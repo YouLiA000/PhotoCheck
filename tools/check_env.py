@@ -51,6 +51,72 @@ def line(name: str, value: str, mark: str) -> None:
     print(f"  {name:22s} {value:34s} {mark}")
 
 
+def _ver_tuple(text: str) -> tuple[int, ...]:
+    """把 "5.9.0" / "1.4.x" / "0.10.14rc1" 解析成数字元组（遇到非数字即截断该段）。"""
+    parts: list[int] = []
+    for piece in str(text).strip().split("."):
+        digits = ""
+        for ch in piece:
+            if not ch.isdigit():
+                break
+            digits += ch
+        parts.append(int(digits) if digits else 0)
+    return tuple(parts)
+
+
+def _cmp(a: tuple[int, ...], b: tuple[int, ...]) -> int:
+    """按补零后逐位比较，返回 -1 / 0 / 1。"""
+    n = max(len(a), len(b))
+    left = a + (0,) * (n - len(a))
+    right = b + (0,) * (n - len(b))
+    return (left > right) - (left < right)
+
+
+def parse_spec(spec: str) -> list[tuple[str, tuple[int, ...]]]:
+    """解析区间记法：">=5,<6"、"10.x"、"1.1.3"、">=4.21,<5"。"""
+    clauses: list[tuple[str, tuple[int, ...]]] = []
+    for raw in str(spec).split(","):
+        part = raw.strip()
+        if not part:
+            continue
+        if part.endswith(".x"):
+            clauses.append(("~", _ver_tuple(part[:-2])))
+        elif part.startswith(">="):
+            clauses.append((">=", _ver_tuple(part[2:])))
+        elif part.startswith("<"):
+            clauses.append(("<", _ver_tuple(part[1:])))
+        else:
+            clauses.append(("==", _ver_tuple(part)))
+    return clauses
+
+
+def in_range(version: str, spec: str) -> tuple[bool | None, str]:
+    """返回 (是否符合, 备注)；None 表示版本串无法解析，调用方应按 WARN 处理。
+
+    2026-11-20 修正：`PACKAGES` 早就写了 `>=5,<6`、`10.x` 这些区间，但
+    `check_packages` 只把它打印出来、从不比较——装了 gradio 6.x 照样报 OK，
+    DoD「在别人电脑上跑通一次」的入口形同装饰。
+    """
+    tv = _ver_tuple(version)
+    if not tv or all(v == 0 for v in tv):
+        return None, "版本串无法解析"
+    for op, target in parse_spec(spec):
+        if op == "~":
+            if _cmp(tv[: len(target)], target) != 0:
+                return False, ""
+        elif op == ">=":
+            if _cmp(tv, target) < 0:
+                return False, ""
+        elif op == "<":
+            if _cmp(tv, target) >= 0:
+                return False, ""
+        elif _cmp(tv[: len(target)], target) != 0:
+            return False, ""
+    lower = str(version).lower()
+    note = "预发布版，仅提示" if any(t in lower for t in ("rc", "alpha", "beta", "dev", "pre")) else ""
+    return True, note
+
+
 def check_python() -> None:
     v = sys.version_info
     good = (v.major, v.minor) == (3, 11)
@@ -77,7 +143,17 @@ def check_packages() -> None:
             line(dist, f"{version} 导入失败：{type(exc).__name__}", BAD)
             globals()["ok"] = False
             continue
-        line(dist, f"{version}   ({want})", OK)
+        verdict, note = in_range(version, want)
+        if verdict is None:
+            line(dist, f"{version}   ({want})", WARN)
+            continue
+        if not verdict:
+            # 必需包越界才算失败；可选包越界只提示，别挡路
+            line(dist, f"{version}   ({want} 不符)", BAD if required else WARN)
+            if required:
+                globals()["ok"] = False
+            continue
+        line(dist, f"{version}   ({want}){'' if not note else '  ' + note}", OK)
 
 
 def check_qr_roundtrip() -> None:

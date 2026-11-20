@@ -199,7 +199,7 @@ def images_readable(ctx: Context) -> Result:
     return ok(f"{total} 张正常图全部可打开{extra}")
 
 
-@check("DS-10", "K-13", "lock 目录禁换行转换（-text）", gate=("W6",))
+@check("DS-11", "K-13", "lock 目录禁换行转换（-text）", gate=("W6",))
 def lock_no_eol_conversion(ctx: Context) -> Result:
     """封存按字节算哈希，git 只要做一次 CRLF→LF 转换，封存就废了。
 
