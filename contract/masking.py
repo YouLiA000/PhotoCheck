@@ -43,6 +43,23 @@ def _starred(head: str, tail: str, width: int) -> str:
     return f"{head}{STAR * width}{tail}"
 
 
+def strip_country_code(value: str) -> str:
+    """剥掉 `+86` / `0086` / `86`（13 位）前缀。
+
+    2026-11-20 修正：A 的检测器在产出前会先剥区号，C 的掩码没有——
+    同一个号码在两边形状不同：contract 输出 `+86****8000`（把区号露在外面），
+    A 输出 `138****8000`。掩码是安全边界，两边必须逐字一致，所以统一在这里处理。
+    """
+    v = (value or "").strip()
+    if v.startswith("+86"):
+        return v[3:]
+    if v.startswith("0086"):
+        return v[4:]
+    if v.startswith("86") and len(v) == 13:
+        return v[2:]
+    return v
+
+
 def mask_phone(value: str) -> str:
     """手机号掩码。**只有恰好 11 位才用 3+4 的标准形状。**
 
@@ -50,7 +67,7 @@ def mask_phone(value: str) -> str:
     （用户要认得出是哪条记录）。但对 8 位输入同样留 3+4 会露出 **7/8 = 88%**——
     那不是掩码，是只遮了一位。短输入多半来自 OCR 截断或错切，越短越该多遮。
     """
-    value = (value or "").strip()
+    value = strip_country_code(value)
     if not value:
         return ""          # 空输入返回空，别造出一个"*"让人以为遮到了什么
     if len(value) == PHONE_LEN:
