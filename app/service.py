@@ -254,7 +254,7 @@ def resolve_source(source_id: str) -> Path:
     if kind == "upload":
         if not re.fullmatch(r"[0-9a-f]{32}", key):
             raise ValueError("上传标识不合法")
-        for suffix in (".jpg", ".png"):
+        for suffix in (".jpg", ".png", ".webp", ".bmp"):
             path = UPLOADS / f"{key}{suffix}"
             if path.is_file():
                 return path
@@ -263,7 +263,7 @@ def resolve_source(source_id: str) -> Path:
 
 
 MAX_IMAGE_PIXELS = 50_000_000
-UPLOAD_FORMATS = {"JPEG": ".jpg", "PNG": ".png"}
+UPLOAD_FORMATS = {"JPEG": ".jpg", "PNG": ".png", "WEBP": ".webp", "BMP": ".bmp"}
 
 
 def _validate_image_bytes(payload: bytes) -> str:
@@ -275,7 +275,7 @@ def _validate_image_bytes(payload: bytes) -> str:
     try:
         opened = Image.open(BytesIO(payload))
     except UnidentifiedImageError as exc:
-        raise ValueError("无法识别图片；只支持 JPG / PNG") from exc
+        raise ValueError("无法识别图片；支持 JPG / PNG / WebP / BMP") from exc
     except Image.DecompressionBombError as exc:
         raise ValueError("图片像素过大，已拒绝") from exc
     except (OSError, ValueError) as exc:
@@ -284,7 +284,7 @@ def _validate_image_bytes(payload: bytes) -> str:
     with opened:
         image_format = opened.format or ""
         if image_format not in UPLOAD_FORMATS:
-            raise ValueError("暂不支持该格式；请转换为 JPG / PNG 后重试")
+            raise ValueError("暂不支持该格式；支持 JPG / PNG / WebP / BMP")
         if opened.width * opened.height > MAX_IMAGE_PIXELS:
             raise ValueError("图片超过 5000 万像素，请先缩小后重试")
         if getattr(opened, "n_frames", 1) != 1:

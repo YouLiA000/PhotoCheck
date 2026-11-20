@@ -26,7 +26,8 @@ if not errorlevel 1 (
 )
 
 echo [ERROR] Python 3.11 was not found.
-echo Install Python 3.11 or create .venv, then run this file again.
+echo For normal users, download PhotoCheck_App_win64.zip, extract it fully,
+echo and run Start.bat. Developers can install Python 3.11 or create .venv.
 pause
 exit /b 1
 

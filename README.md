@@ -3,7 +3,7 @@
 PhotoCheck is a local photo-privacy inspection prototype for Chinese campus
 scenarios. It currently implements the B-side processing infrastructure:
 
-- canonical JPEG/PNG ingestion with EXIF orientation normalization;
+- canonical JPEG/PNG/WebP/BMP ingestion with EXIF orientation normalization;
 - sensitive metadata detection through ExifTool;
 - metadata-free pixel reconstruction and safe exports;
 - solid, blur and mosaic region redaction;

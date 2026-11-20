@@ -36,7 +36,7 @@
       <label class="drop" id="drop">
         <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/bmp" hidden>
         <strong>点这里，或把图片拖进来</strong>
-        <span>JPG / PNG，≤ 40 MB</span>
+        <span>JPG / PNG / WebP / BMP，≤ 40 MB</span>
         <span class="tiny">图片只在本机处理，不会发到任何服务器</span>
       </label>
     </section>
@@ -136,8 +136,8 @@
         <span>遮盖方式</span>
         <select id="method">
           <option value="solid">纯色块（最稳）</option>
-          <option value="blur">高斯模糊</option>
-          <option value="mosaic">马赛克</option>
+          <option value="blur">高斯模糊（人脸自动实心）</option>
+          <option value="mosaic">马赛克（人脸自动实心）</option>
         </select>
       </label>
       <button class="primary" id="btnProcess" disabled>生成脱敏副本</button>

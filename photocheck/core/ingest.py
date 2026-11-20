@@ -22,7 +22,7 @@ from .secrets import SecretStore
 
 DEFAULT_MAX_FILE_BYTES = 50 * 1024 * 1024
 DEFAULT_MAX_PIXELS = 50_000_000
-SUPPORTED_FORMATS = frozenset({"JPEG", "PNG"})
+SUPPORTED_FORMATS = frozenset({"JPEG", "PNG", "WEBP", "BMP"})
 
 
 class ImageIngestError(ValueError):
@@ -89,7 +89,8 @@ def ingest_image(
             image_format = opened.format
             if image_format not in SUPPORTED_FORMATS:
                 raise ImageIngestError(
-                    f"unsupported image format {image_format!r}; expected JPEG or PNG"
+                    f"unsupported image format {image_format!r}; "
+                    "expected JPEG, PNG, WebP or BMP"
                 )
             if opened.width * opened.height > max_pixels:
                 raise ImageIngestError(f"image exceeds the {max_pixels}-pixel limit")
@@ -104,7 +105,7 @@ def ingest_image(
     except ImageIngestError:
         raise
     except (Image.DecompressionBombError, UnidentifiedImageError, OSError, ValueError) as exc:
-        raise ImageIngestError("file is not a valid JPEG or PNG image") from exc
+        raise ImageIngestError("file is not a valid JPEG, PNG, WebP or BMP image") from exc
 
     descriptor = {
         "contract_version": "photocheck/v4",

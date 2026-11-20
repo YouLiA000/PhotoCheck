@@ -616,8 +616,8 @@ function init() {
   $('#method').addEventListener('change', (e) => {
     const notes = {
       solid: '纯色块：整块覆盖，复检必过。演示首选。',
-      mosaic: '马赛克：像素化，通常能过复检。',
-      blur: '模糊：已加大半径，但仍以逐区域复检结果为准。',
+      mosaic: '马赛克：用于文字区域；人脸区域会自动改用实心遮盖。',
+      blur: '模糊：用于文字区域；人脸区域会自动改用实心遮盖。',
     };
     state.methodNote = notes[e.target.value] || '';
     bumpRevision('遮盖方式已变化，旧复检报告已失效');

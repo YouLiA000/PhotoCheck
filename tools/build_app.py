@@ -117,28 +117,65 @@ def copy_site(dest: Path) -> tuple[int, int]:
 
 
 def write_launchers(out: Path) -> None:
-    (out / "启动.bat").write_text(
+    launcher = (
         "@echo off\r\n"
         "chcp 65001 >nul\r\n"
         "cd /d \"%~dp0\"\r\n"
+        "if not exist \"runtime\\python.exe\" goto :missing_runtime\r\n"
+        "if not exist \"runtime\\python311.dll\" goto :missing_runtime\r\n"
+        "if not exist \"runtime\\Lib\\site-packages\" goto :missing_runtime\r\n"
         "set \"PHOTOCHECK_EXIFTOOL=%~dp0runtime\\exiftool\\exiftool.exe\"\r\n"
+        "set \"PYTHONNOUSERSITE=1\"\r\n"
+        "set \"PYTHONDONTWRITEBYTECODE=1\"\r\n"
+        "set \"PYTHONUTF8=1\"\r\n"
         "echo 正在启动 PhotoCheck ...\r\n"
         "runtime\\python.exe app\\main.py\r\n"
         "if errorlevel 1 (\r\n"
         "  echo.\r\n"
         "  echo 启动失败。请把上面的错误信息发给开发者，或先运行 自检.bat\r\n"
         "  pause\r\n"
-        ")\r\n",
-        encoding="utf-8", newline="",
+        ")\r\n"
+        "exit /b %errorlevel%\r\n"
+        ":missing_runtime\r\n"
+        "echo [ERROR] Portable runtime is incomplete.\r\n"
+        "echo Extract the whole ZIP first, then run Start.bat or the Chinese-named launcher.\r\n"
+        "echo Do not run this file directly from inside the ZIP.\r\n"
+        "pause\r\n"
+        "exit /b 1\r\n"
     )
-    (out / "自检.bat").write_text(
+    for name in ("启动.bat", "Start.bat"):
+        (out / name).write_text(launcher, encoding="utf-8", newline="")
+
+    checker = (
         "@echo off\r\n"
         "chcp 65001 >nul\r\n"
         "cd /d \"%~dp0\"\r\n"
+        "if not exist \"runtime\\python.exe\" (\r\n"
+        "  echo [ERROR] runtime\\python.exe is missing. Extract the whole ZIP first.\r\n"
+        "  pause\r\n"
+        "  exit /b 1\r\n"
+        ")\r\n"
         "set \"PHOTOCHECK_EXIFTOOL=%~dp0runtime\\exiftool\\exiftool.exe\"\r\n"
+        "set \"PYTHONNOUSERSITE=1\"\r\n"
+        "set \"PYTHONDONTWRITEBYTECODE=1\"\r\n"
+        "set \"PYTHONUTF8=1\"\r\n"
         "runtime\\python.exe app\\selfcheck.py\r\n"
-        "pause\r\n",
-        encoding="utf-8", newline="",
+        "pause\r\n"
+    )
+    for name in ("自检.bat", "Check.bat"):
+        (out / name).write_text(checker, encoding="utf-8", newline="")
+
+    (out / "README_FIRST.txt").write_text(
+        "PhotoCheck portable package\r\n"
+        "===========================\r\n\r\n"
+        "1. Extract the ENTIRE ZIP to a writable folder.\r\n"
+        "2. Double-click Start.bat (or the Chinese-named launcher).\r\n"
+        "3. Keep the console window open while using the app.\r\n"
+        "4. If it does not start, run Check.bat and send the complete output.\r\n\r\n"
+        "Do not run the launcher directly from inside the ZIP.\r\n"
+        "Windows 10/11 64-bit is supported. Python does not need to be installed.\r\n",
+        encoding="ascii",
+        newline="",
     )
 
 
@@ -248,7 +285,10 @@ def _runtime_debris(out: Path) -> list[str]:
 def _missing_required(out: Path) -> list[str]:
     required = (
         "启动.bat",
+        "Start.bat",
         "自检.bat",
+        "Check.bat",
+        "README_FIRST.txt",
         "使用说明.txt",
         "项目说明.md",
         "app/main.py",
