@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-20T22:50:44",
-  "head": "fb1b572",
+  "generated_at": "2026-11-20T23:46:18",
+  "head": "08c75a7",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 103 tests in 0.443s | OK",
+      "evidence": "Ran 104 tests in 0.391s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.7 小时前更新",
+      "evidence": "1.6 小时前更新",
       "hint": ""
     },
     {
@@ -199,7 +199,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "5 条，均含结论与理由",
+      "evidence": "6 条，均含结论与理由",
       "hint": ""
     },
     {
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 16 个文件，无完整敏感号",
+      "evidence": "扫描 78 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.340s | OK",
+      "evidence": "Ran 48 tests in 4.368s | OK",
       "hint": ""
     },
     {
