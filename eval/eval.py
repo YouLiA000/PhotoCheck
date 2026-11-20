@@ -65,6 +65,23 @@ def allocate_output_dir(base: Path) -> Path:
     raise RuntimeError(f"同名结果目录过多：{base}")
 
 
+def resolve_output_dir(out_arg: str | None, force: bool = False) -> Path:
+    """决定结果写到哪里。
+
+    默认路径一直是「原子创建 + 同秒加后缀」，绝不覆盖；但**显式 `--out` 曾经直通**
+    `write_reports`，指向已存在目录就会静默覆盖上一轮结果——一次误敲就把基线冲掉了。
+    现在显式路径也要过同一道关：非空且未加 `--force` 时拒绝。
+    """
+    if out_arg:
+        out = Path(out_arg)
+        if out.exists() and out.is_dir() and any(out.iterdir()) and not force:
+            raise FileExistsError(f"输出目录已存在且非空：{out}")
+        out.mkdir(parents=True, exist_ok=True)
+        return out
+    base = ROOT / "results" / f"{datetime.now():%Y%m%d-%H%M%S}-{git_sha()}"
+    return allocate_output_dir(base)
+
+
 def run(dataset_dir: Path, predictions: dict[str, list[dict]], prediction_label: str,
         difficulties: dict[str, str] | None = None,
         ci_boot: int = 1000, ci_seed: int = 7,
@@ -161,6 +178,8 @@ def main(argv=None) -> int:
     group.add_argument("--pred-dir", help="预测目录（每图一个 json）")
     group.add_argument("--pred", help="预测文件（json 数组）")
     ap.add_argument("--out", default=None, help="输出目录，默认 results/<时间戳>-<sha>/")
+    ap.add_argument("--force", action="store_true",
+                    help="允许写入已存在的非空 --out 目录（默认拒绝，避免覆盖基线）")
     ap.add_argument("--ci", type=int, default=1000,
                     help="bootstrap 重采样次数（0 = 不算置信区间）")
     ap.add_argument("--seed", type=int, default=7, help="bootstrap 随机种子，保证可复现")
@@ -200,10 +219,13 @@ def main(argv=None) -> int:
         label = str(src)
 
     if args.out:
-        out_dir = Path(args.out)
+        try:
+            out_dir = resolve_output_dir(args.out, args.force)
+        except FileExistsError as exc:
+            print(f"{exc}；确需覆盖请加 --force", file=sys.stderr)
+            return 2
     else:
-        base = ROOT / "results" / f"{datetime.now():%Y%m%d-%H%M%S}-{git_sha()}"
-        out_dir = allocate_output_dir(base)
+        out_dir = resolve_output_dir(None)
 
     try:
         outcome = run(dataset_dir, predictions, label,
