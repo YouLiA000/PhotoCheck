@@ -1,0 +1,31 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-lock-006",
+    "width": 680,
+    "height": 1040,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-lock-006-text-01",
+    "image_id": "image-lock-006",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      357,
+      361,
+      171,
+      26
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "188****2835"
+    }
+  }
+]

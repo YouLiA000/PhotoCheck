@@ -1,0 +1,23 @@
+{
+  "image_id": "qr_wifi_001",
+  "image": "qr_wifi_001.png",
+  "width": 560,
+  "height": 640,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-qr-1",
+      "kind": "qr",
+      "subtype": "qr_wifi",
+      "bbox": [
+        120,
+        110,
+        320,
+        320
+      ]
+    }
+  ],
+  "negative": false,
+  "note": "Wi-Fi 配置码，SSID 走 K-06 的 safe_ssid 字段"
+}

@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*.log
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+photocheck-output/
+*.tmp
+
+# Generated evaluation/application output.
+results/
+build/
+dist/
+work/
+copy/
+*.spec
+
+# Authorised real photographs stay local; only the manifest/example is tracked.
+dataset/real/*
+!dataset/real/README.md
+!dataset/real/manifest.example.csv
+!dataset/real/faces/
+dataset/real/faces/*
+!dataset/real/faces/README.md
+!dataset/real/faces/manifest.example.csv
+dataset/_*/dataset/**/_bak_*/
+
+# Large unpacked tooling; install from the pinned archive/checksum instead.
+tools/exiftool/
+
+# Raw OCR caches and name/address candidate exports contain plaintext and are
+# local regenerable evidence, never repository artifacts.
+photocheck/detectors/a_engine/reports/dev_ocr_cache.json
+photocheck/detectors/a_engine/reports/real_ocr_cache.json
+photocheck/detectors/a_engine/reports/**/candidates.csv
+app/vendor/photocheck/detectors/a_engine/reports/dev_ocr_cache.json
+app/vendor/photocheck/detectors/a_engine/reports/real_ocr_cache.json
+app/vendor/photocheck/detectors/a_engine/reports/**/candidates.csv
+
+# Word/Excel lock files.
+~$*
+

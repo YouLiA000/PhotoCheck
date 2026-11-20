@@ -1,0 +1,24 @@
+{
+  "image_id": "qr_half_001",
+  "image": "qr_half_001.png",
+  "width": 700,
+  "height": 440,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-qr-1",
+      "kind": "qr",
+      "subtype": "qr_unknown",
+      "bbox": [
+        520,
+        90,
+        180,
+        300
+      ],
+      "known_gap": "BC-0011"
+    }
+  ],
+  "negative": false,
+  "note": "半张码：按 finder_min_count=3 预期漏检，缺口登记为 BC-0011"
+}

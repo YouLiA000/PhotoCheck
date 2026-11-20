@@ -1,0 +1,440 @@
+{
+  "generated_at": "2026-11-15T23:58:26",
+  "head": "db5ee5b",
+  "checks": [
+    {
+      "id": "CT-01",
+      "card": "契约v4",
+      "title": "严格 Schema 存在且可解析",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "五类记录齐全，22 个定义，version=PhotoCheck 共享契约 v4",
+      "hint": ""
+    },
+    {
+      "id": "CT-02",
+      "card": "契约v4",
+      "title": "契约测试全绿",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "Ran 83 tests in 0.212s | OK",
+      "hint": ""
+    },
+    {
+      "id": "CT-03",
+      "card": "契约v4",
+      "title": "闭环样例同时通过校验器",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "valid_pipeline.json 通过",
+      "hint": ""
+    },
+    {
+      "id": "CT-04",
+      "card": "契约v4",
+      "title": "v3 迁移脚本可用",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "3 KB",
+      "hint": ""
+    },
+    {
+      "id": "DS-01",
+      "card": "K-13",
+      "title": "dev 集 ≥40 张",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "43 张",
+      "hint": ""
+    },
+    {
+      "id": "DS-02",
+      "card": "K-13",
+      "title": "dev 图与真值一一对应（坏图允许缺）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "43 图 / 38 真值，5 张坏图按约定无真值",
+      "hint": ""
+    },
+    {
+      "id": "DS-03",
+      "card": "K-13",
+      "title": "dev 真值全部通过契约校验",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "38/38 份通过",
+      "hint": ""
+    },
+    {
+      "id": "DS-04",
+      "card": "K-13",
+      "title": "lock 集 ≥20 张",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "23 张",
+      "hint": ""
+    },
+    {
+      "id": "DS-05",
+      "card": "K-13",
+      "title": "lock 已封存且未被改动",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "23 张，封存于 2026-11-08 21:36:21",
+      "hint": ""
+    },
+    {
+      "id": "DS-06",
+      "card": "K-13",
+      "title": "dev 与 lock 的 image_id 零交集（防串图）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "dev 38 / lock 23 零交集，lock 前缀 {'lock'}",
+      "hint": ""
+    },
+    {
+      "id": "DS-07",
+      "card": "K-13",
+      "title": "dev 与 lock 模板零交集（防模板泄漏）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "dev ['broken', 'card', 'chat', 'notice', 'receipt'] / lock ['admission', 'badge', 'invoice']",
+      "hint": ""
+    },
+    {
+      "id": "DS-08",
+      "card": "K-13",
+      "title": "lock 干净图 ≥4 张（误报率来源）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "4 张",
+      "hint": ""
+    },
+    {
+      "id": "DS-09",
+      "card": "K-13",
+      "title": "lock 各类型配额达标",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "qr 7≥5 / phone 5≥3 / idcard 5≥3",
+      "hint": ""
+    },
+    {
+      "id": "DS-10",
+      "card": "K-13",
+      "title": "所有样本图可正常打开",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "61 张正常图全部可打开，跳过 5 张故意坏图",
+      "hint": ""
+    },
+    {
+      "id": "DS-10",
+      "card": "K-13",
+      "title": "lock 目录禁换行转换（-text）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "4 个路径均为 -text",
+      "hint": ""
+    },
+    {
+      "id": "DC-01",
+      "card": "文档",
+      "title": "README 写的 dev 张数与实际一致",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "一致（43 张）",
+      "hint": ""
+    },
+    {
+      "id": "DC-02",
+      "card": "文档",
+      "title": "HANDOFF 存在且在 7 天内更新",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "0.1 小时前更新",
+      "hint": ""
+    },
+    {
+      "id": "DC-03",
+      "card": "文档",
+      "title": "INDEX 行号表与规格卡实际标题一致",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "21 条行号全部命中 功能规格卡_v1.4.md",
+      "hint": ""
+    },
+    {
+      "id": "DC-04",
+      "card": "文档",
+      "title": "AGENTS.md 存在且含铁律/指路",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "88 行",
+      "hint": ""
+    },
+    {
+      "id": "DC-05",
+      "card": "文档",
+      "title": "决策记录格式统一（每条含结论与理由）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "4 条，均含结论与理由",
+      "hint": ""
+    },
+    {
+      "id": "EN-01",
+      "card": "环境",
+      "title": "Python 3.11.x",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "3.11.9",
+      "hint": ""
+    },
+    {
+      "id": "EN-02",
+      "card": "环境",
+      "title": "关键依赖版本在规格卡区间内",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "7/7 全部在区间内",
+      "hint": ""
+    },
+    {
+      "id": "EN-03",
+      "card": "环境",
+      "title": "pyzbar 解码链路真的能解出码",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "image-dev-014.jpg 解出 1 个码，payload 62 字节",
+      "hint": ""
+    },
+    {
+      "id": "EN-04",
+      "card": "环境",
+      "title": "ExifTool 可用（K-02 独立核验）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "v13.61",
+      "hint": ""
+    },
+    {
+      "id": "EN-05",
+      "card": "环境",
+      "title": "Tesseract 5.x + chi_sim（R-04 才需要）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "v5.5.3.20260724，含 chi_sim（D:\\Program Files\\Tesseract-OCR\\tesseract.exe）",
+      "hint": ""
+    },
+    {
+      "id": "EV-01",
+      "card": "K-13",
+      "title": "评测脚本 eval.py 存在且能跑 --help",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "eval/eval.py 可执行",
+      "hint": ""
+    },
+    {
+      "id": "EV-02",
+      "card": "K-13",
+      "title": "三层评测表已产出，每指标带 n",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "r03-layer23-20261115: 三层均有有效数字，layer1 n=84，10 行小样本已标注",
+      "hint": ""
+    },
+    {
+      "id": "RD-01",
+      "card": "K-08",
+      "title": "C 侧处置输入合契约（Decision 能直接喂给 B）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "2 条 Decision 合契约，meta 已排除，交接包结构完整；未设 PHOTOCHECK_REPO_ROOT，跳过跨仓库检查",
+      "hint": ""
+    },
+    {
+      "id": "DET-01",
+      "card": "K-05",
+      "title": "评测链路消费过外部检测器输出（基线可复现）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "20261108-235808-a6511b9：对齐 38 张，召回 100.0% / 精确 100.0%",
+      "hint": ""
+    },
+    {
+      "id": "EX-01",
+      "card": "K-14",
+      "title": "离线可运行：无网络调用",
+      "level": "P1",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "src/ ui/ contract/ 里无联网调用",
+      "hint": ""
+    },
+    {
+      "id": "K03-01",
+      "card": "K-03",
+      "title": "OCR 固定参考集已冻结并按每图中位数测量",
+      "level": "P0",
+      "owner": "A",
+      "status": "PASS",
+      "evidence": "n=5，median=2690.2 ms，p95=3094.4 ms，max=3162.3 ms，AC",
+      "hint": ""
+    },
+    {
+      "id": "PV-01",
+      "card": "隐私红线",
+      "title": "掩码逻辑单点实现（masking 模块）",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "contract/masking.py ← 被 1 个模块引用",
+      "hint": ""
+    },
+    {
+      "id": "PV-02",
+      "card": "隐私红线",
+      "title": "运行产物里没有完整手机号/身份证号",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "扫描 71 个文件，无完整敏感号",
+      "hint": ""
+    },
+    {
+      "id": "PV-03",
+      "card": "隐私红线",
+      "title": "界面测试覆盖「不漏完整号码」",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "test_ui.py 有相关断言",
+      "hint": ""
+    },
+    {
+      "id": "PV-04",
+      "card": "隐私红线",
+      "title": "禁止依赖：PaddleOCR / PySide6 / 联网 API",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "依赖清单与代码里均无禁用项",
+      "hint": ""
+    },
+    {
+      "id": "R04-01",
+      "card": "R-04",
+      "title": "第二 OCR 交叉复核与双人人工判读",
+      "level": "P1",
+      "owner": "B",
+      "status": "PARTIAL",
+      "evidence": "自动交叉 100.0%，正控 96.7%；双人判读未填写",
+      "hint": "两位评审独立填写 R04 对象表后运行 tools/finalize_r04_manual.py"
+    },
+    {
+      "id": "UI-01",
+      "card": "K-11",
+      "title": "app.build() 能构造 Blocks",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "Blocks 构造成功，3 个直接子块",
+      "hint": ""
+    },
+    {
+      "id": "UI-02",
+      "card": "K-11",
+      "title": "三页 Tab：检测 / 处置 / 结论",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "检测 / 处置 / 结论",
+      "hint": ""
+    },
+    {
+      "id": "UI-03",
+      "card": "K-11",
+      "title": "界面测试全绿",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "Ran 48 tests in 2.577s | OK",
+      "hint": ""
+    },
+    {
+      "id": "UI-04",
+      "card": "K-11",
+      "title": "数据源直接吃契约真值，不另造 mock",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "引用 ['labels', 'Detection']，换真检测器只需改这一个模块",
+      "hint": ""
+    },
+    {
+      "id": "UI-05",
+      "card": "K-11",
+      "title": "能生成 Decision（全局版次）且补框有内容版次",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "2 项决定；取消一项 → 全部升到 revision 2（全局版次）；补框版次随坐标变化",
+      "hint": ""
+    },
+    {
+      "id": "UI-06",
+      "card": "K-11",
+      "title": "手动补框可加入且越界坐标被钳制",
+      "level": "P0",
+      "owner": "C",
+      "status": "PASS",
+      "evidence": "补框 id=manual-001，负坐标已钳进图内",
+      "hint": ""
+    }
+  ],
+  "gates": {
+    "W4": {
+      "passed": true,
+      "missing": []
+    },
+    "W6": {
+      "passed": true,
+      "missing": []
+    },
+    "W8": {
+      "passed": true,
+      "missing": []
+    }
+  }
+}

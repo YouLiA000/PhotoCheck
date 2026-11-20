@@ -1,0 +1,31 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-lock-019",
+    "width": 680,
+    "height": 1040,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-lock-019-qr-01",
+    "image_id": "image-lock-019",
+    "kind": "qr",
+    "subtype": "qr_unknown",
+    "bbox": [
+      420,
+      640,
+      220,
+      220
+    ],
+    "detector_score": null,
+    "evidence": "qr_payload",
+    "risk": 2,
+    "details": {
+      "decodable": true
+    }
+  }
+]

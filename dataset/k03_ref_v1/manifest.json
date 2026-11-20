@@ -1,0 +1,59 @@
+{
+  "version": "k03_ref_v1",
+  "seed": 20261115,
+  "generator": "python tools/make_k03_reference.py",
+  "font": "C:/Windows/Fonts/arial.ttf",
+  "character_count_definition": "drawn non-newline text characters before OCR",
+  "items": [
+    {
+      "id": "R1",
+      "file": "images/R1.png",
+      "width": 900,
+      "height": 620,
+      "lines": 4,
+      "drawn_chars": 76,
+      "shape": "sparse",
+      "sha256": "2ce6d36f845104474b116beedf20b56f68fcc95d3d4bce87fdd6ef224aadda34"
+    },
+    {
+      "id": "R2",
+      "file": "images/R2.png",
+      "width": 900,
+      "height": 620,
+      "lines": 16,
+      "drawn_chars": 864,
+      "shape": "dense",
+      "sha256": "d72c28d71fd1e9c3e110a7bc1528277b633a2b184592d71c373acdf3a6b52215"
+    },
+    {
+      "id": "R3",
+      "file": "images/R3.png",
+      "width": 1120,
+      "height": 1560,
+      "lines": 5,
+      "drawn_chars": 95,
+      "shape": "sparse",
+      "sha256": "b68fcec49f54f5b9f0d13b1af4a9a3666c0c9f7a27ad4ac79ebec372155e5bd8"
+    },
+    {
+      "id": "R4",
+      "file": "images/R4.png",
+      "width": 1120,
+      "height": 1560,
+      "lines": 20,
+      "drawn_chars": 1080,
+      "shape": "dense",
+      "sha256": "620c941c79660d9468f13f215d1ccb7dd5fb265275ffa1490f5ff2c7bb438ae8"
+    },
+    {
+      "id": "R5",
+      "file": "images/R5.png",
+      "width": 1600,
+      "height": 1200,
+      "lines": 15,
+      "drawn_chars": 810,
+      "shape": "medium",
+      "sha256": "cec12f1d093e4a503f4fb380ce8373c11a42a1dc9c5f9aba99707c036b0a1ab0"
+    }
+  ]
+}

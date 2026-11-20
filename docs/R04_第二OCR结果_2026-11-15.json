@@ -1,0 +1,38 @@
+{
+  "card": "R-04",
+  "generated_at": "2026-11-15T21:36:35",
+  "started_at": "2026-11-15T21:34:11",
+  "dataset_root": "D:\\Desktop\\codexTEST\\_github_photo_check\\dataset",
+  "sample_size": 30,
+  "seed": 20261115,
+  "subtype_counts": {
+    "phone": 20,
+    "idcard": 10
+  },
+  "tesseract": {
+    "path": "D:\\Program Files\\Tesseract-OCR\\tesseract.exe",
+    "version": "v5.5.3.20260724",
+    "languages": [
+      "chi_sim",
+      "eng",
+      "osd"
+    ],
+    "language_config": "chi_sim+eng",
+    "confidence_threshold": 50
+  },
+  "exiftool": "D:\\Program Files\\PhotoCheck\\ExifTool-13.61\\exiftool.exe",
+  "summary": {
+    "primary_passed": 30,
+    "tesseract_passed": 30,
+    "agreement_count": 30,
+    "agreement_rate": 1.0,
+    "control_readable": 29,
+    "control_readable_rate": 0.9667,
+    "manual_review_status": "pending_two_independent_human_reviewers"
+  },
+  "privacy": {
+    "raw_ocr_text_stored": false,
+    "masked_preview_only": true,
+    "processed_crops_only_for_manual_review": true
+  }
+}

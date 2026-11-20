@@ -1,0 +1,52 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-007",
+    "width": 1120,
+    "height": 1560,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-007-text-01",
+    "image_id": "image-dev-007",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      303,
+      359,
+      226,
+      32
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "152****4490"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-007-text-02",
+    "image_id": "image-dev-007",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [
+      303,
+      673,
+      366,
+      32
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 3,
+    "details": {
+      "masked_preview": "4201**********1918",
+      "idcard_check": "pass"
+    }
+  }
+]

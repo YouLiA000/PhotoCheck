@@ -1,0 +1,110 @@
+{
+  "card": "K-03",
+  "note": "只含文件名/尺寸/耗时，不含任何识别文字",
+  "generated_at": "2026-11-07T20:07:18",
+  "env": {
+    "python": "3.11.17",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "rapidocr": "unknown"
+  },
+  "config": {
+    "min_score": 0.5,
+    "long_side": 1600,
+    "dual_scale": true,
+    "upscale": 2.0
+  },
+  "summary": {
+    "measured_t_ocr_ms": 1644.6,
+    "baseline_t_ocr_ms": 1686.3,
+    "w4_target_ms": 2023.6,
+    "w4_target_if_remeasured_ms": 1973.5,
+    "samples": 10,
+    "median_min_ms": 1644.6,
+    "mean_min_ms": 1555.4,
+    "p95_min_ms": 1885.6,
+    "max_min_ms": 1885.6,
+    "dual_scale": true
+  },
+  "rows": [
+    {
+      "file": "clean_001.png",
+      "width": 800,
+      "height": 480,
+      "blocks": 5,
+      "min_ms": 1690.5,
+      "mean_ms": 1733.8
+    },
+    {
+      "file": "express_001.png",
+      "width": 900,
+      "height": 620,
+      "blocks": 13,
+      "min_ms": 1686.8,
+      "mean_ms": 1888.8
+    },
+    {
+      "file": "idcard_001.png",
+      "width": 760,
+      "height": 480,
+      "blocks": 6,
+      "min_ms": 1602.4,
+      "mean_ms": 1618.5
+    },
+    {
+      "file": "idcard_bad_check_001.png",
+      "width": 760,
+      "height": 480,
+      "blocks": 6,
+      "min_ms": 1867.8,
+      "mean_ms": 1958.1
+    },
+    {
+      "file": "idcard_bad_date_001.png",
+      "width": 760,
+      "height": 480,
+      "blocks": 6,
+      "min_ms": 1885.2,
+      "mean_ms": 1918.0
+    },
+    {
+      "file": "idcard_x_001.png",
+      "width": 760,
+      "height": 480,
+      "blocks": 6,
+      "min_ms": 1885.6,
+      "mean_ms": 1978.1
+    },
+    {
+      "file": "multi_qr_001.png",
+      "width": 900,
+      "height": 460,
+      "blocks": 3,
+      "min_ms": 1122.4,
+      "mean_ms": 1417.4
+    },
+    {
+      "file": "phone_intl_001.png",
+      "width": 760,
+      "height": 400,
+      "blocks": 4,
+      "min_ms": 1450.1,
+      "mean_ms": 1476.7
+    },
+    {
+      "file": "qr_half_001.png",
+      "width": 700,
+      "height": 440,
+      "blocks": 2,
+      "min_ms": 1245.6,
+      "mean_ms": 1368.7
+    },
+    {
+      "file": "qr_wifi_001.png",
+      "width": 560,
+      "height": 640,
+      "blocks": 5,
+      "min_ms": 1118.0,
+      "mean_ms": 1323.7
+    }
+  ]
+}

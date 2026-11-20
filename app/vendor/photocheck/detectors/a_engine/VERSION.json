@@ -1,0 +1,11 @@
+{
+  "artifact": "A delivery (PhotoCheck detection engine)",
+  "built_at": "2026-11-15T22:10:28",
+  "source_hash_sha256": "87B1F7412A5B952FBCBEBC6E5C07122BC4494FA42073D5BB2241DD5A8FD59933",
+  "upstream_source_hash_sha256": "1F1414B88393E38285FF47F61CE0D633838369D9B1B98365656C6D84AB524353",
+  "integration_note": "B integration minifies detector-warning exception text to avoid persisting private input; all other A source files match upstream.",
+  "source_hash_scope": "core/**, scripts/**, tests/** (*.py), path-ordered",
+  "source_hash_algorithm": "sha256 over concat(relpath + NUL + bytes + NUL)",
+  "python": "3.11.17",
+  "note": "Verify with: python scripts/build_delivery.py --check-hash. The zip's own SHA-256 is published next to it as <zip>.sha256, not inside the zip, because writing it inside would make the archive depend on its own digest."
+}

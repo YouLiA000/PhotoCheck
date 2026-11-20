@@ -1,0 +1,65 @@
+file,group,payload_id,expected_subtype,condition,width,height,decodable,sha256,note
+source/qr-wifi-clean.png,source,wifi,qr_wifi,clean,490,490,yes,ce9f4e47935f6f0477070516945808261ac0bd3406239d5d842d9083ad8ce138,用于打印或投屏后实拍
+degraded/qr-wifi-small.png,degraded,wifi,qr_wifi,small,900,620,yes,e09b1d3cb0a55ad91e878732676f607dd291baa3cb33b7241f74178ed37883b9,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-wifi-blur_soft.png,degraded,wifi,qr_wifi,blur_soft,900,620,yes,9e6559ff1279be4e8b6f1ee506e4dbec0f03d3ba2baa3ddf2b2bb650f8ad9af6,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-wifi-blur_hard.png,degraded,wifi,qr_wifi,blur_hard,900,620,yes,9725e2203d8e042936b6a16e5dee3f6f567b8855f69329d3a893788930564e3f,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-wifi-perspective.png,degraded,wifi,qr_wifi,perspective,900,620,yes,e47a54edd6fad6131a83cfb2310bc028e9e5ea7c217acbda812e090a6d721b85,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-wifi-moire_soft.png,degraded,wifi,qr_wifi,moire_soft,900,620,yes,7ed528c56f120370c067f955d5a4cca387f1b5ce00d4aef6ed51e5f37cf64d14,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-wifi-moire.png,degraded,wifi,qr_wifi,moire,900,620,no,f7f3f60cd5b4b95af5eb43289d833b3a5c6657db4b52a4ea951ec183de49422f,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-wifi-jpeg.png,degraded,wifi,qr_wifi,jpeg,900,620,yes,749ed75546528eeca9b95136270f241545018327bcdfea440e4cce2561548a20,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-link-clean.png,source,link,qr_link,clean,450,450,yes,60f33fd3f8d6e67a690d90898d686afeb2b5b57932f766b028aefbfa57f5803f,用于打印或投屏后实拍
+degraded/qr-link-small.png,degraded,link,qr_link,small,900,620,yes,7e87301aa2a6a5e53782cdd02378d902b02be6e8ea8bcc8058dda893fe7974ed,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-link-blur_soft.png,degraded,link,qr_link,blur_soft,900,620,yes,4bcc859f3644d3fb0f31330f761c3944440a32e1768e05510ceb10c6c905cab0,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-link-blur_hard.png,degraded,link,qr_link,blur_hard,900,620,yes,be51c6be58738df810b7fe91f46c177277d5eba5c5da92e6d1a07c72da3c8d3b,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-link-perspective.png,degraded,link,qr_link,perspective,900,620,yes,9a4bc4e87ae16dabd9274d5dda2f81822f93f7c486b04daca0dce8b0bc926156,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-link-moire_soft.png,degraded,link,qr_link,moire_soft,900,620,yes,6bc71367f0acd270f0516abb4cba44a9ce26b01d16375ffa206ab710cc713ab5,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-link-moire.png,degraded,link,qr_link,moire,900,620,no,c1907adc51af7efcefb159bceae5dcb5da94197d37e70345b5e3cc82ab3ca6f3,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-link-jpeg.png,degraded,link,qr_link,jpeg,900,620,yes,f5973cc351203c31c466571fa05096c829b39b234a0fb9cf0d62472e6192cf81,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-geo-clean.png,source,geo,qr_geo,clean,370,370,yes,eebf09ae71a1f3cdc665d1153e91e027f82a92e2161887d47d442c81ab967c52,用于打印或投屏后实拍
+degraded/qr-geo-small.png,degraded,geo,qr_geo,small,900,620,yes,a3af884d46c044c18fb7d73e6192dc5ee4de2633c6b31d0497317a2f2f80bc2c,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-geo-blur_soft.png,degraded,geo,qr_geo,blur_soft,900,620,yes,5d4d9e4a7a62fdcb7eba31992ab47dc0f0f9f53d759aa7e51211c8db310c541e,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-geo-blur_hard.png,degraded,geo,qr_geo,blur_hard,900,620,yes,a12762f7da35bbc3010b734de66654c73d4a530dcc10b6ad3b2636231cdc57fd,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-geo-perspective.png,degraded,geo,qr_geo,perspective,900,620,yes,cda000ec20b5f3b46690582adbd8972f08b3f976af85d87edd2d9ad4919e0d65,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-geo-moire_soft.png,degraded,geo,qr_geo,moire_soft,900,620,yes,9d9b0298900c735b8ef4436236abb8da240980f4ccac5db86f8e5afc637122e9,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-geo-moire.png,degraded,geo,qr_geo,moire,900,620,no,462a9f7b6097979d570480189d41b72675f64ea7731d20b74ef88c2c58a10da4,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-geo-jpeg.png,degraded,geo,qr_geo,jpeg,900,620,no,95b09451e8a80311888ebe32f922bbe4b3d3708b4f6e459f0e2cb0b6e0550210,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-vcard-clean.png,source,vcard,qr_vcard,clean,570,570,yes,ff6c9bb68cc617310e6a362275f857e409b8d9cc00414b3f7789f7c92c19934f,用于打印或投屏后实拍
+degraded/qr-vcard-small.png,degraded,vcard,qr_vcard,small,900,620,no,b80bce429c4edc2c707d75ea88fb2cbd7a7cf8cebde5a2beb101474f30c3865f,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-vcard-blur_soft.png,degraded,vcard,qr_vcard,blur_soft,900,620,yes,9ca5bb522564a5a6639edc59ea206b73d35fe6ea36298c37f526fa79dc4be007,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-vcard-blur_hard.png,degraded,vcard,qr_vcard,blur_hard,900,620,yes,3818c0901ca2e3928fe5f33987ae6a51fe524728c1990c8c3a72febcead50788,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-vcard-perspective.png,degraded,vcard,qr_vcard,perspective,900,620,yes,2c46b9d5d9c6bdc1db2242676fd5dc5fbdcadd8f8cd97018cd5f51150e026944,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-vcard-moire_soft.png,degraded,vcard,qr_vcard,moire_soft,900,620,yes,612a6626d7b209ddcaabe8d26c239b5a59fdfe9ccffd5aca636ef17fa94c550a,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-vcard-moire.png,degraded,vcard,qr_vcard,moire,900,620,no,d1b742d9d63128decbca7c187497cda0740789f9ab67016abfae87460f960bd1,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-vcard-jpeg.png,degraded,vcard,qr_vcard,jpeg,900,620,yes,6714182b7c082153640de4ffe6e2b48e63796a01d01e1ad282f3d3c86648a47f,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-pay-clean.png,source,pay,qr_wechat_pay,clean,410,410,yes,bf13fa98d5c40b2b7c3e3233ee8779234d93306db700eb4185845f1d0eae4b4c,用于打印或投屏后实拍
+degraded/qr-pay-small.png,degraded,pay,qr_wechat_pay,small,900,620,yes,a258fe4d543196ce9761367fd561d120ef4fad6c707b9b6ebe22ef491a025d13,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-pay-blur_soft.png,degraded,pay,qr_wechat_pay,blur_soft,900,620,yes,f232f9755a23bbbfa8e3086eebdc2a98886056a6de168d0af76671b65c5422da,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-pay-blur_hard.png,degraded,pay,qr_wechat_pay,blur_hard,900,620,yes,355a654c2a78919b16e9b5ce45530821968c2a7097067bbb85dbb83d841b203f,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-pay-perspective.png,degraded,pay,qr_wechat_pay,perspective,900,620,yes,c3cd7f78f5ed85e3137e24d02eba0c7c14678e34f3a80ddbfa2e18fd4c79e005,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-pay-moire_soft.png,degraded,pay,qr_wechat_pay,moire_soft,900,620,yes,51e9f74c8ac68e5530555254999cec33f28b9e21e563ac8b0f746a222905326c,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-pay-moire.png,degraded,pay,qr_wechat_pay,moire,900,620,no,80743edc1891c33d73a1267646dd7c18286448f367d872beff378faba4287ccb,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-pay-jpeg.png,degraded,pay,qr_wechat_pay,jpeg,900,620,yes,65f5181cce77657fe9998efe4cb93dcea8fc0b27a84bd3bdd2d9af2b1a479030,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-alipay-clean.png,source,alipay,qr_alipay,clean,490,490,yes,56f10f63a6b052acdc0dfe9ba0486b6b20226ae4e6c76480e06923ff5bfb2eb8,用于打印或投屏后实拍
+degraded/qr-alipay-small.png,degraded,alipay,qr_alipay,small,900,620,yes,662a6cb69d23af169f332efadddfb5696669b71aeeb0a397a26ed75827c12f78,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-alipay-blur_soft.png,degraded,alipay,qr_alipay,blur_soft,900,620,yes,a5855b237cd63b88c8fd0b3bad4ddffa408e5a65ed726fe6c492f8a0ef36ddb0,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-alipay-blur_hard.png,degraded,alipay,qr_alipay,blur_hard,900,620,yes,e033d77428fd0384379a0f516065b4883f60610976fe0003d844fe4624b6cf0c,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-alipay-perspective.png,degraded,alipay,qr_alipay,perspective,900,620,yes,3b3a43134793308c4e3e4430db04475abfb033c68b2ef4bd634ef3ed2bf6c102,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-alipay-moire_soft.png,degraded,alipay,qr_alipay,moire_soft,900,620,yes,85a9d2f124f43c1d2d5095274794323327cd5ba28d63609bd7f539d6691ef579,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-alipay-moire.png,degraded,alipay,qr_alipay,moire,900,620,no,300e7bcba0f37a65ee9f9f26ec644fb15688ae415c4962998ef336cc707c2182,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-alipay-jpeg.png,degraded,alipay,qr_alipay,jpeg,900,620,no,e480228c256d094290ae187928790a6a0e0d8d11840fc0c4527ab1780756a384,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-tel-clean.png,source,tel,qr_contact,clean,370,370,yes,5525a570cba2399cf5b98731ef05950205e407c074443a632a354aa195e25eb0,用于打印或投屏后实拍
+degraded/qr-tel-small.png,degraded,tel,qr_contact,small,900,620,yes,460de6eee08975661cf6cb821c62e8799c6c551180ccf2589f5985eae77820fc,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-tel-blur_soft.png,degraded,tel,qr_contact,blur_soft,900,620,yes,a91b5dd258e9d84b7c7e9fbb1c2a4742fc7077ec5d64e79e796c3d5d1753aff4,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-tel-blur_hard.png,degraded,tel,qr_contact,blur_hard,900,620,yes,4d0d6fea6a3210d54eaaa03f326f5a7bff9dc4cb9a4627abf7c19584fd58f5bc,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-tel-perspective.png,degraded,tel,qr_contact,perspective,900,620,yes,09e94eb1cda5fad4dad19be94382fe76615d79c9180696d71ad47e4faa0ea73e,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-tel-moire_soft.png,degraded,tel,qr_contact,moire_soft,900,620,yes,f8a944a223a369e28afead82755edd71a20160dde131956cfc8177c63064455d,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-tel-moire.png,degraded,tel,qr_contact,moire,900,620,no,6b634192c6f63557a6a66f488d13112d23bb27abd81924945f45c77cd618c1b6,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-tel-jpeg.png,degraded,tel,qr_contact,jpeg,900,620,yes,2d77e75632c1d02860e7efa19e38fc483440581267d0539b917355b019f6875b,真实 JPEG 往返一次（quality=35），模拟压缩损失
+source/qr-text-clean.png,source,text,qr_unknown,clean,370,370,yes,6e57dd2a59d365842f56408438e10e2dc563bffaf4b5317669c114242ef847a2,用于打印或投屏后实拍
+degraded/qr-text-small.png,degraded,text,qr_unknown,small,900,620,yes,f42e61f3835afd239d0630a7a4165c22e639e3eb0d441710ff026f0451f6e47d,整码缩到 96px 再贴到大画布，模拟远距离拍摄
+degraded/qr-text-blur_soft.png,degraded,text,qr_unknown,blur_soft,900,620,yes,deb477c1c3a7becb4a3cfe95e227309287fd1f007f70e272e9ca339777ca2ca1,高斯模糊 radius=2.0，模拟轻微失焦
+degraded/qr-text-blur_hard.png,degraded,text,qr_unknown,blur_hard,900,620,yes,68a689a753390c3d68f49568876c2ccf90836709ea78f92d6d5d0ce18423875b,高斯模糊 radius=4.0，模拟明显失焦
+degraded/qr-text-perspective.png,degraded,text,qr_unknown,perspective,900,620,yes,c9a47a8a1b2582618cb6e84e4fe534dbdda96faee3bb2f635932b576b993dd41,旋转 12° + 四边形透视，模拟斜拍
+degraded/qr-text-moire_soft.png,degraded,text,qr_unknown,moire_soft,900,620,yes,9b1de38e6639c0f3fa99ed9b2fa20818f08f637167e4320a61459903b66b7af5,细网格 + 轻微模糊，模拟拍屏但像素格较疏
+degraded/qr-text-moire.png,degraded,text,qr_unknown,moire,900,620,no,a92c43b79326b3df4fe25eb332bc7ae97f7a8826bff4711ec496e6227c1333d9,密网格 + 模糊，模拟近距离拍屏的强摩尔纹
+degraded/qr-text-jpeg.png,degraded,text,qr_unknown,jpeg,900,620,no,b9205e7eae1f5945359259c4659272cb749c260934d9e0aedbf0d2fe88b140e1,真实 JPEG 往返一次（quality=35），模拟压缩损失

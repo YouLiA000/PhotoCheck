@@ -1,0 +1,79 @@
+{
+  "version": "k03_ref_v1",
+  "generated_at": "2026-11-15T23:53:01+08:00",
+  "reference_manifest_sha256": "733f38274401e79e8ed60a0fb680e7390e505bbaf289c5d571ff437a4296c587",
+  "host": {
+    "cpu": "Intel(R) Core(TM) i7-14650HX",
+    "power": "ac",
+    "platform": "Windows-10-10.0.26100-SP0",
+    "python": "3.11.9"
+  },
+  "config": {
+    "runs_per_image": 3,
+    "discarded_runs_per_image": 1,
+    "statistical_unit": "per-image median",
+    "long_side": 1600,
+    "dual_scale": true
+  },
+  "summary": {
+    "median_of_image_medians_ms": 2690.2,
+    "p95_of_image_medians_ms": 3094.4,
+    "max_of_image_medians_ms": 3162.3,
+    "n_images": 5,
+    "median_megapixels": 1.747,
+    "median_ocr_chars": 753.0,
+    "p95_bootstrap_ci_ms": [
+      2429.8,
+      3162.3
+    ],
+    "bootstrap_runs": 2000,
+    "bootstrap_seed": 7
+  },
+  "rows": [
+    {
+      "id": "R1",
+      "file": "images/R1.png",
+      "width": 900,
+      "height": 620,
+      "drawn_chars": 76,
+      "ocr_chars": 96,
+      "image_median_ms": 976.9
+    },
+    {
+      "id": "R2",
+      "file": "images/R2.png",
+      "width": 900,
+      "height": 620,
+      "drawn_chars": 864,
+      "ocr_chars": 849,
+      "image_median_ms": 2690.2
+    },
+    {
+      "id": "R3",
+      "file": "images/R3.png",
+      "width": 1120,
+      "height": 1560,
+      "drawn_chars": 95,
+      "ocr_chars": 95,
+      "image_median_ms": 1388.2
+    },
+    {
+      "id": "R4",
+      "file": "images/R4.png",
+      "width": 1120,
+      "height": 1560,
+      "drawn_chars": 1080,
+      "ocr_chars": 970,
+      "image_median_ms": 2822.5
+    },
+    {
+      "id": "R5",
+      "file": "images/R5.png",
+      "width": 1600,
+      "height": 1200,
+      "drawn_chars": 810,
+      "ocr_chars": 753,
+      "image_median_ms": 3162.3
+    }
+  ]
+}

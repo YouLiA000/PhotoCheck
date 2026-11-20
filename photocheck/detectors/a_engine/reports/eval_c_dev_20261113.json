@@ -1,0 +1,1272 @@
+{
+  "totals": {
+    "gt": 52,
+    "tp": 51,
+    "fp": 0,
+    "fn": 1,
+    "type_ok": 51
+  },
+  "by_kind": {
+    "text": {
+      "gt": 42,
+      "tp": 42
+    },
+    "qr": {
+      "gt": 10,
+      "tp": 9
+    }
+  },
+  "by_subtype": {
+    "text/idcard": {
+      "gt": 11,
+      "tp": 11,
+      "type_ok": 11
+    },
+    "text/phone": {
+      "gt": 31,
+      "tp": 31,
+      "type_ok": 31
+    },
+    "qr/qr_vcard": {
+      "gt": 4,
+      "tp": 3,
+      "type_ok": 3
+    },
+    "qr/qr_wifi": {
+      "gt": 3,
+      "tp": 3,
+      "type_ok": 3
+    },
+    "qr/qr_wechat_pay": {
+      "gt": 1,
+      "tp": 1,
+      "type_ok": 1
+    },
+    "qr/qr_link": {
+      "gt": 1,
+      "tp": 1,
+      "type_ok": 1
+    },
+    "qr/qr_unknown": {
+      "gt": 1,
+      "tp": 1,
+      "type_ok": 1
+    }
+  },
+  "confusions": [],
+  "failures": [],
+  "per_image": [
+    {
+      "image_id": "image-dev-001",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-001-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9502,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-001-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9735,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 10709.6,
+      "timings": {
+        "text": 6449.9,
+        "qr": 155.6,
+        "face": 3245.7
+      }
+    },
+    {
+      "image_id": "image-dev-002",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-002-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.969,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3428.1,
+      "timings": {
+        "text": 3313.3,
+        "qr": 69.4,
+        "face": 27.4
+      }
+    },
+    {
+      "image_id": "image-dev-003",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-003-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8782,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3262.6,
+      "timings": {
+        "text": 3154.7,
+        "qr": 73.0,
+        "face": 22.1
+      }
+    },
+    {
+      "image_id": "image-dev-004",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-004-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9449,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-004-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9558,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3082.4,
+      "timings": {
+        "text": 2938.0,
+        "qr": 107.2,
+        "face": 26.8
+      }
+    },
+    {
+      "image_id": "image-dev-005",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-005-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9489,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3093.6,
+      "timings": {
+        "text": 2979.9,
+        "qr": 71.6,
+        "face": 29.0
+      }
+    },
+    {
+      "image_id": "image-dev-006",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-006-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9333,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2443.6,
+      "timings": {
+        "text": 2267.8,
+        "qr": 123.3,
+        "face": 37.2
+      }
+    },
+    {
+      "image_id": "image-dev-007",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-007-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9029,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-007-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9646,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2706.7,
+      "timings": {
+        "text": 2586.9,
+        "qr": 78.8,
+        "face": 23.5
+      }
+    },
+    {
+      "image_id": "image-dev-008",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-008-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9216,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2620.0,
+      "timings": {
+        "text": 2429.8,
+        "qr": 140.6,
+        "face": 38.5
+      }
+    },
+    {
+      "image_id": "image-dev-009",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-009-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9455,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-009-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8183,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3962.2,
+      "timings": {
+        "text": 3874.1,
+        "qr": 59.2,
+        "face": 16.7
+      }
+    },
+    {
+      "image_id": "image-dev-010",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-010-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8876,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2227.5,
+      "timings": {
+        "text": 2152.9,
+        "qr": 49.3,
+        "face": 15.6
+      }
+    },
+    {
+      "image_id": "image-dev-011",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-011-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9455,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-011-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8264,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2461.3,
+      "timings": {
+        "text": 2385.1,
+        "qr": 52.9,
+        "face": 16.1
+      }
+    },
+    {
+      "image_id": "image-dev-012",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-012-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.892,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2120.6,
+      "timings": {
+        "text": 2008.1,
+        "qr": 83.7,
+        "face": 21.2
+      }
+    },
+    {
+      "image_id": "image-dev-013",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-013-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8963,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 1860.8,
+      "timings": {
+        "text": 1717.6,
+        "qr": 105.6,
+        "face": 26.3
+      }
+    },
+    {
+      "image_id": "image-dev-014",
+      "gt": 2,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 1,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-014-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8429,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [
+        {
+          "gt_id": "det-image-dev-014-qr-02",
+          "kind": "qr",
+          "subtype": "qr_vcard",
+          "bbox": [
+            720,
+            180,
+            300,
+            300
+          ]
+        }
+      ],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3835.2,
+      "timings": {
+        "text": 3744.0,
+        "qr": 61.7,
+        "face": 20.0
+      }
+    },
+    {
+      "image_id": "image-dev-015",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-015-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_wifi",
+          "pred_subtype": "qr_wifi",
+          "iou": 0.7656,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-015-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8464,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2686.8,
+      "timings": {
+        "text": 2586.2,
+        "qr": 73.3,
+        "face": 20.0
+      }
+    },
+    {
+      "image_id": "image-dev-016",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-016-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_wifi",
+          "pred_subtype": "qr_wifi",
+          "iou": 0.7656,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-016-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9597,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2251.6,
+      "timings": {
+        "text": 2184.3,
+        "qr": 44.6,
+        "face": 12.4
+      }
+    },
+    {
+      "image_id": "image-dev-017",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-017-qr-01",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_vcard",
+          "pred_subtype": "qr_vcard",
+          "iou": 0.7891,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2469.6,
+      "timings": {
+        "text": 2406.0,
+        "qr": 45.3,
+        "face": 12.3
+      }
+    },
+    {
+      "image_id": "image-dev-018",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-018-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9543,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-018-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9364,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3716.5,
+      "timings": {
+        "text": 3580.9,
+        "qr": 100.8,
+        "face": 25.9
+      }
+    },
+    {
+      "image_id": "image-dev-019",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-019-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.917,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-019-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9098,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3233.9,
+      "timings": {
+        "text": 3133.7,
+        "qr": 65.0,
+        "face": 21.5
+      }
+    },
+    {
+      "image_id": "image-dev-020",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-020-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9248,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-020-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9405,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2919.6,
+      "timings": {
+        "text": 2777.4,
+        "qr": 96.9,
+        "face": 31.7
+      }
+    },
+    {
+      "image_id": "image-dev-021",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3492.4,
+      "timings": {
+        "text": 3285.3,
+        "qr": 154.1,
+        "face": 36.1
+      }
+    },
+    {
+      "image_id": "image-dev-022",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2258.6,
+      "timings": {
+        "text": 2085.3,
+        "qr": 125.7,
+        "face": 36.7
+      }
+    },
+    {
+      "image_id": "image-dev-023",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-023-text-01",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9222,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3083.7,
+      "timings": {
+        "text": 2967.2,
+        "qr": 73.0,
+        "face": 27.4
+      }
+    },
+    {
+      "image_id": "image-dev-024",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-024-qr-01",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_vcard",
+          "pred_subtype": "qr_vcard",
+          "iou": 0.7891,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2641.9,
+      "timings": {
+        "text": 2550.7,
+        "qr": 58.4,
+        "face": 22.5
+      }
+    },
+    {
+      "image_id": "image-dev-028",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-028-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_wechat_pay",
+          "pred_subtype": "qr_wechat_pay",
+          "iou": 0.7656,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-028-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.901,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2271.2,
+      "timings": {
+        "text": 2192.7,
+        "qr": 49.7,
+        "face": 18.8
+      }
+    },
+    {
+      "image_id": "image-dev-029",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-029-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_link",
+          "pred_subtype": "qr_link",
+          "iou": 0.7656,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-029-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.901,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2011.3,
+      "timings": {
+        "text": 1880.1,
+        "qr": 101.6,
+        "face": 19.8
+      }
+    },
+    {
+      "image_id": "image-dev-030",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-030-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_unknown",
+          "pred_subtype": "qr_unknown",
+          "iou": 0.7367,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-030-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9283,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2584.2,
+      "timings": {
+        "text": 2505.4,
+        "qr": 55.9,
+        "face": 13.1
+      }
+    },
+    {
+      "image_id": "image-dev-031",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-031-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.969,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3323.5,
+      "timings": {
+        "text": 3118.9,
+        "qr": 155.1,
+        "face": 37.0
+      }
+    },
+    {
+      "image_id": "image-dev-032",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-032-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.953,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2460.8,
+      "timings": {
+        "text": 2299.0,
+        "qr": 104.8,
+        "face": 38.7
+      }
+    },
+    {
+      "image_id": "image-dev-033",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2426.9,
+      "timings": {
+        "text": 2251.0,
+        "qr": 121.5,
+        "face": 37.9
+      }
+    },
+    {
+      "image_id": "image-dev-034",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 1670.3,
+      "timings": {
+        "text": 1504.3,
+        "qr": 104.3,
+        "face": 50.0
+      }
+    },
+    {
+      "image_id": "image-dev-035",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2857.6,
+      "timings": {
+        "text": 2720.4,
+        "qr": 90.5,
+        "face": 33.1
+      }
+    },
+    {
+      "image_id": "image-dev-036",
+      "gt": 0,
+      "pred": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 0,
+      "matches": [],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2122.8,
+      "timings": {
+        "text": 2058.2,
+        "qr": 42.8,
+        "face": 12.2
+      }
+    },
+    {
+      "image_id": "image-dev-037",
+      "gt": 1,
+      "pred": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 1,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-037-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9572,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3105.4,
+      "timings": {
+        "text": 2991.3,
+        "qr": 74.1,
+        "face": 29.0
+      }
+    },
+    {
+      "image_id": "image-dev-038",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-038-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9197,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-038-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9614,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2874.4,
+      "timings": {
+        "text": 2726.1,
+        "qr": 101.1,
+        "face": 35.1
+      }
+    },
+    {
+      "image_id": "image-dev-041",
+      "gt": 3,
+      "pred": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 3,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-041-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9505,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-041-text-02",
+          "pred_id": "det-phone-002",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.944,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-041-text-03",
+          "pred_id": "det-phone-003",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8623,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3803.8,
+      "timings": {
+        "text": 3690.6,
+        "qr": 68.4,
+        "face": 29.5
+      }
+    },
+    {
+      "image_id": "image-dev-042",
+      "gt": 3,
+      "pred": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 3,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-042-qr-02",
+          "pred_id": "det-qr-001",
+          "gt_subtype": "qr_vcard",
+          "pred_subtype": "qr_vcard",
+          "iou": 0.7951,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-042-qr-03",
+          "pred_id": "det-qr-002",
+          "gt_subtype": "qr_wifi",
+          "pred_subtype": "qr_wifi",
+          "iou": 0.7656,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-042-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.8286,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 2703.0,
+      "timings": {
+        "text": 2637.2,
+        "qr": 45.2,
+        "face": 12.5
+      }
+    },
+    {
+      "image_id": "image-dev-043",
+      "gt": 2,
+      "pred": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "type_ok": 2,
+      "matches": [
+        {
+          "gt_id": "det-image-dev-043-text-02",
+          "pred_id": "det-idcard-001",
+          "gt_subtype": "idcard",
+          "pred_subtype": "idcard",
+          "iou": 0.9248,
+          "subtype_ok": true
+        },
+        {
+          "gt_id": "det-image-dev-043-text-01",
+          "pred_id": "det-phone-001",
+          "gt_subtype": "phone",
+          "pred_subtype": "phone",
+          "iou": 0.9002,
+          "subtype_ok": true
+        }
+      ],
+      "missed": [],
+      "extra": [],
+      "skipped": [],
+      "warnings": [],
+      "elapsed_ms": 3177.5,
+      "timings": {
+        "text": 3088.9,
+        "qr": 58.7,
+        "face": 21.5
+      }
+    }
+  ]
+}

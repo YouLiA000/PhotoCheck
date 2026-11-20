@@ -1,0 +1,11 @@
+{
+  "image_id": "idcard_bad_date_001",
+  "image": "idcard_bad_date_001.png",
+  "width": 760,
+  "height": 480,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [],
+  "negative": true,
+  "note": "校验位通过对、日期非法（13 月 32 日）：按规则丢弃，故真值为空"
+}

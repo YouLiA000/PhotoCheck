@@ -1,0 +1,11 @@
+{
+  "image_id": "clean_001",
+  "image": "clean_001.png",
+  "width": 800,
+  "height": 480,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [],
+  "negative": true,
+  "note": "干净负样本：有文字、无敏感信息、无码，用于误报统计"
+}

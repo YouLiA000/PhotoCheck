@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>C · 24 周执行路线图 v2（含进度）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1800px; height: 1120px; overflow: hidden;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: #F1F5F9; color: #0F172A;
+    -webkit-font-smoothing: antialiased;
+  }
+  .poster { padding: 34px 48px; display: flex; flex-direction: column; gap: 18px; height: 100%; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-end; }
+  h1 { font-size: 38px; font-weight: 700; letter-spacing: 1px; }
+  .sub { margin-top: 7px; font-size: 14px; color: #64748B; line-height: 1.7; }
+  .kpis { display: flex; gap: 10px; }
+  .kpi {
+    background: #fff; border: 1px solid #E2E8F0; border-radius: 10px;
+    padding: 8px 16px; text-align: center; min-width: 100px;
+  }
+  .kpi .v { font-size: 22px; font-weight: 700; line-height: 1.1; }
+  .kpi .k { font-size: 11px; color: #64748B; margin-top: 2px; letter-spacing: .5px; }
+
+  .timeline { display: flex; gap: 6px; height: 50px; }
+  .seg { border-radius: 8px; padding: 7px 14px; color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .seg .t { font-size: 13.5px; font-weight: 700; }
+  .seg .w { font-size: 11px; opacity: .82; margin-top: 1px; }
+
+  .phase {
+    background: #fff; border: 1px solid #E2E8F0; border-radius: 12px;
+    padding: 12px 14px; display: flex; gap: 14px; align-items: stretch;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  }
+  .plabel { width: 200px; flex: none; padding-left: 11px; border-left: 5px solid; }
+  .plabel .tag { font-size: 10.5px; letter-spacing: 1px; color: #94A3B8; }
+  .plabel .name { font-size: 18px; font-weight: 700; margin-top: 2px; line-height: 1.25; }
+  .plabel .meter { font-size: 11.5px; color: #64748B; margin-top: 5px; }
+  .plabel .meter b { color: #0F172A; font-size: 12.5px; }
+  .cards { flex: 1; display: grid; gap: 9px; }
+  .card {
+    background: #F8FAFC; border: 1px solid #E8EDF3; border-radius: 9px;
+    padding: 8px 10px; border-top: 3px solid; position: relative;
+  }
+  .card .wno { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; color: #94A3B8; }
+  .card .wt { font-size: 13px; font-weight: 700; margin-top: 2px; line-height: 1.3; }
+  .card .wd { font-size: 11px; color: #64748B; margin-top: 3px; line-height: 1.45; }
+  .card.gate { background: #FFF7ED; }
+  .badge {
+    position: absolute; top: 7px; right: 8px; font-size: 9.5px; font-weight: 700;
+    padding: 1px 6px; border-radius: 20px; letter-spacing: .3px;
+  }
+  .b-ok { background: #DCFCE7; color: #15803D; }
+  .b-half { background: #FEF3C7; color: #B45309; }
+  .b-todo { background: #F1F5F9; color: #94A3B8; }
+
+  .gates { display: grid; grid-template-columns: repeat(5, 1fr); gap: 11px; }
+  .gatecard {
+    background: #fff; border: 1px solid #E2E8F0; border-left: 4px solid #DC2626;
+    border-radius: 10px; padding: 10px 13px;
+  }
+  .gatecard .gw { font-size: 10.5px; font-weight: 700; color: #DC2626; letter-spacing: 1px; }
+  .gatecard .gt { font-size: 13.5px; font-weight: 700; margin-top: 3px; }
+  .gatecard .gd { font-size: 11px; color: #64748B; margin-top: 3px; line-height: 1.45; }
+
+  footer { margin-top: auto; display: grid; grid-template-columns: 1.15fr 1fr 1.1fr; gap: 12px; }
+  .fbox { border-radius: 10px; padding: 11px 14px; }
+  .fbox .h { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; }
+  .fbox .b { font-size: 11.5px; margin-top: 5px; line-height: 1.6; }
+  .f-done { background: #F0FDF4; border: 1px solid #BBF7D0; }
+  .f-done .h { color: #15803D; } .f-done .b { color: #14532D; }
+  .f-next { background: #FFFBEB; border: 1px solid #FDE68A; }
+  .f-next .h { color: #B45309; } .f-next .b { color: #78350F; }
+  .f-warn { background: #FEF2F2; border: 1px solid #FECACA; }
+  .f-warn .h { color: #DC2626; } .f-warn .b { color: #7F1D1D; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div>
+      <h1>C · 24 周执行路线图 <span style="font-size:19px;color:#94A3B8;font-weight:400">v2 · 含进度</span></h1>
+      <div class="sub">
+        数据与评测先行，界面集成在后 ｜ 截至 2026-11-01（W1 末）｜ 依《功能规格卡 v1.4》与《C 执行补充清单 v1.1》
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="v" style="color:#16A34A">63/63</div><div class="k">样本 dev+lock</div></div>
+      <div class="kpi"><div class="v" style="color:#16A34A">W1</div><div class="k">已完成</div></div>
+      <div class="kpi"><div class="v" style="color:#DC2626">9.0</div><div class="k">P0 人日</div></div>
+      <div class="kpi"><div class="v">13.3</div><div class="k">合计人日</div></div>
+    </div>
+  </header>
+
+  <div class="timeline">
+    <div class="seg" style="flex:4; background:#2563EB"><div class="t">S1 准备与数据建设</div><div class="w">W1–W4 · 4.5 人日 · 进行中</div></div>
+    <div class="seg" style="flex:4; background:#0D9488"><div class="t">S2 界面与基线</div><div class="w">W5–W8 · 4.5 人日</div></div>
+    <div class="seg" style="flex:6; background:#B45309"><div class="t">S3 评测体系</div><div class="w">W9–W14 · 2.5 人日</div></div>
+    <div class="seg" style="flex:5; background:#7C3AED"><div class="t">S4 交叉验证</div><div class="w">W15–W19 · 1.0 人日</div></div>
+    <div class="seg" style="flex:5; background:#475569"><div class="t">S5 冻结与交付</div><div class="w">W20–W24 · 0.8 人日</div></div>
+  </div>
+
+  <div class="phase">
+    <div class="plabel" style="border-color:#2563EB">
+      <div class="tag">S1 · 基础</div>
+      <div class="name">环境 · 数据集<br>标注指南</div>
+      <div class="meter">W1–W4 ｜ <b>4.5</b> 人日 ｜ 已完成 3/4</div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card" style="border-top-color:#2563EB"><span class="badge b-ok">✓ 已完成</span>
+        <div class="wno">W1</div><div class="wt">环境与契约</div><div class="wd">Python 3.11 + 11 个包 · schemas · CSV 模板</div></div>
+      <div class="card" style="border-top-color:#2563EB"><span class="badge b-half">◐ 进行中</span>
+        <div class="wno">W2</div><div class="wt">样本与划分</div><div class="wd">40/40 张 · scene 已绑 · 12h 版待定</div></div>
+      <div class="card" style="border-top-color:#2563EB"><span class="badge b-ok">✓ 已完成</span>
+        <div class="wno">W3</div><div class="wt">界面骨架</div><div class="wd">ui/app.py · 三页 Tab · 真值当 mock · 7 条用例</div></div>
+      <div class="card gate" style="border-top-color:#2563EB"><span class="badge b-ok">✓ 已完成</span>
+        <div class="wno">W4 · 卡点已过</div><div class="wt">标注 v0.1</div><div class="wd">dev 40/40 · 指南 v1.2 · 矩阵全达标</div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="plabel" style="border-color:#0D9488">
+      <div class="tag">S2 · 闭环</div>
+      <div class="name">主界面 · 风险分级<br>第一版基线</div>
+      <div class="meter">W5–W8 ｜ <b>4.5</b> 人日 ｜ 已完成 1/4（W6 前半个）</div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card" style="border-top-color:#0D9488"><div class="wno">W5</div><div class="wt">接 A 的检测</div><div class="wd">Detection 适配 · 掩码展示 · 3 组接口测试</div></div>
+      <div class="card" style="border-top-color:#0D9488"><span class="badge b-half">◐ 部分完成</span><div class="wno">W6 · 卡点</div><div class="wt">风险与决定</div><div class="wd">风险分级已接界面 · 只剩 B 的 redact 签名</div></div>
+      <div class="card" style="border-top-color:#0D9488"><div class="wno">W7</div><div class="wt">主交互</div><div class="wd">补框 · 三页 Tab · 处置方式 · 与 B 联调</div></div>
+      <div class="card" style="border-top-color:#0D9488"><div class="wno">W8</div><div class="wt">中期验收</div><div class="wd">结论面板 · 第一版基线表 · 全流程演示</div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="plabel" style="border-color:#B45309">
+      <div class="tag">S3 · 研究核心</div>
+      <div class="name">eval.py<br>三张评测表</div>
+      <div class="meter">W9–W14 ｜ <b>2.5</b> 人日 ｜ 已完成 2/6</div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(6,1fr)">
+      <div class="card" style="border-top-color:#B45309"><span class="badge b-ok">✓ 已完成</span><div class="wno">W9</div><div class="wt">eval 骨架</div><div class="wd">matcher · 一对一 · 16 条单测</div></div>
+      <div class="card" style="border-top-color:#B45309"><span class="badge b-ok">✓ 已完成</span><div class="wno">W10</div><div class="wt">检测质量</div><div class="wd">三张表 · 分 subtype 带 n · 自测 1.0</div></div>
+      <div class="card" style="border-top-color:#B45309"><span class="badge b-todo">○ 等 B</span><div class="wno">W11</div><div class="wt">脱敏有效性</div><div class="wd">需最终导出文件（K-08/K-09）</div></div>
+      <div class="card" style="border-top-color:#B45309"><div class="wno">W12</div><div class="wt">过度脱敏</div><div class="wd">误遮统计 · 人工登记</div></div>
+      <div class="card" style="border-top-color:#B45309"><div class="wno">W13</div><div class="wt">三张表</div><div class="wd">results 归档 · 哨兵图</div></div>
+      <div class="card" style="border-top-color:#B45309"><div class="wno">W14</div><div class="wt">评测协议 v1.0</div><div class="wd">一条命令出全表</div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="plabel" style="border-color:#7C3AED">
+      <div class="tag">S4 · P2 有余力</div>
+      <div class="name">第二 OCR<br>人工交叉验证</div>
+      <div class="meter">W15–W19 ｜ <b>1.0</b> 人日</div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(5,1fr)">
+      <div class="card" style="border-top-color:#7C3AED"><div class="wno">W15</div><div class="wt">Tesseract</div><div class="wd">second_ocr.py · chi_sim</div></div>
+      <div class="card" style="border-top-color:#7C3AED"><div class="wno">W16</div><div class="wt">抽 30 个对象</div><div class="wd">随机种子 · 可复现</div></div>
+      <div class="card" style="border-top-color:#7C3AED"><div class="wno">W17</div><div class="wt">双 OCR 对照</div><div class="wd">RapidOCR vs Tesseract</div></div>
+      <div class="card" style="border-top-color:#7C3AED"><div class="wno">W18</div><div class="wt">双人判读</div><div class="wd">三级量表 · kappa</div></div>
+      <div class="card" style="border-top-color:#7C3AED"><div class="wno">W19</div><div class="wt">交叉验证结论</div><div class="wd">分歧案例清单</div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="plabel" style="border-color:#475569">
+      <div class="tag">S5 · 交付</div>
+      <div class="name">冻结 · 复现<br>答辩</div>
+      <div class="meter">W20–W24 ｜ <b>0.8</b> 人日</div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(5,1fr)">
+      <div class="card" style="border-top-color:#475569"><div class="wno">W20</div><div class="wt">冻结 v1.0-final</div><div class="wd">哈希清单 · lock 第二次</div></div>
+      <div class="card" style="border-top-color:#475569"><div class="wno">W21</div><div class="wt">独立环境</div><div class="wd">换台电脑跑通</div></div>
+      <div class="card" style="border-top-color:#475569"><div class="wno">W22</div><div class="wt">回归修复</div><div class="wd">编码 · 路径 · 坐标</div></div>
+      <div class="card" style="border-top-color:#475569"><div class="wno">W23</div><div class="wt">交付目录</div><div class="wd">C_delivery · 失败案例</div></div>
+      <div class="card" style="border-top-color:#475569"><div class="wno">W24</div><div class="wt">答辩</div><div class="wd">末轮 lock · 演示材料</div></div>
+    </div>
+  </div>
+
+  <div class="gates">
+    <div class="gatecard" style="border-left-color:#16A34A">
+      <div class="gw" style="color:#16A34A">W4 已达成</div>
+      <div class="gt">dev 40 张 · 矩阵达标</div>
+      <div class="gd">二维码 8（5 类全覆盖）/ 证号负样本 2 / 干净图 6 / 坏图 5，9 行全过</div>
+    </div>
+    <div class="gatecard" style="border-left-color:#16A34A">
+      <div class="gw" style="color:#16A34A">W6 已完成一半</div>
+      <div class="gt">C 侧 33/35，只等接口</div>
+      <div class="gd">W6 差 B 的 redact(image, plan) · W8 差 A 的 Detection</div>
+    </div>
+    <div class="gatecard">
+      <div class="gw">W8 规格卡节点</div>
+      <div class="gt">可演示原型 + 基线表</div>
+      <div class="gd">没有这两个，按规格卡启动降级方案</div>
+    </div>
+    <div class="gatecard">
+      <div class="gw">W14</div>
+      <div class="gt">评测协议 v1.0</div>
+      <div class="gd">别人拿到数据 + 脚本能自己复现三张表</div>
+    </div>
+    <div class="gatecard">
+      <div class="gw">W20</div>
+      <div class="gt">冻结 v1.0-final</div>
+      <div class="gd">之后只修 Bug 不加功能，修 Bug 必带回归测试</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="fbox f-done">
+      <div class="h">已完成（不用再排期）</div>
+      <div class="b">
+        环境 3.11.9 + 11 个包 · 契约 57 条用例 · <b>风险规则 + 解释模板</b> · 标注指南 v1.2 ·
+        dev 40 张 / 真值 68 条 / 负例 7 条 · <b>lock 23 张已封存</b> · eval 第一层 · 界面骨架
+      </div>
+    </div>
+    <div class="fbox f-next">
+      <div class="h">本周末必须交</div>
+      <div class="b">
+        ① DR-001 让 A、B 签字（12 小时版已定，缺书面确认）<br>
+        ② risk_rules 十个推定分值三人确认（A+C）<br>
+        ③ 向 A 要第一版 Detection 输出——W5 与 W8 基线表都卡在它
+      </div>
+    </div>
+    <div class="fbox f-warn">
+      <div class="h">最危险的进度点</div>
+      <div class="b">
+        <b>A 的检测输出</b>。eval.py 现在拿真值当预测，指标必然是 1.0——那只证明评测代码没写错，
+        证明不了检测效果。真实检测器一进来，subtype 枚举、risk 口径、坐标系任何一处对不上，
+        W8 的基线表当天就出不来，而 W8 是规格卡写死的闸门。
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

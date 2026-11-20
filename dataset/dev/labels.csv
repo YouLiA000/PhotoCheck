@@ -1,0 +1,100 @@
+﻿file,set,scene_id,kind,subtype,bbox,should_hide,difficulty,note,verdict,det_id,masked_preview,idcard_check,decodable,safe_domain,safe_ssid,annotator,checked
+images/image-dev-001.jpg,dev,scene-receipt,meta,gps,,1,easy,,positive,det-image-dev-001-meta-gps,,,,,,,0
+images/image-dev-001.jpg,dev,scene-receipt,meta,datetime,,1,easy,,positive,det-image-dev-001-meta-datetime,,,,,,,0
+images/image-dev-001.jpg,dev,scene-receipt,meta,device,,1,easy,,positive,det-image-dev-001-meta-device,,,,,,,0
+images/image-dev-001.jpg,dev,scene-receipt,meta,software,,1,easy,,positive,det-image-dev-001-meta-software,,,,,,,0
+images/image-dev-001.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-001-text-01,199****5714,,,,,,0
+images/image-dev-001.jpg,dev,scene-receipt,text,idcard,"303,673,366,32",1,easy,,positive,det-image-dev-001-text-02,3101**********5508,pass,,,,,0
+images/image-dev-002.jpg,dev,scene-receipt,meta,gps,,1,easy,,positive,det-image-dev-002-meta-gps,,,,,,,0
+images/image-dev-002.jpg,dev,scene-receipt,meta,datetime,,1,easy,,positive,det-image-dev-002-meta-datetime,,,,,,,0
+images/image-dev-002.jpg,dev,scene-receipt,meta,device,,1,easy,,positive,det-image-dev-002-meta-device,,,,,,,0
+images/image-dev-002.jpg,dev,scene-receipt,meta,software,,1,easy,,positive,det-image-dev-002-meta-software,,,,,,,0
+images/image-dev-002.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-002-text-01,189****9699,,,,,,0
+images/image-dev-003.jpg,dev,scene-receipt,text,phone,"303,441,226,32",1,hard,,positive,det-image-dev-003-text-01,139****8426,,,,,,0
+images/image-dev-003.jpg,dev,scene-receipt,,,"303,359,226,32",0,hard,11 位纯数字但首位是 2-9，不是手机号；宽松正则会把这类误报,negative,,,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,meta,gps,,1,easy,,positive,det-image-dev-004-meta-gps,,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,meta,datetime,,1,easy,,positive,det-image-dev-004-meta-datetime,,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,meta,device,,1,easy,,positive,det-image-dev-004-meta-device,,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,meta,software,,1,easy,,positive,det-image-dev-004-meta-software,,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-004-text-01,158****1211,,,,,,0
+images/image-dev-004.jpg,dev,scene-receipt,text,idcard,"303,673,366,32",1,easy,,positive,det-image-dev-004-text-02,3701**********0621,fail,,,,,0
+images/image-dev-005.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,hard,,positive,det-image-dev-005-text-01,152****2522,,,,,,0
+images/image-dev-005.jpg,dev,scene-receipt,,,"303,441,241,32",0,hard,座机号，11 位手机号规则不应命中,negative,,,,,,,,0
+images/image-dev-006.jpg,dev,scene-receipt,meta,gps,,1,easy,,positive,det-image-dev-006-meta-gps,,,,,,,0
+images/image-dev-006.jpg,dev,scene-receipt,meta,datetime,,1,easy,,positive,det-image-dev-006-meta-datetime,,,,,,,0
+images/image-dev-006.jpg,dev,scene-receipt,meta,device,,1,easy,,positive,det-image-dev-006-meta-device,,,,,,,0
+images/image-dev-006.jpg,dev,scene-receipt,meta,software,,1,easy,,positive,det-image-dev-006-meta-software,,,,,,,0
+images/image-dev-006.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-006-text-01,139****5674,,,,,,0
+images/image-dev-007.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-007-text-01,152****4490,,,,,,0
+images/image-dev-007.jpg,dev,scene-receipt,text,idcard,"303,673,366,32",1,easy,,positive,det-image-dev-007-text-02,4201**********1918,pass,,,,,0
+images/image-dev-008.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-008-text-01,151****3235,,,,,,0
+images/image-dev-009.jpg,dev,scene-chat,text,phone,"85,580,215,31",1,hard,,positive,det-image-dev-009-text-01,158****7947,,,,,,0
+images/image-dev-009.jpg,dev,scene-chat,text,idcard,"467,840,348,31",1,hard,,positive,det-image-dev-009-text-02,5101**********1420,pass,,,,,0
+images/image-dev-010.jpg,dev,scene-chat,text,phone,"85,580,215,31",1,hard,,positive,det-image-dev-010-text-01,187****0677,,,,,,0
+images/image-dev-010.jpg,dev,scene-chat,,,"85,710,215,31",0,hard,11 位数字且首位为 1，但第二位不在 3-9 号段内，不是手机号,negative,,,,,,,,0
+images/image-dev-011.jpg,dev,scene-chat,text,phone,"85,580,215,31",1,hard,,positive,det-image-dev-011-text-01,187****4930,,,,,,0
+images/image-dev-011.jpg,dev,scene-chat,text,idcard,"467,840,348,31",1,hard,,positive,det-image-dev-011-text-02,3701**********0982,pass,,,,,0
+images/image-dev-012.jpg,dev,scene-chat,text,phone,"85,580,215,31",1,hard,,positive,det-image-dev-012-text-01,177****5192,,,,,,0
+images/image-dev-013.jpg,dev,scene-chat,text,phone,"85,580,215,31",1,hard,,positive,det-image-dev-013-text-01,131****8213,,,,,,0
+images/image-dev-013.jpg,dev,scene-chat,,,"85,710,196,31",0,hard,手机号少一位（10 位），K-13 四条规范第 3 条点名要覆盖这类,negative,,,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,meta,gps,,1,hard,,positive,det-image-dev-014-meta-gps,,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,meta,datetime,,1,hard,,positive,det-image-dev-014-meta-datetime,,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,meta,device,,1,hard,,positive,det-image-dev-014-meta-device,,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,meta,software,,1,hard,,positive,det-image-dev-014-meta-software,,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-014-text-01,189****1382,,,,,,0
+images/image-dev-014.jpg,dev,scene-card,qr,qr_vcard,"720,180,300,300",1,hard,,positive,det-image-dev-014-qr-02,,,1,,,,0
+images/image-dev-015.jpg,dev,scene-card,meta,gps,,1,hard,,positive,det-image-dev-015-meta-gps,,,,,,,0
+images/image-dev-015.jpg,dev,scene-card,meta,datetime,,1,hard,,positive,det-image-dev-015-meta-datetime,,,,,,,0
+images/image-dev-015.jpg,dev,scene-card,meta,device,,1,hard,,positive,det-image-dev-015-meta-device,,,,,,,0
+images/image-dev-015.jpg,dev,scene-card,meta,software,,1,hard,,positive,det-image-dev-015-meta-software,,,,,,,0
+images/image-dev-015.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-015-text-01,183****6386,,,,,,0
+images/image-dev-015.jpg,dev,scene-card,qr,qr_wifi,"720,180,300,300",1,hard,,positive,det-image-dev-015-qr-02,,,1,,Office-5G,,0
+images/image-dev-016.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-016-text-01,136****9862,,,,,,0
+images/image-dev-016.jpg,dev,scene-card,qr,qr_wifi,"720,180,300,300",1,hard,,positive,det-image-dev-016-qr-02,,,1,,Office-5G,,0
+images/image-dev-017.jpg,dev,scene-card,meta,gps,,1,hard,,positive,det-image-dev-017-meta-gps,,,,,,,0
+images/image-dev-017.jpg,dev,scene-card,meta,datetime,,1,hard,,positive,det-image-dev-017-meta-datetime,,,,,,,0
+images/image-dev-017.jpg,dev,scene-card,meta,device,,1,hard,,positive,det-image-dev-017-meta-device,,,,,,,0
+images/image-dev-017.jpg,dev,scene-card,meta,software,,1,hard,,positive,det-image-dev-017-meta-software,,,,,,,0
+images/image-dev-017.jpg,dev,scene-card,qr,qr_vcard,"720,180,300,300",1,hard,,positive,det-image-dev-017-qr-01,,,1,,,,0
+images/image-dev-018.jpg,dev,scene-notice,text,phone,"343,467,226,32",1,hard,,positive,det-image-dev-018-text-01,183****5247,,,,,,0
+images/image-dev-018.jpg,dev,scene-notice,text,idcard,"343,577,366,32",1,hard,,positive,det-image-dev-018-text-02,3101**********6640,pass,,,,,0
+images/image-dev-018.jpg,dev,scene-notice,,,"343,726,215,31",0,hard,日期+流水号，13 位数字，易被切成 11 位手机号,negative,,,,,,,,0
+images/image-dev-019.jpg,dev,scene-notice,text,phone,"343,467,226,32",1,easy,,positive,det-image-dev-019-text-01,183****6962,,,,,,0
+images/image-dev-019.jpg,dev,scene-notice,text,idcard,"343,577,366,32",1,easy,,positive,det-image-dev-019-text-02,1101**********4899,pass,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,meta,gps,,1,easy,,positive,det-image-dev-020-meta-gps,,,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,meta,datetime,,1,easy,,positive,det-image-dev-020-meta-datetime,,,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,meta,device,,1,easy,,positive,det-image-dev-020-meta-device,,,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,meta,software,,1,easy,,positive,det-image-dev-020-meta-software,,,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,text,phone,"343,467,226,32",1,easy,,positive,det-image-dev-020-text-01,158****2886,,,,,,0
+images/image-dev-020.jpg,dev,scene-notice,text,idcard,"343,577,368,32",1,easy,,positive,det-image-dev-020-text-02,4201**********711X,pass,,,,,0
+images/image-dev-021.jpg,dev,scene-receipt,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-022.jpg,dev,scene-chat,,,,0,hard,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-023.jpg,dev,scene-notice,text,idcard,"343,467,368,32",1,easy,,positive,det-image-dev-023-text-01,4403**********140X,pass,,,,,0
+images/image-dev-024.jpg,dev,scene-card,qr,qr_vcard,"720,180,300,300",1,hard,,positive,det-image-dev-024-qr-01,,,1,,,,0
+images/image-dev-028.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-028-text-01,189****7005,,,,,,0
+images/image-dev-028.jpg,dev,scene-card,qr,qr_wechat_pay,"720,180,300,300",1,hard,,positive,det-image-dev-028-qr-02,,,1,,,,0
+images/image-dev-029.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-029-text-01,188****6189,,,,,,0
+images/image-dev-029.jpg,dev,scene-card,qr,qr_link,"720,180,300,300",1,hard,,positive,det-image-dev-029-qr-02,,,1,example.org,,,0
+images/image-dev-030.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-030-text-01,158****0170,,,,,,0
+images/image-dev-030.jpg,dev,scene-card,qr,qr_unknown,"720,180,300,300",1,hard,,positive,det-image-dev-030-qr-02,,,0,,,,0
+images/image-dev-031.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,hard,,positive,det-image-dev-031-text-01,182****1857,,,,,,0
+images/image-dev-031.jpg,dev,scene-receipt,,,"303,441,366,32",0,hard,18 位但生日段非法（13 月 32 日），是流水号不是证号,negative,,,,,,,,0
+images/image-dev-032.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,hard,,positive,det-image-dev-032-text-01,131****9296,,,,,,0
+images/image-dev-032.jpg,dev,scene-receipt,,,"303,441,386,32",0,hard,19 位银联卡号，长度不符，不应命中身份证规则,negative,,,,,,,,0
+images/image-dev-033.jpg,dev,scene-receipt,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-034.jpg,dev,scene-chat,,,,0,hard,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-035.jpg,dev,scene-notice,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-036.jpg,dev,scene-card,,,,0,hard,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-dev-037.jpg,dev,scene-receipt,text,phone,"303,359,226,32",1,easy,,positive,det-image-dev-037-text-01,158****2034,,,,,,0
+images/image-dev-038.jpg,dev,scene-notice,text,phone,"343,467,226,32",1,easy,,positive,det-image-dev-038-text-01,133****7378,,,,,,0
+images/image-dev-038.jpg,dev,scene-notice,text,idcard,"343,577,368,32",1,easy,,positive,det-image-dev-038-text-02,3301**********227X,pass,,,,,0
+images/image-dev-041.jpg,dev,scene-notice,text,phone,"343,466,289,29",1,easy,,positive,det-image-dev-041-text-01,177****4805,,,,,,0
+images/image-dev-041.jpg,dev,scene-notice,text,phone,"343,554,289,29",1,easy,,positive,det-image-dev-041-text-02,163****7822,,,,,,0
+images/image-dev-041.jpg,dev,scene-notice,text,phone,"343,642,262,29",1,easy,,positive,det-image-dev-041-text-03,185****8478,,,,,,0
+images/image-dev-041.jpg,dev,scene-notice,,,"343,730,253,29",0,easy,带区号但位数不对，剥前缀后应是 10 / 12 位，不应命中,negative,,,,,,,,0
+images/image-dev-041.jpg,dev,scene-notice,,,"343,818,307,29",0,easy,带区号但位数不对，剥前缀后应是 10 / 12 位，不应命中,negative,,,,,,,,0
+images/image-dev-042.jpg,dev,scene-card,text,phone,"89,339,248,35",1,hard,,positive,det-image-dev-042-text-01,187****5401,,,,,,0
+images/image-dev-042.jpg,dev,scene-card,qr,qr_vcard,"600,110,240,240",1,hard,,positive,det-image-dev-042-qr-02,,,1,,,,0
+images/image-dev-042.jpg,dev,scene-card,qr,qr_wifi,"600,390,200,200",1,hard,,positive,det-image-dev-042-qr-03,,,1,,Office-5G,,0
+images/image-dev-043.jpg,dev,scene-notice,text,phone,"343,467,226,32",1,easy,,positive,det-image-dev-043-text-01,138****6729,,,,,,0
+images/image-dev-043.jpg,dev,scene-notice,text,idcard,"343,577,368,32",1,easy,,positive,det-image-dev-043-text-02,3101**********328X,pass,,,,,0

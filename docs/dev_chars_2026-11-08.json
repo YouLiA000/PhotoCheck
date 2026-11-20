@@ -1,0 +1,445 @@
+{
+ "generated_at": "2026-11-08",
+ "purpose": "给 A 的 T_ocr 归因：dev 38 张的字符数、文字块、像素与检出",
+ "chars_definition": "所有 OCR 文本块的字符总数（与 A 的 bench_ocr chars 列同口径）",
+ "ms_caveat": "ms 列是 analyze(text,qr,face) 的墙钟时间，**不是纯 OCR**，且第 1 张含模型冷启动。稳态纯 OCR 请用 tools/bench_detect.py 重测。",
+ "measurement_condition": "AMD Ryzen 9 8945HX 16C/32T, 2501MHz, BatteryStatus=2 (AC), 100%, load 3%",
+ "summary": {
+  "n": 38,
+  "median_chars": 64.5,
+  "mean_chars": 81,
+  "min_chars": 19,
+  "max_chars": 143,
+  "median_blocks": 10.0,
+  "median_mp": 1.4,
+  "median_ms": 2317.5,
+  "median_ms_per_kchar": 37096.0,
+  "condition": "AMD Ryzen 9 8945HX 16C/32T, 2501MHz, BatteryStatus=2 (AC), 100%, load 3%"
+ },
+ "rows": [
+  {
+   "image_id": "image-dev-001",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 143,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 6959
+  },
+  {
+   "image_id": "image-dev-002",
+   "megapixels": 1.747,
+   "text_blocks": 14,
+   "chars": 122,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3290
+  },
+  {
+   "image_id": "image-dev-003",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 136,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3148
+  },
+  {
+   "image_id": "image-dev-004",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 142,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2706
+  },
+  {
+   "image_id": "image-dev-005",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 136,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2931
+  },
+  {
+   "image_id": "image-dev-006",
+   "megapixels": 1.747,
+   "text_blocks": 14,
+   "chars": 121,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1805
+  },
+  {
+   "image_id": "image-dev-007",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 142,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2409
+  },
+  {
+   "image_id": "image-dev-008",
+   "megapixels": 1.747,
+   "text_blocks": 14,
+   "chars": 122,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2215
+  },
+  {
+   "image_id": "image-dev-009",
+   "megapixels": 0.99,
+   "text_blocks": 8,
+   "chars": 63,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3823
+  },
+  {
+   "image_id": "image-dev-010",
+   "megapixels": 0.99,
+   "text_blocks": 7,
+   "chars": 49,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1974
+  },
+  {
+   "image_id": "image-dev-011",
+   "megapixels": 0.99,
+   "text_blocks": 8,
+   "chars": 61,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2265
+  },
+  {
+   "image_id": "image-dev-012",
+   "megapixels": 0.99,
+   "text_blocks": 6,
+   "chars": 36,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1845
+  },
+  {
+   "image_id": "image-dev-013",
+   "megapixels": 0.99,
+   "text_blocks": 7,
+   "chars": 46,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1595
+  },
+  {
+   "image_id": "image-dev-014",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 58,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_vcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3409
+  },
+  {
+   "image_id": "image-dev-015",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 58,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_wifi",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2354
+  },
+  {
+   "image_id": "image-dev-016",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 58,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_wifi",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1783
+  },
+  {
+   "image_id": "image-dev-017",
+   "megapixels": 0.734,
+   "text_blocks": 5,
+   "chars": 47,
+   "detections": 1,
+   "kinds": [
+    "qr:qr_vcard"
+   ],
+   "ms_analyze_text_qr_face": 2043
+  },
+  {
+   "image_id": "image-dev-018",
+   "megapixels": 1.4,
+   "text_blocks": 13,
+   "chars": 82,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3217
+  },
+  {
+   "image_id": "image-dev-019",
+   "megapixels": 1.4,
+   "text_blocks": 11,
+   "chars": 69,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2871
+  },
+  {
+   "image_id": "image-dev-020",
+   "megapixels": 1.4,
+   "text_blocks": 11,
+   "chars": 66,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2446
+  },
+  {
+   "image_id": "image-dev-021",
+   "megapixels": 1.747,
+   "text_blocks": 12,
+   "chars": 107,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 3062
+  },
+  {
+   "image_id": "image-dev-022",
+   "megapixels": 0.99,
+   "text_blocks": 4,
+   "chars": 21,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 1610
+  },
+  {
+   "image_id": "image-dev-023",
+   "megapixels": 1.4,
+   "text_blocks": 9,
+   "chars": 52,
+   "detections": 1,
+   "kinds": [
+    "text:idcard"
+   ],
+   "ms_analyze_text_qr_face": 2517
+  },
+  {
+   "image_id": "image-dev-024",
+   "megapixels": 0.734,
+   "text_blocks": 5,
+   "chars": 47,
+   "detections": 1,
+   "kinds": [
+    "qr:qr_vcard"
+   ],
+   "ms_analyze_text_qr_face": 2089
+  },
+  {
+   "image_id": "image-dev-028",
+   "megapixels": 0.734,
+   "text_blocks": 7,
+   "chars": 60,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_wechat_pay",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1855
+  },
+  {
+   "image_id": "image-dev-029",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 58,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_link",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1336
+  },
+  {
+   "image_id": "image-dev-030",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 60,
+   "detections": 2,
+   "kinds": [
+    "qr:qr_unknown",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2281
+  },
+  {
+   "image_id": "image-dev-031",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 142,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3005
+  },
+  {
+   "image_id": "image-dev-032",
+   "megapixels": 1.747,
+   "text_blocks": 16,
+   "chars": 142,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 1848
+  },
+  {
+   "image_id": "image-dev-033",
+   "megapixels": 1.747,
+   "text_blocks": 12,
+   "chars": 106,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 1842
+  },
+  {
+   "image_id": "image-dev-034",
+   "megapixels": 0.99,
+   "text_blocks": 4,
+   "chars": 19,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 1499
+  },
+  {
+   "image_id": "image-dev-035",
+   "megapixels": 1.4,
+   "text_blocks": 7,
+   "chars": 29,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 2120
+  },
+  {
+   "image_id": "image-dev-036",
+   "megapixels": 0.734,
+   "text_blocks": 5,
+   "chars": 47,
+   "detections": 0,
+   "kinds": [],
+   "ms_analyze_text_qr_face": 1666
+  },
+  {
+   "image_id": "image-dev-037",
+   "megapixels": 1.747,
+   "text_blocks": 14,
+   "chars": 121,
+   "detections": 1,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2761
+  },
+  {
+   "image_id": "image-dev-038",
+   "megapixels": 1.4,
+   "text_blocks": 11,
+   "chars": 68,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2607
+  },
+  {
+   "image_id": "image-dev-041",
+   "megapixels": 1.4,
+   "text_blocks": 15,
+   "chars": 118,
+   "detections": 3,
+   "kinds": [
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 3490
+  },
+  {
+   "image_id": "image-dev-042",
+   "megapixels": 0.734,
+   "text_blocks": 6,
+   "chars": 58,
+   "detections": 3,
+   "kinds": [
+    "qr:qr_vcard",
+    "qr:qr_wifi",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2200
+  },
+  {
+   "image_id": "image-dev-043",
+   "megapixels": 1.4,
+   "text_blocks": 11,
+   "chars": 66,
+   "detections": 2,
+   "kinds": [
+    "text:idcard",
+    "text:phone"
+   ],
+   "ms_analyze_text_qr_face": 2891
+  }
+ ]
+}

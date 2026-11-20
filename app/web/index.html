@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhotoCheck · 照片隐私体检</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">◈</span>
+    <span class="name">PhotoCheck</span>
+    <span class="tag">照片隐私体检</span>
+  </div>
+  <div class="pills" id="pills">
+    <span class="pill" id="pillLocal">本地运行 · 不联网</span>
+    <span class="pill muted" id="pillEngine">引擎预热中…</span>
+    <span class="pill muted" id="pillTools">检查工具…</span>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- 左栏：来源 -->
+  <aside class="rail">
+    <section>
+      <h2>示例图库</h2>
+      <p class="sub">全部为合成数据，内容虚构</p>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <section>
+      <h2>上传照片</h2>
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/bmp" hidden>
+        <strong>点这里，或把图片拖进来</strong>
+        <span>JPG / PNG，≤ 40 MB</span>
+        <span class="tiny">图片只在本机处理，不会发到任何服务器</span>
+      </label>
+    </section>
+
+    <section class="scope">
+      <h2>它查五类</h2>
+      <ul>
+        <li><b>文字</b>手机号 · 身份证号</li>
+        <li><b>二维码</b>Wi-Fi 密码 · 名片 · 收款码 · 链接</li>
+        <li><b>人脸</b>可见人脸区域</li>
+        <li><b>拍摄信息</b>GPS · 时间 · 机型 · 软件 · 缩略图</li>
+        <li><b>处置决定</b>擦哪些、留哪些</li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- 中栏：图像 -->
+  <section class="stage">
+    <div class="stage-head">
+      <div>
+        <div class="stage-title" id="stageTitle">选一张图开始</div>
+        <div class="stage-sub" id="stageSub">左侧选示例，或上传你自己的照片</div>
+      </div>
+      <div class="stage-tools">
+        <button class="tab" id="btnManual" title="开启后在图上拖一个矩形，补检测漏掉的区域">手动补框</button>
+        <button class="tab act" id="btnUndo" title="撤销最后一个补框" hidden>撤销</button>
+        <button class="tab act" id="btnClearManual" title="清空全部补框（切图也会清空）" hidden>清空</button>
+        <div class="tabs" id="tabs" hidden>
+          <button class="tab active" data-view="detect">检测</button>
+          <button class="tab" data-view="after">处理后</button>
+          <button class="tab" data-view="compare">对比</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-wrap" id="wrap">
+      <img id="stageImg" alt="" hidden>
+      <svg id="overlay" preserveAspectRatio="none"></svg>
+      <div class="placeholder" id="placeholder">
+        <div class="ph-icon">◈</div>
+        <p>还没有选图</p>
+      </div>
+    </div>
+
+    <!-- 处理后整图：生成完默认看这个。第一眼必须看到"该盖的都盖住了" -->
+    <div class="after" id="afterView" hidden>
+      <div class="after-cap" id="afterCap"></div>
+      <div class="after-wrap" id="afterWrap"><img id="afterImg" alt="处理后的图片"></div>
+    </div>
+
+    <!-- 对比视图 -->
+    <div class="compare" id="compare" hidden>
+      <div class="cmp-stage" id="cmpStage">
+        <img id="cmpAfter" alt="处理后">
+        <div class="cmp-clip" id="cmpClip"><img id="cmpBefore" alt="原图"></div>
+        <div class="cmp-handle" id="cmpHandle"></div>
+        <span class="cmp-tag left">原图</span>
+        <span class="cmp-tag right">处理后</span>
+      </div>
+      <input type="range" id="cmpRange" min="0" max="100" value="50">
+      <div class="cmp-hint">左侧 = 原图　·　右侧 = 处理后　·　拖动中间滑杆切换</div>
+    </div>
+
+    <div class="stage-foot">
+      <div class="legend">
+        <span><i class="sw risk3"></i>高风险</span>
+        <span><i class="sw risk2"></i>中风险</span>
+        <span><i class="sw risk1"></i>低风险</span>
+        <span><i class="sw manual"></i>手动补框</span>
+      </div>
+      <div class="timing" id="timing"></div>
+    </div>
+  </section>
+
+  <!-- 右栏：决定与报告 -->
+  <aside class="panel">
+    <section>
+      <div class="panel-head">
+        <h2>发现项</h2>
+        <span class="badge" id="countBadge">0</span>
+      </div>
+      <p class="sub" id="metaNote"></p>
+      <div class="list" id="list">
+        <div class="empty">检出结果会出现在这里</div>
+      </div>
+      <!-- 这句话是给"图上明明有号码、却没被框出来"这种情况的解释。
+           措辞刻意写"不代表安全"而不是"判定为不敏感"：规则管不到 ≠ 它不隐私，
+           境外号、座机、证件号变体都在规则之外，说错了会给人假的安心。 -->
+      <p class="list-note" id="listNote" hidden>
+        未框出<b>不代表安全</b>：位数不符、座机、订单号、境外号等都不在手机号规则范围内，
+        不会被自动遮盖。确实需要处理的，用「手动补框」。
+      </p>
+    </section>
+
+    <section class="controls">
+      <label class="row">
+        <span>遮盖方式</span>
+        <select id="method">
+          <option value="solid">纯色块（最稳）</option>
+          <option value="blur">高斯模糊</option>
+          <option value="mosaic">马赛克</option>
+        </select>
+      </label>
+      <button class="primary" id="btnProcess" disabled>生成脱敏副本</button>
+      <p class="hint-line" id="hintLine">勾选 = 擦掉，取消 = 保留；元数据始终整图清除。</p>
+    </section>
+
+    <section class="report" id="report" hidden>
+      <div class="report-head">
+        <h2>复检报告</h2>
+        <span class="state" id="stateBadge">—</span>
+      </div>
+      <div class="kv" id="reportKv"></div>
+      <div class="checks" id="reportChecks"></div>
+      <div class="export" id="reportExport"></div>
+      <div class="report-actions" id="reportActions" hidden>
+        <a class="mini" id="dlTxt" download>下载报告（TXT）</a>
+        <a class="mini" id="dlJson" download>JSON</a>
+        <button class="mini" id="btnReveal" type="button">在文件夹中显示</button>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

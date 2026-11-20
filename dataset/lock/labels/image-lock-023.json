@@ -1,0 +1,11 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-lock-023",
+    "width": 680,
+    "height": 1040,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  }
+]

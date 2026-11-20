@@ -1,0 +1,34 @@
+{
+  "image_id": "phone_intl_001",
+  "image": "phone_intl_001.png",
+  "width": 760,
+  "height": 400,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-phone-1",
+      "kind": "text",
+      "subtype": "phone",
+      "bbox": [
+        130,
+        139,
+        283,
+        23
+      ]
+    },
+    {
+      "gt_id": "g-phone-2",
+      "kind": "text",
+      "subtype": "phone",
+      "bbox": [
+        130,
+        219,
+        283,
+        23
+      ]
+    }
+  ],
+  "negative": false,
+  "note": "带 +86 / 0086 的手机号：遮盖框必须含区号，否则等于没盖"
+}

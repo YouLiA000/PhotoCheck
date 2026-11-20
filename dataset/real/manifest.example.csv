@@ -1,0 +1,4 @@
+﻿file,consent,shot_with,angle,glare,light,objects,note
+real-001.jpg,self,手机后置,轻微倾斜 8°,无,室内日光灯,phone=1;qr=1,仿快递面单；号码编的
+real-002.jpg,self,手机后置,俯拍 15°,左上反光,窗边逆光,phone=1,仿名片；姓名虚构
+real-003.jpg,synthetic-photo,屏幕翻拍,-,轻微摩尔纹,室内,phone=2;idcard=1,拍屏幕上的合成图，用于对比

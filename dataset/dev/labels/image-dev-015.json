@@ -1,0 +1,104 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-015",
+    "width": 1080,
+    "height": 680,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-meta-gps",
+    "image_id": "image-dev-015",
+    "kind": "meta",
+    "subtype": "gps",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 3,
+    "details": {}
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-meta-datetime",
+    "image_id": "image-dev-015",
+    "kind": "meta",
+    "subtype": "datetime",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 2,
+    "details": {}
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-meta-device",
+    "image_id": "image-dev-015",
+    "kind": "meta",
+    "subtype": "device",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 1,
+    "details": {}
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-meta-software",
+    "image_id": "image-dev-015",
+    "kind": "meta",
+    "subtype": "software",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 1,
+    "details": {}
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-text-01",
+    "image_id": "image-dev-015",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      89,
+      339,
+      248,
+      35
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "183****6386"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-dev-015-qr-02",
+    "image_id": "image-dev-015",
+    "kind": "qr",
+    "subtype": "qr_wifi",
+    "bbox": [
+      720,
+      180,
+      300,
+      300
+    ],
+    "detector_score": null,
+    "evidence": "qr_payload",
+    "risk": 3,
+    "details": {
+      "decodable": true,
+      "safe_ssid": "Office-5G"
+    }
+  }
+]

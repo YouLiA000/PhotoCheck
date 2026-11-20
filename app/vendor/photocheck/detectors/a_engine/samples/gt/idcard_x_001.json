@@ -1,0 +1,23 @@
+{
+  "image_id": "idcard_x_001",
+  "image": "idcard_x_001.png",
+  "width": 760,
+  "height": 480,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-idcard-1",
+      "kind": "text",
+      "subtype": "idcard",
+      "bbox": [
+        222,
+        208,
+        272,
+        20
+      ]
+    }
+  ],
+  "negative": false,
+  "note": "末位 X 的身份证：校验位按 MOD 11-2 算得 X，用于锁住字符集"
+}

@@ -1,0 +1,40 @@
+﻿file,set,scene_id,kind,subtype,bbox,should_hide,difficulty,note,verdict,det_id,masked_preview,idcard_check,decodable,safe_domain,safe_ssid,annotator,checked
+images/image-lock-001.jpg,lock,scene-invoice,qr,qr_link,"690,960,260,260",1,easy,,positive,det-image-lock-001-qr-01,,,1,example.com,,,0
+images/image-lock-001.jpg,lock,scene-invoice,,,"257,166,204,29",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-002.jpg,lock,scene-invoice,,,"257,166,204,29",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-003.jpg,lock,scene-invoice,qr,qr_wechat_pay,"690,960,260,260",1,easy,,positive,det-image-lock-003-qr-01,,,1,,,,0
+images/image-lock-003.jpg,lock,scene-invoice,,,"257,166,204,29",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-004.jpg,lock,scene-invoice,,,"257,166,204,29",0,hard,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-004.jpg,lock,scene-invoice,,,"237,370,217,29",0,hard,座机号带区号，11 位手机号规则不应命中,negative,,,,,,,,0
+images/image-lock-005.jpg,lock,scene-badge,text,phone,"357,305,171,26",1,easy,,positive,det-image-lock-005-text-01,159****8125,,,,,,0
+images/image-lock-005.jpg,lock,scene-badge,qr,qr_vcard,"420,640,220,220",1,easy,,positive,det-image-lock-005-qr-02,,,1,,,,0
+images/image-lock-006.jpg,lock,scene-badge,text,phone,"357,361,171,26",1,hard,,positive,det-image-lock-006-text-01,188****2835,,,,,,0
+images/image-lock-006.jpg,lock,scene-badge,,,"357,305,171,26",0,hard,日期+流水号 13 位，易被切成 11 位手机号,negative,,,,,,,,0
+images/image-lock-007.jpg,lock,scene-badge,text,phone,"357,305,171,26",1,easy,,positive,det-image-lock-007-text-01,187****2524,,,,,,0
+images/image-lock-007.jpg,lock,scene-badge,qr,qr_unknown,"420,640,220,220",1,easy,,positive,det-image-lock-007-qr-02,,,1,,,,0
+images/image-lock-008.jpg,lock,scene-admission,text,idcard,"247,500,294,27",1,easy,,positive,det-image-lock-008-text-01,5101**********5856,pass,,,,,0
+images/image-lock-008.jpg,lock,scene-admission,text,phone,"247,564,182,27",1,easy,,positive,det-image-lock-008-text-02,186****9101,,,,,,0
+images/image-lock-008.jpg,lock,scene-admission,,,"247,436,182,27",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-009.jpg,lock,scene-admission,text,idcard,"247,500,294,27",1,easy,,positive,det-image-lock-009-text-01,5101**********7988,pass,,,,,0
+images/image-lock-009.jpg,lock,scene-admission,qr,qr_link,"110,1070,230,230",1,easy,,positive,det-image-lock-009-qr-02,,,1,example.org,,,0
+images/image-lock-009.jpg,lock,scene-admission,,,"247,436,182,27",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-010.jpg,lock,scene-admission,text,idcard,"247,564,294,27",1,hard,,positive,det-image-lock-010-text-01,4201**********6633,pass,,,,,0
+images/image-lock-010.jpg,lock,scene-admission,,,"247,436,182,27",0,hard,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-010.jpg,lock,scene-admission,,,"247,500,310,27",0,hard,19 位银联卡号，长度不符，不应命中身份证规则,negative,,,,,,,,0
+images/image-lock-011.jpg,lock,scene-admission,,,"247,436,182,27",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-012.jpg,lock,scene-invoice,,,"257,166,204,29",0,hard,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-013.jpg,lock,scene-badge,,,"357,305,156,26",0,hard,手机号少一位（10 位）,negative,,,,,,,,0
+images/image-lock-014.jpg,lock,scene-admission,,,"247,436,182,27",0,hard,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-014.jpg,lock,scene-admission,text,idcard,"247,500,294,27",1,easy,校验位失败（应为 7 实为 3）、生日段亦非法；按 K-04 校验失败仍报 fail,positive,det-image-lock-014-text-01,1101**********9343,fail,,,,,0
+images/image-lock-015.jpg,lock,scene-invoice,qr,qr_wechat_pay,"690,960,260,260",1,easy,,positive,det-image-lock-015-qr-01,,,1,,,,0
+images/image-lock-015.jpg,lock,scene-invoice,,,"257,166,204,29",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-016.jpg,lock,scene-badge,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-lock-017.jpg,lock,scene-admission,text,phone,"247,500,182,27",1,easy,,positive,det-image-lock-017-text-01,186****0370,,,,,,0
+images/image-lock-017.jpg,lock,scene-admission,,,"247,436,182,27",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-018.jpg,lock,scene-invoice,text,idcard,"237,370,331,29",1,easy,,positive,det-image-lock-018-text-01,3701**********579X,pass,,,,,0
+images/image-lock-018.jpg,lock,scene-invoice,,,"257,166,204,29",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-019.jpg,lock,scene-badge,qr,qr_unknown,"420,640,220,220",1,easy,,positive,det-image-lock-019-qr-01,,,1,,,,0
+images/image-lock-020.jpg,lock,scene-admission,,,"247,436,182,27",0,easy,11 位纯数字但首位是 2-9，不是手机号,negative,,,,,,,,0
+images/image-lock-021.jpg,lock,scene-invoice,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-lock-022.jpg,lock,scene-admission,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0
+images/image-lock-023.jpg,lock,scene-badge,,,,0,easy,整图无敏感对象（干净负样本，用于误报率）,clean,,,,,,,,0

@@ -1,0 +1,265 @@
+{
+  "mode": "real-count-only",
+  "dataset": "C:\\pc_full\\PhotoCheck\\dataset\\real",
+  "expected": {
+    "phone": 13,
+    "idcard": 3,
+    "qr": 5,
+    "barcode": 3
+  },
+  "found": {
+    "phone": 11,
+    "idcard": 2,
+    "qr": 0,
+    "barcode": 0
+  },
+  "over_reported": {
+    "phone": 0,
+    "idcard": 0,
+    "qr": 0,
+    "barcode": 0
+  },
+  "per_image": [
+    {
+      "file": "real-001.jpg",
+      "expected": {
+        "phone": 2,
+        "qr": 1,
+        "barcode": 1
+      },
+      "found": {
+        "phone": 2,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        },
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-002.jpg",
+      "expected": {
+        "phone": 2,
+        "qr": 1,
+        "barcode": 1
+      },
+      "found": {
+        "phone": 2,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        },
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-003.jpg",
+      "expected": {
+        "phone": 1
+      },
+      "found": {
+        "phone": 1,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-004.jpg",
+      "expected": {
+        "phone": 2,
+        "qr": 1,
+        "barcode": 1
+      },
+      "found": {
+        "phone": 2,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        },
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-005.jpg",
+      "expected": {
+        "phone": 1,
+        "idcard": 1
+      },
+      "found": {
+        "phone": 1,
+        "idcard": 1,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "idcard"
+        },
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-006.jpg",
+      "expected": {
+        "phone": 1
+      },
+      "found": {
+        "phone": 1,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-007.jpg",
+      "expected": {},
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-008.jpg",
+      "expected": {
+        "qr": 2
+      },
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-009.jpg",
+      "expected": {},
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-010.jpg",
+      "expected": {
+        "phone": 3
+      },
+      "found": {
+        "phone": 2,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "phone"
+        },
+        {
+          "kind": "text",
+          "subtype": "phone"
+        }
+      ]
+    },
+    {
+      "file": "real-011.jpg",
+      "expected": {},
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-012.jpg",
+      "expected": {},
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-013.jpg",
+      "expected": {},
+      "found": {
+        "phone": 0,
+        "idcard": 0,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": []
+    },
+    {
+      "file": "real-014.jpg",
+      "expected": {
+        "phone": 1,
+        "idcard": 2
+      },
+      "found": {
+        "phone": 0,
+        "idcard": 1,
+        "qr": 0,
+        "barcode": 0
+      },
+      "detections": [
+        {
+          "kind": "text",
+          "subtype": "idcard"
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

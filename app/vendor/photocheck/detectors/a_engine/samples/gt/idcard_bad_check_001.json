@@ -1,0 +1,23 @@
+{
+  "image_id": "idcard_bad_check_001",
+  "image": "idcard_bad_check_001.png",
+  "width": 760,
+  "height": 480,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-idcard-1",
+      "kind": "text",
+      "subtype": "idcard",
+      "bbox": [
+        222,
+        208,
+        270,
+        20
+      ]
+    }
+  ],
+  "negative": false,
+  "note": "日期合法、校验位错：必须照报，risk 2，不得静默丢弃"
+}

@@ -1,0 +1,6 @@
+# Optional dependencies for the contract v4 validator.
+# When installed, uses a standard JSON Schema implementation; otherwise
+# validate_records.py falls back to its built-in equivalent.
+# Runtime deps (Pillow / opencv / rapidocr / pyzbar / mediapipe / gradio) are locked
+# by B in K-15; do not add them here.
+jsonschema>=4.21,<5

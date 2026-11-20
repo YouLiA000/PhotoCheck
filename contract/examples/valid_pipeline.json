@@ -1,0 +1,151 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-demo-001",
+    "width": 1600,
+    "height": 1200,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-demo-meta-gps",
+    "image_id": "image-demo-001",
+    "kind": "meta",
+    "subtype": "gps",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 3,
+    "details": {}
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-demo-phone-01",
+    "image_id": "image-demo-001",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [520, 410, 220, 42],
+    "detector_score": 0.96,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "138****0000"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-demo-id-01",
+    "image_id": "image-demo-001",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [520, 470, 300, 44],
+    "detector_score": 0.93,
+    "evidence": "ocr_rule",
+    "risk": 3,
+    "details": {
+      "masked_preview": "1101**********1234",
+      "idcard_check": "pass"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-demo-qr-01",
+    "image_id": "image-demo-001",
+    "kind": "qr",
+    "subtype": "qr_contact",
+    "bbox": [980, 860, 240, 240],
+    "detector_score": 0.99,
+    "evidence": "qr_payload",
+    "risk": 3,
+    "details": {
+        "decodable": true
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Decision",
+    "finding_id": "det-demo-phone-01",
+    "action": "redact",
+    "revision": 2
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Decision",
+    "finding_id": "det-demo-id-01",
+    "action": "retain",
+    "revision": 2
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Decision",
+    "finding_id": "det-demo-qr-01",
+    "action": "redact",
+    "revision": 2
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "RedactionPlan",
+    "image_id": "image-demo-001",
+    "revision": 2,
+    "items": [
+      {
+        "id": "redact:det-demo-phone-01",
+        "finding_id": "det-demo-phone-01",
+        "bbox": [520, 410, 220, 42],
+        "method": "solid"
+      },
+      {
+        "id": "redact:det-demo-qr-01",
+        "finding_id": "det-demo-qr-01",
+        "bbox": [980, 860, 240, 240],
+        "method": "solid"
+      },
+      {
+        "id": "manual-face-001",
+        "finding_id": null,
+        "bbox": [150, 180, 300, 330],
+        "method": "solid"
+      }
+    ]
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "VerificationReport",
+    "image_id": "image-demo-001",
+    "plan_revision": 2,
+    "disposal_state": "pending",
+    "checks": [
+      {
+        "region_id": "redact:det-demo-phone-01",
+        "status": "passed",
+        "method": "ocr"
+      },
+      {
+        "region_id": "redact:det-demo-qr-01",
+        "status": "passed",
+        "method": "qr"
+      },
+      {
+        "region_id": "manual-face-001",
+        "status": "not_applicable",
+        "method": "solid_black_region_structural_only"
+      }
+    ],
+    "residuals": [
+      {
+        "region_id": null,
+        "finding_id": "det-demo-id-01",
+        "reason": "retained",
+        "kind": "text",
+        "subtype": "idcard",
+        "masked_summary": "text/idcard"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2 @@
+face_id,file,truth_faces,condition,detected_faces,rotation_applied,width,height,authorization
+face-dev-001,images/face-dev-001.jpg,1,frontal_or_near_frontal,1,0,1200,1600,user_confirmed_date

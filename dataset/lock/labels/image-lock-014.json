@@ -1,0 +1,32 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-lock-014",
+    "width": 1000,
+    "height": 1400,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-lock-014-text-01",
+    "image_id": "image-lock-014",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [
+      247,
+      500,
+      294,
+      27
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "1101**********9343",
+      "idcard_check": "fail"
+    }
+  }
+]

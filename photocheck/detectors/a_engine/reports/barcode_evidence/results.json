@@ -1,0 +1,59 @@
+{
+  "card": "K-05 (1D barcode half)",
+  "generated_at": "2026-11-07T20:44:20",
+  "backend": "pyzbar",
+  "pyzbar_ok": true,
+  "host_note": "added DLL directory 'C:/Program Files/Microsoft Office/root/Client' (host repair, not a product dependency)",
+  "ean13": "6901234567892",
+  "modules": 95,
+  "scale_px_per_module": 4,
+  "expectation": "positive -> 1 x qr_code; both negatives -> 0",
+  "passed": true,
+  "cases": [
+    {
+      "case": "ean13_good",
+      "label": "positive: valid check digit",
+      "image": "ean13_good.png",
+      "size": [
+        620,
+        260
+      ],
+      "hit_count": 1,
+      "detections": [
+        {
+          "subtype": "qr_code",
+          "risk": 1,
+          "bbox": [
+            120,
+            70,
+            380,
+            119
+          ],
+          "decodable": true
+        }
+      ]
+    },
+    {
+      "case": "ean13_badcheck",
+      "label": "negative: look-alike, wrong check digit",
+      "image": "ean13_badcheck.png",
+      "size": [
+        620,
+        260
+      ],
+      "hit_count": 0,
+      "detections": []
+    },
+    {
+      "case": "stripes",
+      "label": "negative: decorative stripes, no guards",
+      "image": "stripes.png",
+      "size": [
+        620,
+        260
+      ],
+      "hit_count": 0,
+      "detections": []
+    }
+  ]
+}

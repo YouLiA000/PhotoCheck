@@ -1,0 +1,53 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-lock-009",
+    "width": 1000,
+    "height": 1400,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-lock-009-text-01",
+    "image_id": "image-lock-009",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [
+      247,
+      500,
+      294,
+      27
+    ],
+    "detector_score": null,
+    "evidence": "ocr_rule",
+    "risk": 3,
+    "details": {
+      "masked_preview": "5101**********7988",
+      "idcard_check": "pass"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-image-lock-009-qr-02",
+    "image_id": "image-lock-009",
+    "kind": "qr",
+    "subtype": "qr_link",
+    "bbox": [
+      110,
+      1070,
+      230,
+      230
+    ],
+    "detector_score": null,
+    "evidence": "qr_payload",
+    "risk": 1,
+    "details": {
+      "decodable": true,
+      "safe_domain": "example.org"
+    }
+  }
+]

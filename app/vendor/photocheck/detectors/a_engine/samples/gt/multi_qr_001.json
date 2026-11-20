@@ -1,0 +1,34 @@
+{
+  "image_id": "multi_qr_001",
+  "image": "multi_qr_001.png",
+  "width": 900,
+  "height": 460,
+  "source": "synthetic_generated",
+  "generator": "scripts/make_sample.py",
+  "objects": [
+    {
+      "gt_id": "g-qr-1",
+      "kind": "qr",
+      "subtype": "qr_link",
+      "bbox": [
+        60,
+        120,
+        240,
+        240
+      ]
+    },
+    {
+      "gt_id": "g-qr-2",
+      "kind": "qr",
+      "subtype": "qr_wifi",
+      "bbox": [
+        560,
+        120,
+        240,
+        240
+      ]
+    }
+  ],
+  "negative": false,
+  "note": "同页两码：回归 detectMulti 解包缺陷，两个码都必须报出"
+}
