@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-15T23:58:26",
-  "head": "db5ee5b",
+  "generated_at": "2026-11-20T22:50:44",
+  "head": "fb1b572",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 83 tests in 0.212s | OK",
+      "evidence": "Ran 103 tests in 0.443s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.1 小时前更新",
+      "evidence": "0.7 小时前更新",
       "hint": ""
     },
     {
@@ -189,7 +189,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "88 行",
+      "evidence": "92 行",
       "hint": ""
     },
     {
@@ -199,7 +199,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "4 条，均含结论与理由",
+      "evidence": "5 条，均含结论与理由",
       "hint": ""
     },
     {
@@ -249,7 +249,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "v5.5.3.20260724，含 chi_sim（D:\\Program Files\\Tesseract-OCR\\tesseract.exe）",
+      "evidence": "v5.5.3.20260724，含 chi_sim（D:\\Program Files\\Tesseract-OCR\\tesseract.EXE）",
       "hint": ""
     },
     {
@@ -289,7 +289,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "20261108-235808-a6511b9：对齐 38 张，召回 100.0% / 精确 100.0%",
+      "evidence": "review-external-20261120：对齐 38 张，召回 100.0% / 精确 100.0%",
       "hint": ""
     },
     {
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 71 个文件，无完整敏感号",
+      "evidence": "扫描 16 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 2.577s | OK",
+      "evidence": "Ran 48 tests in 4.340s | OK",
       "hint": ""
     },
     {
