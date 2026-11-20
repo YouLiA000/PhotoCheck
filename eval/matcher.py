@@ -59,6 +59,83 @@ def _check_mask(result: "ImageResult", image_id: str, truth: Mapping, pred: Mapp
         })
 
 
+def max_weight_matching(scores: list[list[float | None]]) -> list[tuple[int, int]]:
+    """最大基数、其次最大权的一对一匹配（纯 Python，不引入 scipy）。
+
+    为什么不用「按 IoU 降序贪心」：贪心是局部最优。反例——
+    真值 A 对预测 1/2 的 IoU 是 0.9/0.8，真值 B 对预测 1/2 是 0.8/不可行：
+    贪心先吃 (A,1)，B 就落空，只得到 1 对；最优解是 (A,2)+(B,1)，2 对。
+    框密集或重叠时，贪心会系统性少配，导致 FN 偏高、FP 偏高——
+    而「真值当预测」自测恒为 1.0，根本测不出来。
+
+    这里退化为最小费用最大流：先保证配对数最多，再让总 IoU 最大。
+    scores[i][j] 为 None 表示低于阈值、不可配。
+    """
+    n = len(scores)
+    m = len(scores[0]) if n else 0
+    if not n or not m:
+        return []
+
+    # 节点：0=源，1..n=真值，n+1..n+m=预测，末位=汇
+    src, sink = 0, n + m + 1
+    graph: list[list[int]] = [[] for _ in range(n + m + 2)]
+
+    def add(u: int, v: int, cap: int, cost: float) -> None:
+        graph[u].append(len(edges)); edges.append([v, cap, cost, len(graph[v])])
+        graph[v].append(len(edges)); edges.append([u, 0, -cost, len(graph[u]) - 1])
+
+    edges: list[list] = []
+    for i in range(n):
+        add(src, 1 + i, 1, 0.0)
+    for j in range(m):
+        add(1 + n + j, sink, 1, 0.0)
+    BIG = 1.0                      # 每次配对固定收益，保证「先求配对数最多」
+    for i in range(n):
+        for j in range(m):
+            s = scores[i][j]
+            if s is not None:
+                add(1 + i, 1 + n + j, 1, -(BIG + float(s)))
+
+    INF = float("inf")
+    total_flow = 0
+    while True:
+        dist = [INF] * len(graph)
+        in_queue = [False] * len(graph)
+        prev_edge = [-1] * len(graph)
+        dist[src] = 0.0
+        queue = [src]
+        in_queue[src] = True
+        while queue:                      # SPFA：小图足够，且能处理负权
+            u = queue.pop(0)
+            in_queue[u] = False
+            for eid in graph[u]:
+                v, cap, cost, _ = edges[eid]
+                if cap > 0 and dist[u] + cost < dist[v] - 1e-12:
+                    dist[v] = dist[u] + cost
+                    prev_edge[v] = eid
+                    if not in_queue[v]:
+                        queue.append(v)
+                        in_queue[v] = True
+        if dist[sink] == INF:
+            break
+        # 沿增广路推 1 单位（所有边容量为 1）
+        v = sink
+        while v != src:
+            eid = prev_edge[v]
+            edges[eid][1] -= 1
+            edges[eid ^ 1][1] += 1
+            v = edges[eid ^ 1][0]
+        total_flow += 1
+
+    pairs: list[tuple[int, int]] = []
+    for i in range(n):
+        for eid in graph[1 + i]:
+            v, cap, cost, _ = edges[eid]
+            if 1 + n <= v <= n + m and cap == 0:   # 正向边被用掉 = 配上了
+                pairs.append((i, v - 1 - n))
+    return sorted(pairs)
+
+
 @dataclass
 class ImageResult:
     """一张图的匹配结果。计数都是「对象数」，不是「图数」。"""
@@ -123,20 +200,23 @@ def match_image(
     t_boxes, t_metas = _split(truth)
     p_boxes, p_metas = _split(pred)
 
-    # ---- 有框对象：按 IoU 从高到低贪心配对，保证一对一 ----
-    candidates = []
-    for ti, t in enumerate(t_boxes):
+    # ---- 有框对象：最大基数 + 最大权的全局一对一匹配 ----
+    # 2026-11-20 由「IoU 降序贪心」改为全局最优：贪心在框密集时会少配，
+    # 把本可配上的对象算成 miss + FP。
+    weights: list[list[float | None]] = []
+    for t in t_boxes:
         threshold = (thresholds or {}).get(str(t.get("kind")), config.IOU_THRESHOLD)
-        for pi, p in enumerate(p_boxes):
+        row: list[float | None] = []
+        for p in p_boxes:
             score = iou(t["bbox"], p["bbox"])
-            if score >= threshold:
-                candidates.append((score, ti, pi))
-    candidates.sort(key=lambda c: -c[0])
+            row.append(score if score >= threshold else None)
+        weights.append(row)
 
     used_t, used_p = set(), set()
-    for score, ti, pi in candidates:
-        if ti in used_t or pi in used_p:
-            continue
+    pairs = max_weight_matching(weights)
+    # 高 IoU 先记账，失败明细的顺序更可读（不影响计数）
+    for ti, pi in sorted(pairs, key=lambda pr: -(weights[pr[0]][pr[1]] or 0.0)):
+        score = float(weights[ti][pi] or 0.0)
         used_t.add(ti)
         used_p.add(pi)
         t, p = t_boxes[ti], p_boxes[pi]
