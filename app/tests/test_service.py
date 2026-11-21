@@ -36,11 +36,18 @@ class ServiceUploadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "空"):
             service.save_upload("empty.png", b"")
 
-    def test_webp_is_rejected_consistently(self) -> None:
-        payload = BytesIO()
-        Image.new("RGB", (8, 8), "white").save(payload, format="WEBP")
-        with self.assertRaisesRegex(ValueError, "JPG / PNG"):
-            service.save_upload("photo.webp", payload.getvalue())
+    def test_common_consumer_formats_are_accepted(self) -> None:
+        for image_format, suffix in (("WEBP", ".webp"), ("BMP", ".bmp")):
+            with self.subTest(image_format=image_format):
+                payload = BytesIO()
+                Image.new("RGB", (8, 8), "white").save(payload, format=image_format)
+                with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+                    service, "UPLOADS", Path(tmp)
+                ):
+                    source_id = service.save_upload(
+                        f"photo{suffix}", payload.getvalue()
+                    )
+                    self.assertTrue(service.resolve_source(source_id).name.endswith(suffix))
 
     def test_extension_comes_from_actual_format(self) -> None:
         payload = BytesIO()

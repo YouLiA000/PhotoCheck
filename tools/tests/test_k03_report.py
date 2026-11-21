@@ -119,6 +119,44 @@ class Aggregates(unittest.TestCase):
         with self.assertRaises(ValueError):
             k03_report.percentile([1, 2, 3], 0.95, method="cubic")
 
+    def test_frozen_reference_constant(self):
+        self.assertEqual(k03_report.T_OCR_REF_V2_MS, 2690.2)
+
+    def test_gate_evaluation_uses_frozen_reference(self):
+        gates = k03_report.evaluate_gates({
+            "median_of_image_medians": 2690.2,
+            "p95_of_image_medians": 3094.4,
+            "max_of_image_medians": 3162.3,
+        })
+        self.assertTrue(gates["median_passed"])
+        self.assertTrue(gates["p95_passed"])
+        self.assertFalse(gates["max_requires_explanation"])
+        self.assertEqual(gates["reference_ms"], 2690.2)
+
+    def test_gate_rejects_slow_median_and_p95(self):
+        gates = k03_report.evaluate_gates(
+            {
+                "median_of_image_medians": 4000.0,
+                "p95_of_image_medians": 5000.0,
+                "max_of_image_medians": 6000.0,
+            },
+            reference_ms=2690.2,
+        )
+        self.assertFalse(gates["median_passed"])
+        self.assertFalse(gates["p95_passed"])
+        self.assertTrue(gates["max_requires_explanation"])
+
+    def test_gate_ref_must_be_positive(self):
+        with self.assertRaises(ValueError):
+            k03_report.evaluate_gates(
+                {
+                    "median_of_image_medians": 1,
+                    "p95_of_image_medians": 1,
+                    "max_of_image_medians": 1,
+                },
+                reference_ms=0,
+            )
+
 
 class Validate(unittest.TestCase):
     def test_complete_report_passes(self):

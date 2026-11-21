@@ -686,6 +686,13 @@ def validate_cross_record(records: Sequence[Mapping[str, Any]], report: Validati
                     f"RedactionPlan({image_id}).items[{item['id']}].method",
                     f"二维码区域必须实心遮盖，当前为 {item['method']}；QR 有纠错能力，半遮可能仍可解",
                 )
+            if det and det.get("kind") == "face" and item["method"] != "solid":
+                report.error(
+                    "face_method_not_solid",
+                    f"RedactionPlan({image_id}).items[{item['id']}].method",
+                    f"人脸区域必须实心遮盖，当前为 {item['method']}；"
+                    "模糊和像素化不能作为不可逆匿名化保证",
+                )
             desc = descriptors.get(image_id)
             if desc:
                 x, y, w, h = item["bbox"]

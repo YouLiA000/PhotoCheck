@@ -13,8 +13,8 @@ K-03 测的是**纯 OCR 稳态耗时**，不是端到端检测。测量由 A 的
   2. `validate_report`：按模板校验报告字段齐全、口径一致；缺必需字段直接判无效。
   3. CLI：`validate` 校验一份报告、`template` 输出空模板，方便 A 照着填。
 
-只依赖标准库。这里**不硬编码通过/失败结论**——判据（1.2× / 1.5×）由规格卡与
-冻结基线决定，本模块只负责把数字算对、把字段查全，见 `GATE_*` 常量。
+只依赖标准库。这里把规格卡的 1.2× / 1.5× 闸门固化为可执行判定，但冻结基线
+仍由 `T_OCR_REF_V2_MS` 明确控制；改基线或参考集必须升级版本并取得三方同意。
 
 用法：
     python tools/k03_report.py template > k03_report.json     # 出空模板
@@ -33,13 +33,15 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 # ---------------------------------------------------------------------------
-# 共识常量（判据，供报告生成与人工核对用；本模块不做 pass/fail 判定）
+# 共识常量与冻结参考集基线
 # ---------------------------------------------------------------------------
 
 # 旧基线：仅作预验收参考，不得命名为新参考集基线（B 最终意见 §2.2）
 T_OCR_LEGACY_MS = 1686.3
 # 旧基线的 p95 软闸门值（1686.3 × 1.5 = 2529.45，统一保守写 2529.5）
 LEGACY_P95_LINE_MS = 2529.5
+# k03_ref_v1 冻结值，来自 2026-11-15 的参考集测量并由三方最终口径确认。
+T_OCR_REF_V2_MS = 2690.2
 
 # 闸门倍数（B 最终意见 §2.3）：median ≤1.2×、p95 ≤1.5×、max 不设硬线但 >2× 须逐图解释
 GATE_MEDIAN_MULT = 1.2
@@ -164,6 +166,68 @@ def compute_aggregates(
         aggregates["bootstrap_95_ci_p95"] = [round(lo, 1), round(hi, 1)]
 
     return aggregates
+
+
+def evaluate_gates(
+    aggregates: dict[str, Any],
+    *,
+    reference_ms: float = T_OCR_REF_V2_MS,
+) -> dict[str, Any]:
+    """Evaluate the frozen K-03 gates against one aggregate report."""
+    if isinstance(reference_ms, bool) or reference_ms <= 0:
+        raise ValueError("reference_ms 必须是大于 0 的数值")
+    median_ms = _number(aggregates.get("median_of_image_medians"))
+    p95_ms = _number(aggregates.get("p95_of_image_medians"))
+    max_ms = _number(aggregates.get("max_of_image_medians"))
+    if median_ms is None or p95_ms is None or max_ms is None:
+        raise ValueError("aggregates 缺少可计算的 median / p95 / max")
+
+    median_limit = reference_ms * GATE_MEDIAN_MULT
+    p95_limit = reference_ms * GATE_P95_MULT
+    max_explanation_line = reference_ms * GATE_MAX_MULT
+    return {
+        "data_version": DATA_VERSION,
+        "reference_ms": round(reference_ms, 1),
+        "median_ms": round(median_ms, 1),
+        "median_limit_ms": round(median_limit, 1),
+        "median_ratio": round(median_ms / reference_ms, 3),
+        "median_passed": median_ms <= median_limit,
+        "p95_ms": round(p95_ms, 1),
+        "p95_limit_ms": round(p95_limit, 1),
+        "p95_ratio": round(p95_ms / reference_ms, 3),
+        "p95_passed": p95_ms <= p95_limit,
+        "max_ms": round(max_ms, 1),
+        "max_explanation_line_ms": round(max_explanation_line, 1),
+        "max_ratio": round(max_ms / reference_ms, 3),
+        "max_requires_explanation": max_ms > max_explanation_line,
+    }
+
+
+def _print_gates(gates: dict[str, Any]) -> None:
+    print(
+        f"[gate] 基线 = {gates['reference_ms']:.1f} ms"
+        f"（{gates['data_version']}）"
+    )
+    print(
+        f"  median {gates['median_ms']:.1f} / {gates['median_limit_ms']:.1f} ms"
+        f" = {gates['median_ratio']:.3f}x → "
+        f"{'PASS' if gates['median_passed'] else 'FAIL'}"
+    )
+    print(
+        f"  p95    {gates['p95_ms']:.1f} / {gates['p95_limit_ms']:.1f} ms"
+        f" = {gates['p95_ratio']:.3f}x → "
+        f"{'PASS' if gates['p95_passed'] else 'FAIL'}"
+    )
+    max_status = (
+        "需逐图解释"
+        if gates["max_requires_explanation"]
+        else "无需额外解释"
+    )
+    print(
+        f"  max    {gates['max_ms']:.1f} / "
+        f"{gates['max_explanation_line_ms']:.1f} ms"
+        f" = {gates['max_ratio']:.3f}x → {max_status}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -593,6 +657,12 @@ def _cli() -> int:
 
     p_validate = sub.add_parser("validate", help="校验一份报告")
     p_validate.add_argument("report", help="报告 JSON 路径")
+    p_validate.add_argument(
+        "--ref-ms",
+        type=float,
+        default=T_OCR_REF_V2_MS,
+        help=f"冻结基线（默认 {T_OCR_REF_V2_MS} ms）",
+    )
 
     args = parser.parse_args()
 
@@ -614,9 +684,16 @@ def _cli() -> int:
             print("[format] A 形态（rows / summary，由 make_k03_reference.py 产出）")
             problems = validate_a_format(report)
             gaps = TEMPLATE_ONLY_FIELDS
+            summary = report.get("summary") or {}
+            gate_input = {
+                "median_of_image_medians": summary.get("median_of_image_medians_ms"),
+                "p95_of_image_medians": summary.get("p95_of_image_medians_ms"),
+                "max_of_image_medians": summary.get("max_of_image_medians_ms"),
+            }
         else:
             problems = validate_report(report)
             gaps = ()
+            gate_input = report.get("aggregates") or {}
         if problems:
             print(f"[invalid] {len(problems)} 个问题：")
             for problem in problems:
@@ -625,7 +702,21 @@ def _cli() -> int:
             print(f"[gaps] 与 C 模板的字段缺口 {len(gaps)} 项（不计为错误，但算不全模板要求）：")
             for name, why in gaps:
                 print(f"  - {name}：{why}")
+        if not problems:
+            try:
+                gates = evaluate_gates(gate_input, reference_ms=args.ref_ms)
+            except ValueError as exc:
+                print(f"[gate] 无法判定：{exc}")
+                return 1
+            if abs(args.ref_ms - T_OCR_REF_V2_MS) > 1e-9:
+                print(
+                    "[gate] WARNING：使用了自定义基线，仅用于诊断；"
+                    f"正式验收必须使用 {T_OCR_REF_V2_MS:.1f} ms"
+                )
+            _print_gates(gates)
         if problems:
+            return 1
+        if not (gates["median_passed"] and gates["p95_passed"]):
             return 1
         print("[ok] 报告自洽、口径一致")
         return 0

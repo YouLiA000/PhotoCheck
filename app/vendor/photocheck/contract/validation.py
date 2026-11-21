@@ -161,6 +161,10 @@ def validate_records(
                 raise ContractError(f"redaction item references unknown finding {finding_id}")
             if item["bbox"] != finding["bbox"]:
                 raise ContractError("redaction item bbox must match its Detection bbox")
+            if finding["kind"] == "qr" and item["method"] != "solid":
+                raise ContractError("QR regions must always use solid redaction")
+            if finding["kind"] == "face" and item["method"] != "solid":
+                raise ContractError("face regions must always use solid redaction")
 
         if reports:
             report = reports[0]

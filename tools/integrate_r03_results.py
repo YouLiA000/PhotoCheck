@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -15,23 +17,24 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from eval import reporter  # noqa: E402
+from eval import loader  # noqa: E402
+from eval import eval as eval_runner  # noqa: E402
 
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _latest_layer1(results: Path) -> tuple[Path, dict[str, Any]]:
-    candidates = sorted(
-        (path for path in results.iterdir() if path.is_dir() and (path / "summary.json").is_file()),
-        key=lambda path: (path / "summary.json").stat().st_mtime,
-        reverse=True,
-    )
-    for path in candidates:
-        data = _load(path / "summary.json")
-        if (data.get("layer1") or {}).get("objects_truth"):
-            return path, data
-    raise FileNotFoundError("no existing report has valid layer1 data")
+def _sha256(path: Path) -> str:
+    if path.is_file():
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    for child in sorted(path.rglob("*")):
+        if child.is_file():
+            digest.update(child.relative_to(path).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(child.read_bytes())
+    return digest.hexdigest()
 
 
 def _layer2(path: Path) -> dict[str, Any]:
@@ -95,19 +98,35 @@ def integrate(
     *,
     layer2_path: Path,
     layer3_path: Path,
-    results: Path,
+    predictions_path: Path,
     out: Path,
 ) -> Path:
-    _, previous = _latest_layer1(results)
-    summary = previous["layer1"]
-    context = dict(previous.get("context") or {})
+    layer2_path = layer2_path.resolve()
+    layer3_path = layer3_path.resolve()
+    predictions_path = predictions_path.resolve()
+    out = out.resolve()
+    dataset = ROOT / "dataset" / "dev"
+    predictions = loader.load_predictions(predictions_path)
+    outcome = eval_runner.run(
+        dataset,
+        predictions,
+        prediction_label=predictions_path.relative_to(ROOT).as_posix(),
+        difficulties=loader.load_manifest(dataset),
+        ci_boot=1000,
+        ci_seed=7,
+    )
+    summary = outcome["summary"]
+    context = dict(outcome["context"])
     context.update(
         {
             "dataset": "dev",
             "prediction": "A layer2 export audit + recorded R-03 review",
-            "generated_at": "2026-11-15",
+            "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
             "layer2_source": layer2_path.relative_to(ROOT).as_posix(),
             "layer3_source": layer3_path.relative_to(ROOT).as_posix(),
+            "layer2_sha256": _sha256(layer2_path),
+            "layer3_sha256": _sha256(layer3_path),
+            "predictions_sha256": _sha256(predictions_path),
         }
     )
     layer2 = _layer2(layer2_path)
@@ -115,6 +134,9 @@ def integrate(
     out.mkdir(parents=True, exist_ok=True)
     reporter.write_reports(out, summary, layer2, layer3, context, failures=[])
     shutil.copy2(layer3_path, out / "layer3_review.json")
+    destination = out / "predictions"
+    if predictions_path.resolve() != destination.resolve():
+        shutil.copytree(predictions_path, destination)
     return out
 
 
@@ -128,13 +150,16 @@ def main(argv: list[str] | None = None) -> int:
         "--layer3",
         default=str(ROOT / "docs" / "R03人工判读_v1.4五类范围_2026-11-15.json"),
     )
-    parser.add_argument("--results", default=str(ROOT / "results"))
-    parser.add_argument("--out", default=str(ROOT / "reports" / "r03-layer23-20261115"))
+    parser.add_argument(
+        "--predictions",
+        default=str(ROOT / "results" / "predictions-dev-20261108"),
+    )
+    parser.add_argument("--out", default=str(ROOT / "reports" / "r03-layer23-20261121"))
     args = parser.parse_args(argv)
     out = integrate(
         layer2_path=Path(args.layer2),
         layer3_path=Path(args.layer3),
-        results=Path(args.results),
+        predictions_path=Path(args.predictions),
         out=Path(args.out),
     )
     print(out)

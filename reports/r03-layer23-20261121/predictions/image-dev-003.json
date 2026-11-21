@@ -1,0 +1,31 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-003",
+    "width": 1120,
+    "height": 1560,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-phone-001",
+    "image_id": "image-dev-003",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      307,
+      443,
+      219,
+      29
+    ],
+    "detector_score": 0.9979,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "139****8426"
+    }
+  }
+]

@@ -155,7 +155,7 @@ def _method_for_item(
     detection_by_id: Mapping[str, Mapping[str, Any]],
 ) -> str:
     finding = detection_by_id.get(item.get("finding_id"))
-    if finding is not None and finding["kind"] == "qr":
+    if finding is not None and finding["kind"] in {"qr", "face"}:
         return "solid"
     return str(item["method"])
 

@@ -94,6 +94,16 @@ class IngestTests(unittest.TestCase):
                     (24, 16),
                 )
 
+    def test_webp_and_bmp_inputs_are_normalized(self) -> None:
+        for image_format, suffix in (("WEBP", ".webp"), ("BMP", ".bmp")):
+            with self.subTest(image_format=image_format), tempfile.TemporaryDirectory() as temp_dir:
+                path = Path(temp_dir) / f"consumer{suffix}"
+                Image.new("RGB", (24, 16), (10, 20, 30)).save(path, format=image_format)
+                with ingest_image(path) as result:
+                    self.assertEqual(result.source_format, image_format)
+                    self.assertEqual(result.image.size, (24, 16))
+                    self.assertEqual(result.detections, ())
+
     def test_caller_can_supply_the_dataset_image_id(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "clean.png"

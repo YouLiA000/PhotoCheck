@@ -1,0 +1,295 @@
+{
+  "context": {
+    "dataset": "dev",
+    "prediction": "A layer2 export audit + recorded R-03 review",
+    "iou_threshold": 0.5,
+    "generated_at": "2026-11-21T23:40:23+08:00",
+    "git_sha": "73a38b5",
+    "git_dirty": false,
+    "negative_regions": 9,
+    "difficulty_source": "manifest.csv",
+    "ci_boot": 1000,
+    "kinds": "all",
+    "layer2_source": "photocheck/detectors/a_engine/reports/layer2_export_20261114.json",
+    "layer3_source": "docs/R03人工判读_v1.4五类范围_2026-11-15.json",
+    "layer2_sha256": "0a468117b1a9bd6e66d65db5604865ef5b931bc8f2c0b97ad5b5bc7ba52f1c28",
+    "layer3_sha256": "9b714d09bbf358c35b0d1f7aa4633db777ff274e6e77efd9b79c6c1412fb7b02",
+    "predictions_sha256": "d93cc52a3b9ca4e5955ec21652d69097a7b8010f2f4f2a76be43d1335847e77a"
+  },
+  "layer1": {
+    "images": 38,
+    "objects_truth": 84,
+    "objects_pred": 84,
+    "tp": 84,
+    "fn": 0,
+    "fp": 0,
+    "subtype_errors": 0,
+    "recall": 1.0,
+    "precision": 1.0,
+    "mask_checked": 42,
+    "mask_mismatches": 0,
+    "mask_accuracy": 1.0,
+    "duplicates": 0,
+    "duplicate_rate": 0.0,
+    "fp_per_image": 0.0,
+    "negative_hits": 0,
+    "by_subtype": [
+      {
+        "subtype": "datetime",
+        "n": 8,
+        "tp": 8,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "device",
+        "n": 8,
+        "tp": 8,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "gps",
+        "n": 8,
+        "tp": 8,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "idcard",
+        "n": 11,
+        "tp": 11,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "phone",
+        "n": 31,
+        "tp": 31,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": ""
+      },
+      {
+        "subtype": "qr_link",
+        "n": 1,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "qr_unknown",
+        "n": 1,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "qr_vcard",
+        "n": 4,
+        "tp": 4,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "qr_wechat_pay",
+        "n": 1,
+        "tp": 1,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "qr_wifi",
+        "n": 3,
+        "tp": 3,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      },
+      {
+        "subtype": "software",
+        "n": 8,
+        "tp": 8,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": "仅作开发参考"
+      }
+    ],
+    "small_sample": false,
+    "failing_images": [],
+    "by_difficulty": [
+      {
+        "difficulty": "easy",
+        "images": 16,
+        "n": 42,
+        "tp": 42,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": ""
+      },
+      {
+        "difficulty": "hard",
+        "images": 22,
+        "n": 42,
+        "tp": 42,
+        "fn": 0,
+        "fp": 0,
+        "subtype_error": 0,
+        "recall": 1.0,
+        "precision": 1.0,
+        "note": ""
+      }
+    ],
+    "coverage": {
+      "truth_images": 38,
+      "prediction_images": 38,
+      "matched_images": 38,
+      "foreign_images": [],
+      "foreign_count": 0,
+      "uncovered_images": 0
+    },
+    "loose": {
+      "threshold": 0.3,
+      "recall": 1.0,
+      "precision": 1.0,
+      "tp": 84,
+      "fn": 0,
+      "fp": 0,
+      "subtype_errors": 0
+    },
+    "ci": {
+      "recall": [
+        1.0,
+        1.0
+      ],
+      "precision": [
+        1.0,
+        1.0
+      ],
+      "n_boot": 1000,
+      "seed": 7,
+      "method": "cluster_by_image"
+    }
+  },
+  "layer2": {
+    "status": "passed",
+    "reason": "对最终导出 JPG 重新检测并独立扫描元数据；中间图不参与该数字",
+    "images": 38,
+    "clean": 38,
+    "residuals": 0,
+    "metadata_tags": 0,
+    "disposal_state_counts": {
+      "passed": 32,
+      "not_applicable": 6
+    },
+    "items": [
+      {
+        "检查项目": "文字 / 二维码导出残留",
+        "通过": true,
+        "失败": 0,
+        "状态": "passed",
+        "说明": "在最终导出文件上重跑检测"
+      },
+      {
+        "检查项目": "导出文件存活元数据",
+        "通过": true,
+        "失败": 0,
+        "状态": "passed",
+        "说明": "EXIF/XMP/IPTC/PNG 文本块"
+      },
+      {
+        "检查项目": "导出文件数",
+        "通过": 38,
+        "失败": 0,
+        "状态": "passed",
+        "说明": "导出干净 38/38"
+      },
+      {
+        "检查项目": "处置状态分布",
+        "通过": 38,
+        "失败": 0,
+        "状态": "passed",
+        "说明": "{\"passed\": 32, \"not_applicable\": 6}"
+      }
+    ]
+  },
+  "layer3": {
+    "version": "r03-v1.4-five-class-2026-11-15",
+    "reviewed_images": 38,
+    "appropriate": 38,
+    "over_redacted": 0,
+    "under_redacted": 0,
+    "reviewers": 2,
+    "agreed": 38,
+    "status": "passed",
+    "scope": "功能规格卡 v1.4 的手机号、身份证、二维码、元数据、人脸五类对象",
+    "decision": "项目负责人于 2026-11-15 确认本轮五类范围人工判读全部通过",
+    "known_limit": "姓名、地址、邮箱属于 S-7 扩展范围，本结论不声称已经覆盖或脱敏这三类内容",
+    "source_report": "photocheck/detectors/a_engine/reports/A_第三层判读结论_2026-11-14.md",
+    "reason": "项目负责人于 2026-11-15 确认本轮五类范围人工判读全部通过",
+    "items": [
+      {
+        "项目": "误遮对象数",
+        "数值": 0,
+        "状态": "passed",
+        "说明": "人工判读"
+      },
+      {
+        "项目": "欠遮对象数（本口径）",
+        "数值": 0,
+        "状态": "passed",
+        "说明": "人工判读"
+      },
+      {
+        "项目": "判读一致数",
+        "数值": 38,
+        "状态": "passed",
+        "说明": "2 名判读人"
+      }
+    ]
+  }
+}

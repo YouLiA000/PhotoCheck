@@ -28,6 +28,17 @@ $Routes = @(
         Select-Object InterfaceAlias, NextHop, RouteMetric
 )
 $activeAdapters = @($Adapters | Where-Object { $_.Status -eq "Up" })
+$firewallProfiles = @()
+try {
+    $firewallProfiles = @(
+        Get-NetFirewallProfile -ErrorAction Stop |
+            Select-Object Name, Enabled, DefaultInboundAction, DefaultOutboundAction
+    )
+}
+catch {
+    # The main network evidence remains valid on systems where the firewall
+    # cmdlets are unavailable; the missing profiles are explicit in the JSON.
+}
 $connected = $false
 try {
     $client = New-Object System.Net.Sockets.TcpClient
@@ -41,10 +52,10 @@ catch {
 
 $network = [ordered]@{
     captured_at = (Get-Date).ToString("o")
-    adapters = $Adapters
-    default_routes = $Routes
     active_adapter_count = $activeAdapters.Count
+    default_route_count = $Routes.Count
     external_connection_succeeded = $connected
+    firewall_profiles = $firewallProfiles
 }
 $network | ConvertTo-Json -Depth 5 |
     Set-Content -LiteralPath (Join-Path $Evidence "network-summary.json") -Encoding UTF8

@@ -1,0 +1,31 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-024",
+    "width": 1080,
+    "height": 680,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-qr-001",
+    "image_id": "image-dev-024",
+    "kind": "qr",
+    "subtype": "qr_vcard",
+    "bbox": [
+      736,
+      196,
+      267,
+      267
+    ],
+    "detector_score": null,
+    "evidence": "qr_payload",
+    "risk": 3,
+    "details": {
+      "decodable": true
+    }
+  }
+]

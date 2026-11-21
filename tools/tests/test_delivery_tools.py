@@ -91,6 +91,22 @@ class SmokeAudit(unittest.TestCase):
 
 
 class PortableBundleAudit(unittest.TestCase):
+    def test_portable_launchers_are_ascii_and_self_diagnosing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build_app.write_launchers(root)
+            for name in ("启动.bat", "Start.bat", "自检.bat", "Check.bat", "README_FIRST.txt"):
+                self.assertTrue((root / name).is_file(), name)
+            launcher = (root / "Start.bat").read_text(encoding="ascii")
+            self.assertIn("runtime\\python.exe", launcher)
+            self.assertIn("runtime is incomplete", launcher)
+            self.assertIn("PYTHONNOUSERSITE", launcher)
+            self.assertIn("exit /b %PHOTOCHECK_EXIT%", launcher)
+            checker = (root / "Check.bat").read_text(encoding="ascii")
+            self.assertIn("exit /b %PHOTOCHECK_EXIT%", checker)
+            first = (root / "README_FIRST.txt").read_text(encoding="ascii")
+            self.assertIn("Extract the ENTIRE ZIP", first)
+
     def test_runtime_debris_is_detected(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

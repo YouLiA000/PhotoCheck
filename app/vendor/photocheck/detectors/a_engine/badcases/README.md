@@ -95,14 +95,19 @@ front matter 必填：
 | BC-0002 | idcard | rule_miss | P0 | fixed |
 | BC-0003 | datetime | rule_miss | P1 | fixed |
 | BC-0004 | phone | rule_miss | P1 | fixed |
-| BC-0005 | phone | rule_miss | P1 | **open** |
+| BC-0005 | phone | rule_miss | P1 | fixed |
 | BC-0006 | pipeline | rule_miss | P1 | fixed |
 | BC-0007 | qr_link | ocr_miss | P0 | fixed |
 | BC-0008 | pipeline | ocr_miss | P1 | **open** |
+| BC-0009 | qr_unknown | threshold | P1 | fixed |
+| BC-0010 | idcard | rule_miss | P1 | fixed |
+| BC-0011 | qr_unknown | threshold | P2 | **open** |
+| BC-0012 | pipeline | rule_miss | P0 | fixed |
+| BC-0013 | phone | rule_miss | P1 | fixed |
 
 > 第一批 5 条全部来自 2026-11-02 对《A_交付_修订》契约的评审。
 > 它们有个共同点：**在真实数据上会静默失败**——不报错、不崩溃，只是结果里少了东西。
 > 这类问题正是没有 badcase 库时最容易漏掉的。
 >
-> BC-0005 保持 `open`，因为改它需要 C 的 dev 集给出"带区号号码占比"才能判断
-> 值不值得付出误报代价。`open` 不是贬义——它是"已知、已定位、等一个数据再决策"。
+BC-0008 与 BC-0011 仍为 `open`，分别表示 pyzbar 运行库降级和半张二维码候选不足；
+其余 11 条已有回归测试。

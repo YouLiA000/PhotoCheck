@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-20T22:50:44",
-  "head": "fb1b572",
+  "generated_at": "2026-11-21T23:45:54",
+  "head": "769747e",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 103 tests in 0.443s | OK",
+      "evidence": "Ran 107 tests in 0.347s | OK",
       "hint": ""
     },
     {
@@ -143,7 +143,7 @@
       "hint": ""
     },
     {
-      "id": "DS-10",
+      "id": "DS-11",
       "card": "K-13",
       "title": "lock 目录禁换行转换（-text）",
       "level": "P0",
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.7 小时前更新",
+      "evidence": "0.2 小时前更新",
       "hint": ""
     },
     {
@@ -199,7 +199,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "5 条，均含结论与理由",
+      "evidence": "6 条，均含结论与理由",
       "hint": ""
     },
     {
@@ -269,7 +269,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "r03-layer23-20261115: 三层均有有效数字，layer1 n=84，10 行小样本已标注",
+      "evidence": "r03-layer23-20261121: 三层均有有效数字，layer1 n=84，10 行小样本已标注",
       "hint": ""
     },
     {
@@ -298,9 +298,9 @@
       "title": "离线可运行：无网络调用",
       "level": "P1",
       "owner": "C",
-      "status": "PASS",
-      "evidence": "src/ ui/ contract/ 里无联网调用",
-      "hint": ""
+      "status": "PARTIAL",
+      "evidence": "源码无外连调用，但缺少物理断网/防火墙证据",
+      "hint": "在验收机器按 docs/K14验收机器取证步骤_2026-11-20.md 生成 docs/evidence/<时间戳>/network-summary.json + offline-audit.txt"
     },
     {
       "id": "K03-01",
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 16 个文件，无完整敏感号",
+      "evidence": "扫描 124 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.340s | OK",
+      "evidence": "Ran 48 tests in 2.644s | OK",
       "hint": ""
     },
     {
@@ -433,8 +433,10 @@
       "missing": []
     },
     "W8": {
-      "passed": true,
-      "missing": []
+      "passed": false,
+      "missing": [
+        "EX-01 离线可运行：无网络调用（源码无外连调用，但缺少物理断网/防火墙证据）"
+      ]
     }
   }
 }

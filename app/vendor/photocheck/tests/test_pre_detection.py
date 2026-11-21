@@ -151,6 +151,54 @@ class RedactionTests(unittest.TestCase):
         ) as result:
             self.assertEqual(result.applied_regions[0].method, "solid")
 
+    def test_face_finding_forces_solid_mask(self) -> None:
+        source = patterned_image()
+        descriptor = {
+            "contract_version": "photocheck/v4",
+            "record_type": "ImageDescriptor",
+            "image_id": "image-face",
+            "width": source.width,
+            "height": source.height,
+            "orientation": "exif_transposed",
+            "coordinate_space": "top_left_pixels",
+        }
+        face = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Detection",
+            "id": "det-face",
+            "image_id": "image-face",
+            "kind": "face",
+            "subtype": "face_region",
+            "bbox": [50, 30, 80, 80],
+            "detector_score": 0.9,
+            "evidence": "face_box",
+            "risk": 1,
+            "details": {},
+        }
+        decision = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Decision",
+            "finding_id": "det-face",
+            "action": "redact",
+            "revision": 1,
+        }
+        plan = build_redaction_plan(
+            descriptor,
+            [face],
+            [decision],
+            revision=1,
+            method_by_finding={"det-face": "blur"},
+        )
+        self.assertEqual(plan["items"][0]["method"], "solid")
+        with apply_redactions(
+            source,
+            plan,
+            image_id="image-face",
+            detections=[face],
+        ) as result:
+            self.assertEqual(result.applied_regions[0].method, "solid")
+            self.assertEqual(result.image.getpixel((60, 40))[:3], (0, 0, 0))
+
     def test_empty_plan_preserves_pixels(self) -> None:
         source = patterned_image((50, 40))
         plan = build_redaction_plan(

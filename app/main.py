@@ -16,8 +16,14 @@ VENDOR = ROOT / "app" / "vendor"
 if str(VENDOR) not in sys.path:
     sys.path.insert(0, str(VENDOR))
 
-from photocheck.network_guard import assert_network_blocked, install_network_guard  # noqa: E402
-from app.server import main  # noqa: E402
+try:
+    from photocheck.network_guard import assert_network_blocked, install_network_guard  # noqa: E402
+    from app.server import main  # noqa: E402
+except Exception as exc:  # dependency/DLL problems otherwise look like a vanished window
+    print("PhotoCheck 启动失败：运行环境不完整或文件未完整解压。")
+    print("请先运行 Check.bat / 自检.bat，并把完整输出发给开发者。")
+    print(f"启动阶段错误类型：{type(exc).__name__}")
+    raise SystemExit(2) from exc
 
 if __name__ == "__main__":
     guard = install_network_guard()

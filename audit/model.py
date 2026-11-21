@@ -77,6 +77,16 @@ def check(cid: str, card: str, title: str, level: str = "P0",
     """注册一条检查。gate 填该检查属于哪些闸门，如 ("W6", "W8")。"""
 
     def deco(fn: Callable[[Context], Result]) -> Callable[[Context], Result]:
+        # ID 必须唯一：审计报告、豁免清单、文档索引都按 ID 定位。
+        # 2026-11-20 发现 `DS-10` 被两条检查共用（42 项只有 41 个唯一 ID），
+        # 按 ID 做豁免会指到错误的检查上，所以在注册期就拦住。
+        for existing in REGISTRY:
+            if existing.id == cid:
+                raise ValueError(
+                    f"审计检查 ID 重复：{cid}"
+                    f"（已有「{existing.title}」，新增「{title}」）。"
+                    "ID 必须唯一，否则按 ID 豁免/追踪会指向错误检查。"
+                )
         REGISTRY.append(Check(cid, card, title, level, owner, fn, gate))
         return fn
 

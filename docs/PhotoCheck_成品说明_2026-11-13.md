@@ -11,7 +11,7 @@ PhotoCheck 是一个本地照片隐私体检与脱敏原型：检测明确的文
 ## 当前完整链路
 
 ```text
-JPG / PNG
+JPG / PNG / WebP / BMP
 → 方向矫正与元数据检测
 → A 检测器
 → Decision
@@ -23,15 +23,18 @@ JPG / PNG
 → 输出图片 + JSON/TXT 报告
 ```
 
-二维码始终强制 `solid`。高斯模糊已从约短边 1/4 提升到短边 3/4 的奇数核，
-但仍必须由复检决定是否通过；不能用“已经模糊”代替验证。
+二维码和人脸始终强制 `solid`。其他文字区域仍可使用模糊或马赛克，但必须由复检决定
+是否通过；不能用“已经模糊”代替验证。
 
 ## 包内结构
 
 ```text
 PhotoCheck_App/
 ├─ 启动.bat
+├─ Start.bat
 ├─ 自检.bat
+├─ Check.bat
+├─ README_FIRST.txt
 ├─ 使用说明.txt
 ├─ 项目说明.md
 ├─ BUILD_INFO.json
@@ -80,6 +83,6 @@ PhotoCheck_App/
 ## 启动
 
 1. 解压到可写目录。
-2. 双击 `启动.bat`。
+2. 完整解压后双击 `Start.bat` 或 `启动.bat`。不要直接在 ZIP 内运行。
 3. 浏览器打开本机地址。
 4. 使用完毕关闭命令行窗口；如需清理，删除 `work/`。
