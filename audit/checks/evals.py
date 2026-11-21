@@ -293,18 +293,46 @@ def detector_ready(ctx: Context) -> Result:
 
 @check("EX-01", "K-14", "离线可运行：无网络调用", level="P1", owner="C", gate=("W8",))
 def offline_only(ctx: Context) -> Result:
-    suspicious = []
-    for base in (ctx.src_dir, ctx.ui_dir, ctx.contract_dir):
-        if not base.is_dir():
-            continue
-        for p in base.rglob("*.py"):
-            low = ctx.read_text(p).lower()
-            for pat in ("requests.get", "requests.post", "urllib.request", "http://api", "https://api"):
-                if pat in low:
-                    suspicious.append(f"{p.name}:{pat}")
+    try:
+        from photocheck.scripts.audit_offline import scan_source
+
+        static = scan_source(ctx.root)
+    except Exception as exc:  # noqa: BLE001
+        return fail(f"离线源码扫描无法执行：{type(exc).__name__}", "检查 source scanner 导入")
+    suspicious = static.get("imports", []) + static.get("calls", [])
     if suspicious:
-        return fail(f"{len(suspicious)} 处疑似联网：{suspicious[:3]}", "K-14 要求离线可运行")
-    return ok("src/ ui/ contract/ 里无联网调用")
+        return fail(
+            f"{len(suspicious)} 处疑似联网：{suspicious[:3]}",
+            "K-14 要求 app/audit/contract/eval/photocheck/scripts/tools/ui 均无外连",
+        )
+
+    evidence_root = ctx.root / "docs" / "evidence"
+    summaries = sorted(evidence_root.glob("*/network-summary.json")) if evidence_root.is_dir() else []
+    for summary in reversed(summaries):
+        try:
+            data = json.loads(ctx.read_text(summary))
+        except Exception:  # noqa: BLE001
+            continue
+        audit_file = summary.with_name("offline-audit.txt")
+        profiles = data.get("firewall_profiles") or []
+        firewall_enabled = bool(profiles) and all(
+            isinstance(profile, dict) and profile.get("Enabled") is True
+            for profile in profiles
+        )
+        if (
+            data.get("external_connection_succeeded") is False
+            and audit_file.is_file()
+            and firewall_enabled
+        ):
+            return ok(
+                "源码无外连调用；物理断网证据 "
+                f"{summary.parent.name} 记录外部连接失败、防火墙已启用且离线冒烟已归档"
+            )
+    return partial(
+        "源码无外连调用，但缺少物理断网/防火墙证据",
+        "在验收机器按 docs/K14验收机器取证步骤_2026-11-20.md 生成 "
+        "docs/evidence/<时间戳>/network-summary.json + offline-audit.txt",
+    )
 
 
 @check("K03-01", "K-03", "OCR 固定参考集已冻结并按每图中位数测量", level="P0", owner="A", gate=("W8",))

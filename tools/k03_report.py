@@ -13,8 +13,8 @@ K-03 测的是**纯 OCR 稳态耗时**，不是端到端检测。测量由 A 的
   2. `validate_report`：按模板校验报告字段齐全、口径一致；缺必需字段直接判无效。
   3. CLI：`validate` 校验一份报告、`template` 输出空模板，方便 A 照着填。
 
-只依赖标准库。这里**不硬编码通过/失败结论**——判据（1.2× / 1.5×）由规格卡与
-冻结基线决定，本模块只负责把数字算对、把字段查全，见 `GATE_*` 常量。
+只依赖标准库。这里把规格卡的 1.2× / 1.5× 闸门固化为可执行判定，但冻结基线
+仍由 `T_OCR_REF_V2_MS` 明确控制；改基线或参考集必须升级版本并取得三方同意。
 
 用法：
     python tools/k03_report.py template > k03_report.json     # 出空模板
@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 # ---------------------------------------------------------------------------
-# 共识常量（判据，供报告生成与人工核对用；本模块不做 pass/fail 判定）
+# 共识常量与冻结参考集基线
 # ---------------------------------------------------------------------------
 
 # 旧基线：仅作预验收参考，不得命名为新参考集基线（B 最终意见 §2.2）
@@ -708,6 +708,11 @@ def _cli() -> int:
             except ValueError as exc:
                 print(f"[gate] 无法判定：{exc}")
                 return 1
+            if abs(args.ref_ms - T_OCR_REF_V2_MS) > 1e-9:
+                print(
+                    "[gate] WARNING：使用了自定义基线，仅用于诊断；"
+                    f"正式验收必须使用 {T_OCR_REF_V2_MS:.1f} ms"
+                )
             _print_gates(gates)
         if problems:
             return 1

@@ -128,14 +128,15 @@ def write_launchers(out: Path) -> None:
         "set \"PYTHONNOUSERSITE=1\"\r\n"
         "set \"PYTHONDONTWRITEBYTECODE=1\"\r\n"
         "set \"PYTHONUTF8=1\"\r\n"
-        "echo 正在启动 PhotoCheck ...\r\n"
+        "echo Starting PhotoCheck ...\r\n"
         "runtime\\python.exe app\\main.py\r\n"
-        "if errorlevel 1 (\r\n"
+        "set \"PHOTOCHECK_EXIT=%ERRORLEVEL%\"\r\n"
+        "if not \"%PHOTOCHECK_EXIT%\"==\"0\" (\r\n"
         "  echo.\r\n"
-        "  echo 启动失败。请把上面的错误信息发给开发者，或先运行 自检.bat\r\n"
+        "  echo Startup failed. Run Check.bat and send the complete output.\r\n"
         "  pause\r\n"
         ")\r\n"
-        "exit /b %errorlevel%\r\n"
+        "exit /b %PHOTOCHECK_EXIT%\r\n"
         ":missing_runtime\r\n"
         "echo [ERROR] Portable runtime is incomplete.\r\n"
         "echo Extract the whole ZIP first, then run Start.bat or the Chinese-named launcher.\r\n"
@@ -144,7 +145,7 @@ def write_launchers(out: Path) -> None:
         "exit /b 1\r\n"
     )
     for name in ("启动.bat", "Start.bat"):
-        (out / name).write_text(launcher, encoding="utf-8", newline="")
+        (out / name).write_text(launcher, encoding="ascii", newline="")
 
     checker = (
         "@echo off\r\n"
@@ -160,10 +161,12 @@ def write_launchers(out: Path) -> None:
         "set \"PYTHONDONTWRITEBYTECODE=1\"\r\n"
         "set \"PYTHONUTF8=1\"\r\n"
         "runtime\\python.exe app\\selfcheck.py\r\n"
+        "set \"PHOTOCHECK_EXIT=%ERRORLEVEL%\"\r\n"
         "pause\r\n"
+        "exit /b %PHOTOCHECK_EXIT%\r\n"
     )
     for name in ("自检.bat", "Check.bat"):
-        (out / name).write_text(checker, encoding="utf-8", newline="")
+        (out / name).write_text(checker, encoding="ascii", newline="")
 
     (out / "README_FIRST.txt").write_text(
         "PhotoCheck portable package\r\n"

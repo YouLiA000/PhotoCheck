@@ -1,0 +1,112 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-020",
+    "width": 1000,
+    "height": 1400,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "meta:image-dev-020:gps",
+    "image_id": "image-dev-020",
+    "kind": "meta",
+    "subtype": "gps",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 3,
+    "details": {
+      "masked_preview": "GPS location present"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "meta:image-dev-020:datetime",
+    "image_id": "image-dev-020",
+    "kind": "meta",
+    "subtype": "datetime",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 2,
+    "details": {
+      "masked_preview": "Capture datetime present"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "meta:image-dev-020:device",
+    "image_id": "image-dev-020",
+    "kind": "meta",
+    "subtype": "device",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 1,
+    "details": {
+      "masked_preview": "Camera model or lens present"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "meta:image-dev-020:software",
+    "image_id": "image-dev-020",
+    "kind": "meta",
+    "subtype": "software",
+    "bbox": null,
+    "detector_score": null,
+    "evidence": "exif",
+    "risk": 1,
+    "details": {
+      "masked_preview": "Processing software present"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-phone-001",
+    "image_id": "image-dev-020",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      347,
+      466,
+      219,
+      33
+    ],
+    "detector_score": 0.9987,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "158****2886"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-idcard-001",
+    "image_id": "image-dev-020",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [
+      347,
+      578,
+      363,
+      30
+    ],
+    "detector_score": 0.9939,
+    "evidence": "ocr_rule",
+    "risk": 3,
+    "details": {
+      "masked_preview": "4201**********711X",
+      "idcard_check": "pass"
+    }
+  }
+]

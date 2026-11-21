@@ -1,7 +1,8 @@
 # PhotoCheck 验收包使用说明
 
-> 版本：2026-11-20（新仓库 `fb1b572` + C 侧三处加固）
-> 用途：在验收机器上完成 K-14 离线验证与取证
+> 版本：2026-11-21（新仓库 + 兼容性/脱敏/评测加固）
+> 用途：开发和验收人员的源码环境与 K-14 取证。普通用户应使用
+> `PhotoCheck_App_win64_*.zip`，完整解压后双击 `Start.bat`，不需要 Python。
 
 ---
 
@@ -43,7 +44,7 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 .venv\Scripts\python.exe -m pytest photocheck\detectors\a_engine\tests -q
 ```
 
-期望：**400 / 67 / 238 passed**，`xfailed` 为 0。
+期望：**421 / 69 / 238 passed**，`xfailed` 为 0。
 
 ---
 

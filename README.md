@@ -13,20 +13,25 @@ scenarios. It currently implements the B-side processing infrastructure:
 
 ## Current status
 
-The 2026-11-08 C delivery is integrated into this repository. The A engine is
-vendored under `photocheck/detectors/a_engine/`; C's 43 张合成 dev 数据集, 23-image
-sealed lock set, Gradio UI, evaluation tooling, and local browser application
-are available under `dataset/`, `ui/`, `eval/`, and `app/`.
+This directory is the clean repository created on 2026-11-20. It contains the
+integrated A/B/C implementation, the frozen dev/lock datasets, the A engine,
+evaluation and audit tooling, and the local browser application.
+The dataset contains 43 张合成 dev images (38 labelled), 23 sealed lock images,
+and local-only authorised real samples.
 
-B's current runtime has passed 89 runtime/contract tests, 233 A engine and
-A+B integration tests, 228 C data/UI/eval/tool tests, and 31 application
-tests, for 581 passing tests in total. On C's 43-image dev batch, 41 images were processable,
-32 ended `passed`, 9 ended `not_applicable`, 52 plan regions were checked, and
-both residuals and unplanned detections were zero. The two remaining images are
-intentionally invalid JPEGs.
+The 2026-11-21 regression run is:
 
-K-07 face recall still has no authorised human-face evaluation set, so its
-detection quality is not yet claimed.
+- contract/data/UI/eval/tool/application groups: **421 passed**
+- B runtime + A/B integration: **69 passed**
+- A engine: **238 passed**
+- environment preflight: all required dependencies OK
+
+The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
+single-face authorised samples** are prepared and all 22 have metadata removed.
+The two multi-person photos remain quarantined and are not counted.
+
+The only known incomplete human-evidence item is the two-reviewer R-04 manual
+judgement. A passed state is never interpreted as an absolute safety claim.
 
 Run the local application with:
 

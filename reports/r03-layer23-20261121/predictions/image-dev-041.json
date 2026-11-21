@@ -1,0 +1,71 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-041",
+    "width": 1000,
+    "height": 1400,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-phone-001",
+    "image_id": "image-dev-041",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      345,
+      465,
+      284,
+      30
+    ],
+    "detector_score": 0.996,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "177****4805"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-phone-002",
+    "image_id": "image-dev-041",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      346,
+      553,
+      282,
+      30
+    ],
+    "detector_score": 0.9985,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "163****7822"
+    }
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-phone-003",
+    "image_id": "image-dev-041",
+    "kind": "text",
+    "subtype": "phone",
+    "bbox": [
+      349,
+      644,
+      252,
+      26
+    ],
+    "detector_score": 0.9984,
+    "evidence": "ocr_rule",
+    "risk": 2,
+    "details": {
+      "masked_preview": "185****8478"
+    }
+  }
+]

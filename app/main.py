@@ -22,7 +22,7 @@ try:
 except Exception as exc:  # dependency/DLL problems otherwise look like a vanished window
     print("PhotoCheck 启动失败：运行环境不完整或文件未完整解压。")
     print("请先运行 Check.bat / 自检.bat，并把完整输出发给开发者。")
-    print(f"启动阶段错误：{type(exc).__name__}: {exc}")
+    print(f"启动阶段错误类型：{type(exc).__name__}")
     raise SystemExit(2) from exc
 
 if __name__ == "__main__":

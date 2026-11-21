@@ -97,10 +97,13 @@ class PortableBundleAudit(unittest.TestCase):
             build_app.write_launchers(root)
             for name in ("启动.bat", "Start.bat", "自检.bat", "Check.bat", "README_FIRST.txt"):
                 self.assertTrue((root / name).is_file(), name)
-            launcher = (root / "Start.bat").read_text(encoding="utf-8")
+            launcher = (root / "Start.bat").read_text(encoding="ascii")
             self.assertIn("runtime\\python.exe", launcher)
             self.assertIn("runtime is incomplete", launcher)
             self.assertIn("PYTHONNOUSERSITE", launcher)
+            self.assertIn("exit /b %PHOTOCHECK_EXIT%", launcher)
+            checker = (root / "Check.bat").read_text(encoding="ascii")
+            self.assertIn("exit /b %PHOTOCHECK_EXIT%", checker)
             first = (root / "README_FIRST.txt").read_text(encoding="ascii")
             self.assertIn("Extract the ENTIRE ZIP", first)
 

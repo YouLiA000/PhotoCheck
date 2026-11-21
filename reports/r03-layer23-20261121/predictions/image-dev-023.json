@@ -1,0 +1,32 @@
+[
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "ImageDescriptor",
+    "image_id": "image-dev-023",
+    "width": 1000,
+    "height": 1400,
+    "orientation": "exif_transposed",
+    "coordinate_space": "top_left_pixels"
+  },
+  {
+    "contract_version": "photocheck/v4",
+    "record_type": "Detection",
+    "id": "det-idcard-001",
+    "image_id": "image-dev-023",
+    "kind": "text",
+    "subtype": "idcard",
+    "bbox": [
+      347,
+      468,
+      362,
+      30
+    ],
+    "detector_score": 0.9932,
+    "evidence": "ocr_rule",
+    "risk": 3,
+    "details": {
+      "masked_preview": "4403**********140X",
+      "idcard_check": "pass"
+    }
+  }
+]

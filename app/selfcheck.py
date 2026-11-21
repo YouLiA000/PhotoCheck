@@ -13,7 +13,6 @@ from __future__ import annotations
 import platform
 import subprocess
 import sys
-import traceback
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -50,9 +49,8 @@ def main() -> int:
 
     try:
         from app import service
-    except Exception:
-        traceback.print_exc()
-        line(BAD, "应用模块导入失败，见上面的堆栈")
+    except Exception as exc:  # noqa: BLE001
+        line(BAD, f"应用模块导入失败：{type(exc).__name__}")
         return 1
 
     status = service.status()
@@ -70,6 +68,8 @@ def main() -> int:
         line(tag, f"检测器 {key}：{value}")
         if value != "ok" and key != "face":
             critical.append(f"检测器 {key} 不可用：{value}")
+        elif value != "ok":
+            degraded.append(f"检测器 face 不可用：{value}")
 
     exiftool = service.exiftool_path()
     if exiftool and Path(exiftool).is_file():
@@ -130,9 +130,8 @@ def main() -> int:
             f"处置 {processed.get('plan_items', 0)} 个区域，"
             f"复检状态 {processed.get('disposal_state')}",
         )
-    except Exception:
-        traceback.print_exc()
-        line(BAD, "端到端检测、导出或复检失败")
+    except Exception as exc:  # noqa: BLE001
+        line(BAD, f"端到端检测、导出或复检失败：{type(exc).__name__}")
         return 1
     finally:
         if analysis_id:
@@ -141,7 +140,7 @@ def main() -> int:
     if degraded:
         for issue in degraded:
             line(WARN, issue)
-        print("\n结论：程序可启动，但二维码/条码能力不完整。")
+        print("\n结论：程序可启动，但部分检测能力不完整，不能视为全绿。")
         return 1
 
     print("\n结论：一切正常，双击「启动.bat」即可使用。")

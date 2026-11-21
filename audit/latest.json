@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-20T23:46:18",
-  "head": "08c75a7",
+  "generated_at": "2026-11-21T23:36:24",
+  "head": "4146030",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 104 tests in 0.391s | OK",
+      "evidence": "Ran 107 tests in 0.265s | OK",
       "hint": ""
     },
     {
@@ -143,7 +143,7 @@
       "hint": ""
     },
     {
-      "id": "DS-10",
+      "id": "DS-11",
       "card": "K-13",
       "title": "lock 目录禁换行转换（-text）",
       "level": "P0",
@@ -158,9 +158,9 @@
       "title": "README 写的 dev 张数与实际一致",
       "level": "P0",
       "owner": "C",
-      "status": "PASS",
-      "evidence": "一致（43 张）",
-      "hint": ""
+      "status": "SKIP",
+      "evidence": "README 里没写 dev 张数",
+      "hint": "可以不写，但写了就必须对"
     },
     {
       "id": "DC-02",
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "1.6 小时前更新",
+      "evidence": "0.0 小时前更新",
       "hint": ""
     },
     {
@@ -298,9 +298,9 @@
       "title": "离线可运行：无网络调用",
       "level": "P1",
       "owner": "C",
-      "status": "PASS",
-      "evidence": "src/ ui/ contract/ 里无联网调用",
-      "hint": ""
+      "status": "PARTIAL",
+      "evidence": "源码无外连调用，但缺少物理断网/防火墙证据",
+      "hint": "在验收机器按 docs/K14验收机器取证步骤_2026-11-20.md 生成 docs/evidence/<时间戳>/network-summary.json + offline-audit.txt"
     },
     {
       "id": "K03-01",
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.368s | OK",
+      "evidence": "Ran 48 tests in 3.993s | OK",
       "hint": ""
     },
     {
@@ -433,8 +433,10 @@
       "missing": []
     },
     "W8": {
-      "passed": true,
-      "missing": []
+      "passed": false,
+      "missing": [
+        "EX-01 离线可运行：无网络调用（源码无外连调用，但缺少物理断网/防火墙证据）"
+      ]
     }
   }
 }

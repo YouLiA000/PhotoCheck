@@ -6,27 +6,36 @@ $Root = $PSScriptRoot
 Set-Location $Root
 
 function Find-Python311 {
-    param([string[]]$Candidates)
-    foreach ($c in $Candidates) {
-        if (-not $c) { continue }
+    param([object[]]$Candidates)
+    foreach ($candidate in $Candidates) {
+        if (-not $candidate.Executable) { continue }
         try {
-            $ver = & $c -c "import sys;print('%d.%d' % sys.version_info[:2])" 2>$null
-            if ($ver -eq "3.11") { return $c }
+            $ver = & $candidate.Executable @($candidate.PrefixArgs) `
+                -c "import sys;print('%d.%d' % sys.version_info[:2])" 2>$null
+            if ($ver -eq "3.11") { return $candidate }
         } catch { }
     }
     return $null
 }
 
 Write-Host "[1/4] 查找 Python 3.11 ..." -ForegroundColor Cyan
-$python = Find-Python311 @($env:PHOTOCHECK_PYTHON, "python", "py -3.11", "$env:LOCALAPPDATA\Programs\Python\Python311\python.exe", "C:\Python311\python.exe")
+$candidates = @(
+    @{ Executable = $env:PHOTOCHECK_PYTHON; PrefixArgs = @() },
+    @{ Executable = "python"; PrefixArgs = @() },
+    @{ Executable = "py"; PrefixArgs = @("-3.11") },
+    @{ Executable = "$env:LOCALAPPDATA\Programs\Python\Python311\python.exe"; PrefixArgs = @() },
+    @{ Executable = "C:\Python311\python.exe"; PrefixArgs = @() },
+    @{ Executable = "C:\Python311\Python311\python.exe"; PrefixArgs = @() }
+)
+$python = Find-Python311 $candidates
 if (-not $python) {
     throw "未找到 Python 3.11。请先安装 3.11（3.13 缺 wheel），或设置 PHOTOCHECK_PYTHON 指向 python.exe"
 }
-Write-Host "      使用：$python"
+Write-Host "      使用：$($python.Executable) $($python.PrefixArgs -join ' ')"
 
 Write-Host "[2/4] 创建 .venv ..." -ForegroundColor Cyan
 if (Test-Path ".venv") { Write-Host "      .venv 已存在，跳过创建" }
-else { & $python -m venv .venv }
+else { & $python.Executable @($python.PrefixArgs) -m venv .venv }
 
 $vpy = Join-Path $Root ".venv\Scripts\python.exe"
 if (-not (Test-Path $vpy)) { throw "虚拟环境创建失败：$vpy 不存在" }
