@@ -101,6 +101,10 @@ def integrate(
     predictions_path: Path,
     out: Path,
 ) -> Path:
+    layer2_path = layer2_path.resolve()
+    layer3_path = layer3_path.resolve()
+    predictions_path = predictions_path.resolve()
+    out = out.resolve()
     dataset = ROOT / "dataset" / "dev"
     predictions = loader.load_predictions(predictions_path)
     outcome = eval_runner.run(
