@@ -30,8 +30,9 @@ The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
 single-face authorised samples** are prepared and all 22 have metadata removed.
 The two multi-person photos remain quarantined and are not counted.
 
-The only known incomplete human-evidence item is the two-reviewer R-04 manual
-judgement. A passed state is never interpreted as an absolute safety claim.
+Known incomplete evidence items are the two-reviewer R-04 manual judgement and
+the acceptance-machine K-14 network/firewall artifact set. A passed state is
+never interpreted as an absolute safety claim.
 
 Run the local application with:
 

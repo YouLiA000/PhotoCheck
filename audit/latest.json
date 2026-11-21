@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-21T23:36:24",
-  "head": "4146030",
+  "generated_at": "2026-11-21T23:41:52",
+  "head": "73a38b5",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 107 tests in 0.265s | OK",
+      "evidence": "Ran 107 tests in 0.286s | OK",
       "hint": ""
     },
     {
@@ -158,9 +158,9 @@
       "title": "README 写的 dev 张数与实际一致",
       "level": "P0",
       "owner": "C",
-      "status": "SKIP",
-      "evidence": "README 里没写 dev 张数",
-      "hint": "可以不写，但写了就必须对"
+      "status": "PASS",
+      "evidence": "一致（43 张）",
+      "hint": ""
     },
     {
       "id": "DC-02",
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.0 小时前更新",
+      "evidence": "0.1 小时前更新",
       "hint": ""
     },
     {
@@ -269,7 +269,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "r03-layer23-20261115: 三层均有有效数字，layer1 n=84，10 行小样本已标注",
+      "evidence": "r03-layer23-20261121: 三层均有有效数字，layer1 n=84，10 行小样本已标注",
       "hint": ""
     },
     {
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 78 个文件，无完整敏感号",
+      "evidence": "扫描 124 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 3.993s | OK",
+      "evidence": "Ran 48 tests in 3.892s | OK",
       "hint": ""
     },
     {
