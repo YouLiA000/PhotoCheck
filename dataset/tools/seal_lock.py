@@ -51,15 +51,22 @@ def collect(lock_dir: Path) -> list[tuple[str, str]]:
 
     **图片和标注都要算**。只哈希图片等于只锁住半套题：真值文件被改一个字符，
     检测器照样跑、评测照样出分，但分数已经不是原来那套题的了——这种污染比换图更隐蔽。
+
+    2026-11-20 修正：改为**递归全量枚举**。原实现按 `images/*.jpg` + `labels/*.json`
+    + 三个固定根文件的白名单收集，白名单之外的新增（`*.png`、子目录里的杂项文件）
+    根本进不了 `actual`，于是 `verify` 的「封存后新增」永远检测不到——
+    lock 集「改动必被发现」的承诺形同虚设，而这正是铁律 6 依赖的机制。
     """
     entries: list[tuple[str, str]] = []
-    for folder, pattern in (("images", "*.jpg"), ("labels", "*.json")):
-        for p in sorted((lock_dir / folder).glob(pattern)):
-            entries.append((f"{folder}/{p.name}", sha256_of(p)))
-    for name in ("negatives.json", "manifest.csv", "labels.csv"):
-        p = lock_dir / name
-        if p.exists():
-            entries.append((name, sha256_of(p)))
+    self_names = {SUMS_NAME, SEAL_NAME}
+    for path in sorted(lock_dir.rglob("*")):
+        if not path.is_file():
+            continue
+        # 只排除 lock 根下的封存产物本身（子目录里的同名文件不放过）
+        if path.parent == lock_dir and path.name in self_names:
+            continue
+        rel = path.relative_to(lock_dir).as_posix()
+        entries.append((rel, sha256_of(path)))
     return entries
 
 
@@ -102,6 +109,11 @@ def verify(lock_dir: Path = LOCK) -> list[str]:
             problems.append(f"{sums.name}:{lineno} 格式不合法（应为 <64位哈希><两个空格><路径>）")
             continue
         digest, rel = parts
+        if rel in recorded:
+            # 重复行不能静默覆盖：两份不同的哈希指向同一文件时，
+            # 谁在后面谁生效，等于让封存记录可以被"追加一行"改写
+            problems.append(f"{sums.name}:{lineno} 重复记录：{rel}")
+            continue
         recorded[rel] = digest
 
     actual = {rel: digest for rel, digest in collect(lock_dir)}
