@@ -1,0 +1,4 @@
+
+WindowsProductName    OsVersion  OsBuildNumber CsSystemType
+------------------    ---------  ------------- ------------
+Windows 10 Home China 10.0.26100 26100         x64-based PC

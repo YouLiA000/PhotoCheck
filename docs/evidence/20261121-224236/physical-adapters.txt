@@ -1,0 +1,6 @@
+
+Name InterfaceDescription                 Status       LinkSpeed
+---- --------------------                 ------       ---------
+WLAN    <redacted-adapter-description> Disconnected 574 Mbps
+本地连接 <redacted-vpn-adapter>         Not Present  0 bps
+以太网   <redacted-adapter-description> Disconnected 0 bps

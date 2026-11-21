@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-11-21T22:33:14+08:00",
+  "rules": [
+    {
+      "display_name": "PhotoCheck-Deny-Out-Python",
+      "enabled": true,
+      "profile": "Any",
+      "direction": "Outbound",
+      "action": "Block",
+      "program_basename": "python.exe"
+    },
+    {
+      "display_name": "PhotoCheck-Deny-Out-ExifTool",
+      "enabled": true,
+      "profile": "Any",
+      "direction": "Outbound",
+      "action": "Block",
+      "program_basename": "exiftool.exe"
+    }
+  ],
+  "source_sha256": "00ec1e13c9de1843c7f5f96c36e0772982052c43f0794940be23ba2eb0f86506",
+  "source_note": "Derived from the raw Get-NetFirewallRule transcript; the raw transcript is retained outside the public repository because it contains local paths."
+}

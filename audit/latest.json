@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T23:45:54",
+  "generated_at": "2026-11-22T00:09:18",
   "head": "769747e",
   "checks": [
     {
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 107 tests in 0.347s | OK",
+      "evidence": "Ran 107 tests in 0.298s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.2 小时前更新",
+      "evidence": "0.0 小时前更新",
       "hint": ""
     },
     {
@@ -298,9 +298,9 @@
       "title": "离线可运行：无网络调用",
       "level": "P1",
       "owner": "C",
-      "status": "PARTIAL",
-      "evidence": "源码无外连调用，但缺少物理断网/防火墙证据",
-      "hint": "在验收机器按 docs/K14验收机器取证步骤_2026-11-20.md 生成 docs/evidence/<时间戳>/network-summary.json + offline-audit.txt"
+      "status": "PASS",
+      "evidence": "源码无外连调用；目录 20261121-224236 记录活动网卡为 0、外部连接失败、离线冒烟通过，且Python/ExifTool 的 Any Profile 出站规则均启用且为 Block",
+      "hint": ""
     },
     {
       "id": "K03-01",
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 2.644s | OK",
+      "evidence": "Ran 48 tests in 4.092s | OK",
       "hint": ""
     },
     {
@@ -433,10 +433,8 @@
       "missing": []
     },
     "W8": {
-      "passed": false,
-      "missing": [
-        "EX-01 离线可运行：无网络调用（源码无外连调用，但缺少物理断网/防火墙证据）"
-      ]
+      "passed": true,
+      "missing": []
     }
   }
 }

@@ -1,0 +1,22 @@
+Test-NetConnection www.baidu.com:443 = True
+--- curl ---
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+所在位置 行:5 字符: 4
++   (curl.exe -I https://www.baidu.com --max-time 10 2>&1)
++    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+HTTP/1.1 200 OK
+Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform
+Content-Length: 0
+Content-Type: text/html
+Pragma: no-cache
+Server: bfe
+Date: Sat, 21 Nov 2026 14:34:54 GMT

@@ -1,0 +1,92 @@
+{
+  "analysis_id": "31704f99d5094f6f9654b389d4ad297d",
+  "disposal_state": "passed",
+  "checks": [
+    {
+      "region_id": "redact:det-qr-001",
+      "status": "passed",
+      "method": "a_qr_probe"
+    },
+    {
+      "region_id": "redact:det-phone-001",
+      "status": "passed",
+      "method": "a_ocr_probe"
+    },
+    {
+      "region_id": "redact:det-qr-002",
+      "status": "passed",
+      "method": "a_qr_probe"
+    }
+  ],
+  "residuals": [],
+  "full_recheck": {
+    "image_id": "image-87c85b8d682a3402945d86b3",
+    "detections": [],
+    "retained_count": 0,
+    "unplanned_count": 0,
+    "unplanned": [],
+    "warnings": []
+  },
+  "export": {
+    "name": "photocheck-ddac5112423e41309f5f5cc61b1e3c06.jpg",
+    "sha256": "bc74765906e5d81c01c0f3e52ff863d6486bb6aceed1f39e3ddb967bc105cfc3",
+    "source_sha256": "87c85b8d682a3402945d86b3d5ed43cab9ab47f885a5947c6dd3612b098c7872",
+    "source_format": "JPEG",
+    "pixel_mean_abs_diff": 0.0736
+  },
+  "plan_items": 3,
+  "plan_regions": [
+    {
+      "id": "redact:det-qr-001",
+      "finding_id": "det-qr-001",
+      "bbox": [
+        596,
+        114,
+        248,
+        232
+      ],
+      "method": "solid"
+    },
+    {
+      "id": "redact:det-phone-001",
+      "finding_id": "det-phone-001",
+      "bbox": [
+        93,
+        338,
+        238,
+        37
+      ],
+      "method": "solid"
+    },
+    {
+      "id": "redact:det-qr-002",
+      "finding_id": "det-qr-002",
+      "bbox": [
+        597,
+        394,
+        205,
+        191
+      ],
+      "method": "solid"
+    }
+  ],
+  "decisions": {
+    "redact": 3,
+    "retain": 0
+  },
+  "manual_regions": 0,
+  "plan_revision": 1,
+  "elapsed_ms": 6759,
+  "warnings": [],
+  "undecoded_qr": [],
+  "output_path": "D:\\Desktop\\codexTEST\\PhotoCheck_clean_20261120\\dist\\PhotoCheck_App\\work\\outputs\\run-9567acf5\\photocheck-ddac5112423e41309f5f5cc61b1e3c06.jpg",
+  "output_url": "/api/output-image?analysis=31704f99d5094f6f9654b389d4ad297d&v=1795274112655",
+  "exiftool": true,
+  "image": {
+    "image_id": "image-87c85b8d682a3402945d86b3",
+    "width": 1080,
+    "height": 680,
+    "source_format": null
+  },
+  "generated_at": "2026-11-21 23:15:12"
+}

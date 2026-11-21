@@ -16,6 +16,109 @@ from pathlib import Path
 from audit.model import Context, Result, check, fail, ok, partial, skip
 
 
+_SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+_OFFLINE_RULE_TARGETS = {"python.exe", "exiftool.exe"}
+
+
+def _read_json(ctx: Context, path: Path) -> dict:
+    """Read JSON written by either Python or Windows PowerShell.
+
+    Windows PowerShell 5.1 commonly writes UTF-8 JSON with a BOM. Treating the
+    BOM as part of the first JSON token makes otherwise valid acceptance
+    evidence silently disappear from the audit.
+    """
+
+    payload = json.loads(ctx.read_text(path).lstrip("\ufeff"))
+    if not isinstance(payload, dict):
+        raise ValueError("JSON root must be an object")
+    return payload
+
+
+def _firewall_profiles_enabled(summary: dict) -> bool:
+    profiles = summary.get("firewall_profiles") or []
+    return bool(profiles) and all(
+        isinstance(profile, dict) and profile.get("Enabled") is True
+        for profile in profiles
+    )
+
+
+def _physically_offline(summary: dict) -> bool:
+    active_count = summary.get("active_adapter_count")
+    adapters = summary.get("adapters") or []
+    adapters_offline = bool(adapters) and all(
+        isinstance(adapter, dict) and adapter.get("Status") != "Up"
+        for adapter in adapters
+    )
+    count_offline = type(active_count) is int and active_count == 0
+    return adapters_offline or (count_offline and not adapters)
+
+
+def _firewall_rules_valid(ctx: Context, directory: Path) -> bool:
+    path = directory / "firewall-rules-summary.json"
+    if not path.is_file():
+        return False
+    try:
+        data = _read_json(ctx, path)
+    except (OSError, TypeError, ValueError):
+        return False
+
+    source_hash = str(data.get("source_sha256") or "")
+    if not _SHA256_RE.fullmatch(source_hash):
+        return False
+
+    targets: set[str] = set()
+    for rule in data.get("rules") or []:
+        if not isinstance(rule, dict):
+            return False
+        program = str(rule.get("program_basename") or "").lower()
+        if (
+            rule.get("enabled") is True
+            and rule.get("profile") == "Any"
+            and rule.get("direction") == "Outbound"
+            and rule.get("action") == "Block"
+            and program in _OFFLINE_RULE_TARGETS
+        ):
+            targets.add(program)
+    return targets == _OFFLINE_RULE_TARGETS
+
+
+def _offline_evidence_reason(ctx: Context, summary: Path) -> str | None:
+    """Return the accepted evidence description, or None if proof is incomplete."""
+
+    try:
+        data = _read_json(ctx, summary)
+    except (OSError, TypeError, ValueError):
+        return None
+    if data.get("external_connection_succeeded") is not False:
+        return None
+    if not _physically_offline(data):
+        return None
+
+    audit_file = summary.with_name("offline-audit.txt")
+    if not audit_file.is_file():
+        return None
+    try:
+        audit_data = _read_json(ctx, audit_file)
+    except (OSError, TypeError, ValueError):
+        return None
+    if audit_data.get("static_ok") is not True:
+        return None
+    runtime = audit_data.get("runtime") or {}
+    if runtime.get("ok") is not True:
+        return None
+
+    if _firewall_profiles_enabled(data):
+        firewall = "三个防火墙配置文件均启用"
+    elif _firewall_rules_valid(ctx, summary.parent):
+        firewall = "Python/ExifTool 的 Any Profile 出站规则均启用且为 Block"
+    else:
+        return None
+    return (
+        f"源码无外连调用；目录 {summary.parent.name} 记录活动网卡为 0、"
+        f"外部连接失败、离线冒烟通过，且{firewall}"
+    )
+
+
 @check("EV-01", "K-13", "评测脚本 eval.py 存在且能跑 --help", level="P0", owner="C", gate=("W8",))
 def eval_script(ctx: Context) -> Result:
     # 搜根目录 + eval/ tools/ src/。/eval/ 是 K-13 评测脚本的正式位置，
@@ -309,25 +412,9 @@ def offline_only(ctx: Context) -> Result:
     evidence_root = ctx.root / "docs" / "evidence"
     summaries = sorted(evidence_root.glob("*/network-summary.json")) if evidence_root.is_dir() else []
     for summary in reversed(summaries):
-        try:
-            data = json.loads(ctx.read_text(summary))
-        except Exception:  # noqa: BLE001
-            continue
-        audit_file = summary.with_name("offline-audit.txt")
-        profiles = data.get("firewall_profiles") or []
-        firewall_enabled = bool(profiles) and all(
-            isinstance(profile, dict) and profile.get("Enabled") is True
-            for profile in profiles
-        )
-        if (
-            data.get("external_connection_succeeded") is False
-            and audit_file.is_file()
-            and firewall_enabled
-        ):
-            return ok(
-                "源码无外连调用；物理断网证据 "
-                f"{summary.parent.name} 记录外部连接失败、防火墙已启用且离线冒烟已归档"
-            )
+        reason = _offline_evidence_reason(ctx, summary)
+        if reason:
+            return ok(reason)
     return partial(
         "源码无外连调用，但缺少物理断网/防火墙证据",
         "在验收机器按 docs/K14验收机器取证步骤_2026-11-20.md 生成 "
