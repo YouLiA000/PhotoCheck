@@ -1,0 +1,5 @@
+﻿检查项目,通过,失败,状态,说明
+文字 / 二维码导出残留,True,0,passed,在最终导出文件上重跑检测
+导出文件存活元数据,True,0,passed,EXIF/XMP/IPTC/PNG 文本块
+导出文件数,38,0,passed,导出干净 38/38
+处置状态分布,38,0,passed,"{""passed"": 32, ""not_applicable"": 6}"
