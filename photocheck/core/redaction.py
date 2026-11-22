@@ -102,6 +102,7 @@ def apply_redactions(
     )
 
     applied: list[AppliedRegion] = []
+    applied_once: set[tuple[tuple[int, int, int, int], str]] = set()
     for item in ordered_items:
         method = _method_for_item(item, detection_by_id)
         if method not in SUPPORTED_METHODS:
@@ -109,11 +110,14 @@ def apply_redactions(
             raise RedactionError(f"unsupported redaction method {method!r}")
         source_bbox = tuple(item["bbox"])
         applied_bbox = expand_bbox(source_bbox, working.size)
-        try:
-            _apply_region(working, applied_bbox, method)
-        except Exception:
-            working.close()
-            raise
+        operation = (applied_bbox, method)
+        if operation not in applied_once:
+            try:
+                _apply_region(working, applied_bbox, method)
+            except Exception:
+                working.close()
+                raise
+            applied_once.add(operation)
         applied.append(
             AppliedRegion(
                 id=item["id"],

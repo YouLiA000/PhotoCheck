@@ -95,6 +95,42 @@ class RedactionTests(unittest.TestCase):
                     self.assertEqual(result.image.getpixel((0, 0)), source.getpixel((0, 0)))
                     self.assertEqual(result.image.getpixel((199, 119)), source.getpixel((199, 119)))
 
+    def test_duplicate_mosaic_regions_are_not_applied_twice(self) -> None:
+        source = patterned_image()
+        descriptor = {
+            "contract_version": "photocheck/v4",
+            "record_type": "ImageDescriptor",
+            "image_id": "image-duplicate",
+            "width": source.width,
+            "height": source.height,
+            "orientation": "exif_transposed",
+            "coordinate_space": "top_left_pixels",
+        }
+        plan = build_redaction_plan(
+            descriptor,
+            [],
+            [],
+            revision=1,
+            manual_regions=[
+                {"id": "manual-001", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+                {"id": "manual-002", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+            ],
+        )
+        single_plan = build_redaction_plan(
+            descriptor,
+            [],
+            [],
+            revision=1,
+            manual_regions=[
+                {"id": "manual-001", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+            ],
+        )
+        with apply_redactions(source, single_plan, image_id="image-duplicate") as single:
+            expected = single.image.tobytes()
+        with apply_redactions(source, plan, image_id="image-duplicate") as duplicated:
+            self.assertEqual(len(duplicated.applied_regions), 2)
+            self.assertEqual(duplicated.image.tobytes(), expected)
+
     def test_edge_mask_is_clamped_to_the_image(self) -> None:
         source = patterned_image((30, 20))
         plan = manual_plan(source, "image-test", bbox=[0, 0, 6, 4])

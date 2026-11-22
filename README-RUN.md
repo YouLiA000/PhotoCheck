@@ -45,7 +45,7 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 .venv\Scripts\python.exe -m pytest photocheck\detectors\a_engine\tests -q
 ```
 
-期望：按仓库当前 `AGENTS.md` 四组命令运行，合计 **751 passed**。
+期望：按仓库当前 `AGENTS.md` 四组命令运行，合计 **758 passed**。
 `test_real_photos_local_only` 在非 Git 工作树会显式 skip，不能把该 skip
 记成真实照片红线已执行。
 

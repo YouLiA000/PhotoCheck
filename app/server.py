@@ -10,6 +10,7 @@ import json
 import mimetypes
 import re
 import sys
+import threading
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -19,6 +20,7 @@ from . import service
 
 WEB = Path(__file__).resolve().parent / "web"
 MAX_UPLOAD = 40 * 1024 * 1024
+PROCESS_SLOT = threading.BoundedSemaphore(1)
 
 # 静态资源的 MIME 显式兜底：mimetypes 在精简便携解释器/部分 Windows 上可能返回 None，
 # 导致 .js/.css 被当成 octet-stream，浏览器拒加载。这里按扩展名锁定最常用的几种。
@@ -171,13 +173,23 @@ class Handler(BaseHTTPRequestHandler):
                 folder = service.reveal_in_explorer(body.get("analysis_id"))
                 self._json({"folder": folder})
             elif route == "/api/process":
-                self._json(service.process(
-                    str(body.get("source_id") or ""),
-                    [str(x) for x in (body.get("selected_ids") or [])],
-                    str(body.get("method") or "solid"),
-                    body.get("manual_boxes") or [],
-                    str(body.get("analysis_id") or "") or None,
-                ))
+                if not PROCESS_SLOT.acquire(blocking=False):
+                    self._error(
+                        HTTPStatus.TOO_MANY_REQUESTS,
+                        "已有图片正在处理，请等待当前任务完成",
+                    )
+                    return
+                try:
+                    result = service.process(
+                        str(body.get("source_id") or ""),
+                        [str(x) for x in (body.get("selected_ids") or [])],
+                        str(body.get("method") or "solid"),
+                        body.get("manual_boxes") or [],
+                        str(body.get("analysis_id") or "") or None,
+                    )
+                finally:
+                    PROCESS_SLOT.release()
+                self._json(result)
             else:
                 self._error(HTTPStatus.NOT_FOUND, f"未知接口 {route}")
         except (ValueError, FileNotFoundError, RuntimeError) as exc:

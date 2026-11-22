@@ -107,16 +107,25 @@ class Session:
         self.warm_warning: str | None = None
 
     def add(self, analysis: Analysis) -> None:
+        evicted_analysis: Analysis | None = None
+        evicted_output: Path | None = None
         with self.lock:
             self.analyses[analysis.id] = analysis
             self.analyses.move_to_end(analysis.id)
             self.last_analysis_id = analysis.id
             while len(self.analyses) > self.max_analyses:
-                expired_id, _ = self.analyses.popitem(last=False)
-                self.outputs.pop(expired_id, None)
+                expired_id, evicted_analysis = self.analyses.popitem(last=False)
+                evicted_output = self.outputs.pop(expired_id, None)
                 self.reports.pop(expired_id, None)
                 self.latest_revisions.pop(expired_id, None)
                 self.decision_fingerprints.pop(expired_id, None)
+        if evicted_output is not None:
+            _remove_output_dir(evicted_output.parent)
+        if evicted_analysis is not None and evicted_analysis.source_id.startswith("upload:"):
+            source = evicted_analysis.path
+            if _is_within(source, UPLOADS):
+                source.unlink(missing_ok=True)
+                source.with_suffix(".name").unlink(missing_ok=True)
 
     def get(self, source_id: str, analysis_id: str | None = None) -> Analysis:
         with self.lock:
@@ -392,13 +401,12 @@ def _clamp_manual_box(box: Any, width: int, height: int) -> tuple[list[int], str
         raise ValueError(f"不支持的遮盖方式：{box_method}")
     if w <= 0 or h <= 0:
         raise ValueError("补框宽高必须大于 0")
-    x = max(0, min(x, width - 1))
-    y = max(0, min(y, height - 1))
-    w = min(w, width - x)
-    h = min(h, height - y)
-    if w < 3 or h < 3:
+    ix1, iy1 = max(0, x), max(0, y)
+    ix2, iy2 = min(width, x + w), min(height, y + h)
+    iw, ih = ix2 - ix1, iy2 - iy1
+    if iw < 3 or ih < 3:
         raise ValueError("补框太小或完全落在图外")
-    return [x, y, w, h], box_method
+    return [ix1, iy1, iw, ih], box_method
 
 
 # 遮盖余量：引擎给的框是「字的外接矩形」，边缘常常压着半个笔画；

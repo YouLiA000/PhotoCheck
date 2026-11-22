@@ -7,10 +7,16 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
+from collections import OrderedDict
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_METADATA_CACHE_LIMIT = 16
+_METADATA_CACHE: OrderedDict[tuple[str, int, int, str], dict[str, Any]] = OrderedDict()
+_METADATA_CACHE_LOCK = threading.Lock()
 
 _ALLOWED_PNG_TECHNICAL_TAGS = {
     "BitDepth",
@@ -100,7 +106,24 @@ def read_metadata(
 ) -> dict[str, Any]:
     """Read content metadata, excluding SourceFile and filesystem attributes."""
 
-    exiftool = resolve_exiftool(exiftool_path)
+    exiftool = resolve_exiftool(exiftool_path).resolve()
+    source_path = Path(path).resolve()
+    try:
+        stat = source_path.stat()
+    except OSError:
+        stat = None
+    cache_key = (
+        str(source_path),
+        stat.st_size if stat else -1,
+        stat.st_mtime_ns if stat else -1,
+        str(exiftool),
+    )
+    if stat is not None:
+        with _METADATA_CACHE_LOCK:
+            cached = _METADATA_CACHE.get(cache_key)
+            if cached is not None:
+                _METADATA_CACHE.move_to_end(cache_key)
+                return deepcopy(cached)
     environment = os.environ.copy()
     environment.update({"LC_ALL": "C", "LC_CTYPE": "C", "LANG": "C"})
     command = [
@@ -123,7 +146,7 @@ def read_metadata(
             command,
             check=False,
             capture_output=True,
-            input=f"{Path(path)}\n".encode("utf-8"),
+        input=f"{source_path}\n".encode("utf-8"),
             timeout=20,
             env=environment,
         )
@@ -151,7 +174,20 @@ def read_metadata(
     for key in list(metadata):
         if key.startswith(("System:", "File:", "ExifTool:")):
             metadata.pop(key)
+    if stat is not None:
+        with _METADATA_CACHE_LOCK:
+            _METADATA_CACHE[cache_key] = deepcopy(metadata)
+            _METADATA_CACHE.move_to_end(cache_key)
+            while len(_METADATA_CACHE) > _METADATA_CACHE_LIMIT:
+                _METADATA_CACHE.popitem(last=False)
     return metadata
+
+
+def clear_metadata_cache() -> None:
+    """Clear the process-local metadata cache (tests and explicit privacy purge)."""
+
+    with _METADATA_CACHE_LOCK:
+        _METADATA_CACHE.clear()
 
 
 def exiftool_version(

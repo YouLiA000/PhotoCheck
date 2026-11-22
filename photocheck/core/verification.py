@@ -52,20 +52,23 @@ def verify_redacted_export(
             output.load()
             if output.size != ingested.image.size:
                 raise VerificationError("final output dimensions differ from the working image")
+            try:
+                metadata = read_metadata(path, exiftool_path=exiftool_path)
+            except MetadataScanError as exc:
+                raise VerificationError("final metadata scan failed") from exc
+            if metadata_residual_tags(metadata):
+                raise VerificationError("final output still contains content metadata")
+
+            probe = content_probe or _default_content_probe
+            checks = [
+                _verify_region(output, region, detections, probe)
+                for region in redacted.applied_regions
+            ]
     except VerificationError:
         raise
     except (OSError, ValueError) as exc:
         raise VerificationError("final output is not a readable image") from exc
 
-    try:
-        metadata = read_metadata(path, exiftool_path=exiftool_path)
-    except MetadataScanError as exc:
-        raise VerificationError("final metadata scan failed") from exc
-    if metadata_residual_tags(metadata):
-        raise VerificationError("final output still contains content metadata")
-
-    probe = content_probe or _default_content_probe
-    checks = [_verify_region(path, region, detections, probe) for region in redacted.applied_regions]
     return build_verification_report(
         descriptor,
         plan,
@@ -76,11 +79,18 @@ def verify_redacted_export(
 
 
 def _verify_region(
-    output_path: Path,
+    output: Image.Image | str | os.PathLike[str],
     region: AppliedRegion,
     detections: list[dict[str, Any]],
     content_probe: ContentProbe,
 ) -> dict[str, Any]:
+    if not isinstance(output, Image.Image):
+        try:
+            with Image.open(output) as opened:
+                opened.load()
+                return _verify_region(opened, region, detections, content_probe)
+        except (OSError, ValueError):
+            return _check(region, "failed", f"a_{region.method}_probe")
     finding = next(
         (
             detection
@@ -90,34 +100,30 @@ def _verify_region(
         None,
     )
     if finding is not None and finding["kind"] in {"text", "qr", "face"}:
-        return _verify_finding(output_path, region, finding, content_probe)
+        return _verify_finding(output, region, finding, content_probe)
     if region.method != "solid":
         return {
             "region_id": region.id,
             "status": "not_applicable",
-            "method": "solid_black_region_structural_only",
+            "method": f"{region.method}_region_structural_only",
         }
 
-    try:
-        with Image.open(output_path) as output:
-            crop = output.crop(_bbox_xyxy(region.applied_bbox)).convert("RGBA")
-            if crop.width <= 2 or crop.height <= 2:
-                uniform = False
-            else:
-                interior = crop.crop((1, 1, crop.width - 1, crop.height - 1))
-                pixels = np.asarray(interior, dtype=np.int16)
-                rgb = pixels[..., :3]
-                black_enough = bool(
-                    float(rgb.mean()) <= 8
-                    and float(np.percentile(rgb, 99)) <= 24
-                )
-                alpha_safe = bool(
-                    pixels.shape[-1] == 3
-                    or float(np.percentile(pixels[..., 3], 1)) >= 250
-                )
-                uniform = black_enough and alpha_safe
-    except (OSError, ValueError):
+    crop = output.crop(_bbox_xyxy(region.applied_bbox)).convert("RGBA")
+    if crop.width <= 2 or crop.height <= 2:
         uniform = False
+    else:
+        interior = crop.crop((1, 1, crop.width - 1, crop.height - 1))
+        pixels = np.asarray(interior, dtype=np.int16)
+        rgb = pixels[..., :3]
+        black_enough = bool(
+            float(rgb.mean()) <= 8
+            and float(np.percentile(rgb, 99)) <= 24
+        )
+        alpha_safe = bool(
+            pixels.shape[-1] == 3
+            or float(np.percentile(pixels[..., 3], 1)) >= 250
+        )
+        uniform = black_enough and alpha_safe
     return {
         "region_id": region.id,
         "status": "not_applicable" if uniform else "failed",
@@ -126,7 +132,7 @@ def _verify_region(
 
 
 def _verify_finding(
-    output_path: Path,
+    output: Image.Image,
     region: AppliedRegion,
     finding: Mapping[str, Any],
     content_probe: ContentProbe,
@@ -134,7 +140,7 @@ def _verify_finding(
     kind = finding["kind"]
     try:
         evidence = content_probe(
-            output_path,
+            output,
             region.source_bbox,
             kinds=(kind,),
         )
