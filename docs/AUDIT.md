@@ -1,7 +1,7 @@
 # 进度审计报告
 
 > 自动生成，勿手改。重跑：`python audit/run.py --md`
-> 2026-11-22 23:00 ｜ HEAD `dafb9b7` ｜ Python 3.11.9
+> 2026-11-22 23:07 ｜ HEAD `dafb9b7` ｜ Python 3.11.9
 
 ## 闸门
 
@@ -18,7 +18,7 @@
 | 结果 | 编号 | 检查项 | 证据 | 下一步 |
 |---|---|---|---|---|
 | OK | CT-01 | 严格 Schema 存在且可解析 | 五类记录齐全，22 个定义，version=PhotoCheck 共享契约 v4 | — |
-| OK | CT-02 | 契约测试全绿 | Ran 108 tests in 0.219s \| OK | — |
+| OK | CT-02 | 契约测试全绿 | Ran 108 tests in 0.225s \| OK | — |
 | OK | CT-03 | 闭环样例同时通过校验器 | valid_pipeline.json 通过 | — |
 | OK | CT-04 | v3 迁移脚本可用 | 3 KB | — |
 
@@ -105,7 +105,7 @@
 |---|---|---|---|---|
 | OK | UI-01 | app.build() 能构造 Blocks | Blocks 构造成功，3 个直接子块 | — |
 | OK | UI-02 | 三页 Tab：检测 / 处置 / 结论 | 检测 / 处置 / 结论 | — |
-| OK | UI-03 | 界面测试全绿 | Ran 48 tests in 4.536s \| OK | — |
+| OK | UI-03 | 界面测试全绿 | Ran 48 tests in 3.137s \| OK | — |
 | OK | UI-04 | 数据源直接吃契约真值，不另造 mock | 引用 ['labels', 'Detection']，换真检测器只需改这一个模块 | — |
 | OK | UI-05 | 能生成 Decision（全局版次）且补框有内容版次 | 2 项决定；取消一项 → 全部升到 revision 2（全局版次）；补框版次随坐标变化 | — |
 | OK | UI-06 | 手动补框可加入且越界坐标被钳制 | 补框 id=manual-001，负坐标已钳进图内 | — |

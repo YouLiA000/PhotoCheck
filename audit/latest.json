@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T23:00:24",
+  "generated_at": "2026-11-22T23:07:27",
   "head": "dafb9b7",
   "checks": [
     {
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 108 tests in 0.219s | OK",
+      "evidence": "Ran 108 tests in 0.225s | OK",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.536s | OK",
+      "evidence": "Ran 48 tests in 3.137s | OK",
       "hint": ""
     },
     {
