@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-22T20:29:43",
-  "head": "ff59a88",
+  "generated_at": "2026-11-22T20:32:01",
+  "head": "aab2b78",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 108 tests in 0.198s | OK",
+      "evidence": "Ran 108 tests in 0.180s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.0 小时前更新",
+      "evidence": "0.1 小时前更新",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 2.664s | OK",
+      "evidence": "Ran 48 tests in 2.809s | OK",
       "hint": ""
     },
     {
