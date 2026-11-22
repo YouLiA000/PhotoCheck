@@ -1,0 +1,12 @@
+{
+  "sample_size": 30,
+  "reviewer_agreement_count": 30,
+  "reviewer_agreement_rate": 1.0,
+  "cohen_kappa": 1.0,
+  "human_readable": 0,
+  "human_not_readable": 30,
+  "primary_vs_human_agreement": 1.0,
+  "tesseract_vs_human_agreement": 1.0,
+  "manual_review_status": "complete_two_independent_reviewers",
+  "manual_independence_source": "process_attestation_only"
+}

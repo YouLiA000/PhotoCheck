@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T14:06:08",
+  "generated_at": "2026-11-22T20:29:43",
   "head": "ff59a88",
   "checks": [
     {
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 108 tests in 0.175s | OK",
+      "evidence": "Ran 108 tests in 0.198s | OK",
       "hint": ""
     },
     {
@@ -358,9 +358,9 @@
       "title": "第二 OCR 交叉复核与双人人工判读",
       "level": "P1",
       "owner": "B",
-      "status": "PARTIAL",
-      "evidence": "自动交叉 100.0%，正控 96.7%；第一位评审 30/30，仍缺第二位",
-      "hint": "第二位评审独立填写后合并两份结果并运行 tools/finalize_r04_manual.py"
+      "status": "PASS",
+      "evidence": "30 对象；自动交叉 100.0%；人工一致 1.0",
+      "hint": ""
     },
     {
       "id": "UI-01",
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 2.657s | OK",
+      "evidence": "Ran 48 tests in 2.664s | OK",
       "hint": ""
     },
     {

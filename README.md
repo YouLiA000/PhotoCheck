@@ -23,16 +23,15 @@ The 2026-11-22 regression run is:
 
 - four documented groups: **102 / 240 / 381 / 35 passed**, **758 total**
 - environment preflight: all required dependencies OK
-- repository privacy scan: **555 files passed**
+- repository privacy scan: **560 files passed**
 
 The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
 single-face authorised samples** are prepared and all 22 have metadata removed.
 The two multi-person photos remain quarantined and are not counted.
 
-K-14 network/firewall evidence is archived under `docs/evidence/`. The only
-remaining audit partial is R-04: one independent reviewer (C) has completed the
-30-object form, and the second independent reviewer is still required. A passed
-state is never interpreted as an absolute safety claim.
+K-14 network/firewall evidence is archived under `docs/evidence/`. R-04 now has
+two independent named reviewers with 30/30 agreement. A passed state is never
+interpreted as an absolute safety claim.
 
 Run the local application with:
 
