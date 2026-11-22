@@ -60,6 +60,10 @@ def _log_exception(exc: Exception, route: str) -> None:
 class Handler(BaseHTTPRequestHandler):
     server_version = "PhotoCheck/1.0"
 
+    # 由 serve() 在绑定之后按真实端口写入；为空表示不做该项校验（直接构造 Handler 的单测场景）。
+    allowed_hosts: frozenset[str] = frozenset()
+    allowed_origins: frozenset[str] = frozenset()
+
     # ---- 基础工具 ----
 
     def log_message(self, fmt: str, *args) -> None:  # noqa: A003
@@ -104,7 +108,33 @@ class Handler(BaseHTTPRequestHandler):
 
     # ---- 路由 ----
 
+    def _trusted(self) -> bool:
+        """本地服务的信任边界。
+
+        绑 `127.0.0.1` 只保证「只有本机能连」，不保证「只有本页面能调」：
+        用户浏览器里任意网页都能向 `127.0.0.1:<port>` 发跨站请求（简单请求不触发预检），
+        配合 DNS rebinding 还能绕过同源读到响应。对「照片不出本机」的工具来说，
+        这等于把本地样本与检测结果暴露给任意网页。
+
+        三道校验各自堵一条路，缺一条就有一条绕过方式：
+        Host 挡 DNS rebinding、Sec-Fetch-Site 挡现代浏览器的跨站、Origin 兜老浏览器。
+        """
+        host = self.headers.get("Host", "")
+        if self.allowed_hosts and host not in self.allowed_hosts:
+            self._error(HTTPStatus.FORBIDDEN, "Host 不在白名单内")
+            return False
+        if self.headers.get("Sec-Fetch-Site") in {"cross-site", "same-site"}:
+            self._error(HTTPStatus.FORBIDDEN, "跨站请求被拒绝")
+            return False
+        origin = self.headers.get("Origin")
+        if origin and self.allowed_origins and origin not in self.allowed_origins:
+            self._error(HTTPStatus.FORBIDDEN, "请求来源不在白名单内")
+            return False
+        return True
+
     def do_GET(self) -> None:  # noqa: N802
+        if not self._trusted():
+            return
         parsed = urlparse(self.path)
         route = parsed.path
         query = parse_qs(parsed.query)
@@ -151,6 +181,8 @@ class Handler(BaseHTTPRequestHandler):
         self.do_GET()
 
     def do_POST(self) -> None:  # noqa: N802
+        if not self._trusted():
+            return
         route = urlparse(self.path).path
         try:
             if route == "/api/upload":
@@ -200,7 +232,30 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def serve(host: str = "127.0.0.1", port: int = 7861) -> ThreadingHTTPServer:
+    """绑定本地端口并返回 server。
+
+    白名单必须用**真实端口**：`port=0` 时端口由内核分配，只有 `bind` 之后才知道。
+    所以这里派生一个 per-server 的 handler 子类，而不是改全局 `Handler`——
+    多实例或多测试并存时，后者会互相覆盖。
+    """
     httpd = ThreadingHTTPServer((host, port), Handler)
+    actual_port = httpd.server_address[1]
+
+    def _hosts_for(p: int) -> frozenset[str]:
+        names = {f"127.0.0.1:{p}", f"localhost:{p}"}
+        if host in {"::1", "0:0:0:0:0:0:0:1"}:
+            names.add(f"[::1]:{p}")
+        return frozenset(names)
+
+    hosts = _hosts_for(actual_port)
+    httpd.RequestHandlerClass = type(
+        "BoundHandler",
+        (Handler,),
+        {
+            "allowed_hosts": hosts,
+            "allowed_origins": frozenset(f"http://{h}" for h in hosts),
+        },
+    )
     httpd.daemon_threads = True
     return httpd
 
