@@ -1,0 +1,24 @@
+# pre-commit 门禁（2026-11-22 新增）
+#
+# 装法：
+#   python -m pip install pre-commit
+#   pre-commit install
+#
+# 目前只挂一条：app/vendor 与 photocheck 的字节级同步。
+# 为什么先挂这条——它是唯一"漂移了也不会有任何测试变红"的地方：
+# 成品跑 vendor、pytest 跑根包，快照落后时测试全绿、成品缺东西。
+# 2026-11-20 的 ExifTool 缺失、2026-11-22 PR #2 的 test_k14_evidence 漏同步，
+# 都是这一类。
+#
+# ruff 暂不挂：当前基线还有 25 条（见 ruff.toml），先清零再接进来，
+# 否则第一次提交就是红的，用不了三天就会被 --no-verify 绕过。
+
+repos:
+  - repo: local
+    hooks:
+      - id: photocheck-vendor-sync
+        name: app/vendor/photocheck 与 photocheck 字节级一致
+        entry: python scripts/sync_app_vendor.py --check
+        language: system
+        pass_filenames: false
+        files: ^(photocheck/|app/vendor/photocheck/)

@@ -39,7 +39,25 @@ prototype. The repository combines:
 | `dataset/` | dev, sealed lock, and local authorised samples |
 | `contract/` | C-side v4 validation, masking, risk, and migration tools |
 | `ui/`, `eval/` | Gradio interface and K-13 evaluation |
+| `audit/` | 进度与合规审计：`python audit/run.py`（`--json-stdout` 给脚本用，`--md` 重生成 `docs/AUDIT.md`） |
+| `reports/`, `results/` | 评测与三层判读的生成物（`results/` 入库、`reports/` 归档，均不作运行输入） |
+| `work/` | 应用运行期的上传副本与导出目录（24h 清理，**不入库**） |
 | `docs/` | specification, handoff, audits, and decisions |
+
+## 提交前
+
+```powershell
+python -m pip install pre-commit
+pre-commit install
+```
+
+已挂一条门禁：`app/vendor/photocheck` 必须与 `photocheck/` 字节级一致
+（成品跑 vendor、pytest 跑根包，漂移时测试全绿而成品缺东西）。手动检查：
+
+```powershell
+python scripts/sync_app_vendor.py --check
+python scripts/sync_app_vendor.py      # 不同步时刷新快照，再把结果一起提交
+```
 
 ## 坑
 
