@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-22T20:32:01",
-  "head": "aab2b78",
+  "generated_at": "2026-11-22T21:14:58",
+  "head": "3368060",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 108 tests in 0.180s | OK",
+      "evidence": "Ran 108 tests in 0.292s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.1 小时前更新",
+      "evidence": "0.8 小时前更新",
       "hint": ""
     },
     {
@@ -189,7 +189,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "92 行",
+      "evidence": "110 行",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 2.809s | OK",
+      "evidence": "Ran 48 tests in 4.096s | OK",
       "hint": ""
     },
     {

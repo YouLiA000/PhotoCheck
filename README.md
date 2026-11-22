@@ -23,7 +23,7 @@ The 2026-11-22 regression run is:
 
 - four documented groups: **102 / 240 / 381 / 35 passed**, **758 total**
 - environment preflight: all required dependencies OK
-- repository privacy scan: **560 files passed**
+- repository privacy scan: **561 files passed**
 
 The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
 single-face authorised samples** are prepared and all 22 have metadata removed.
