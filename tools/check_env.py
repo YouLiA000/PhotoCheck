@@ -16,6 +16,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from photocheck.core.metadata import MetadataScanError, resolve_exiftool
+
 OK, BAD, WARN = "OK", "FAIL", "WARN"
 
 # 团队统一固定的 ExifTool 版本。固定不是洁癖：K-02/K-09 的复核结论要能互相比对，
@@ -24,7 +30,7 @@ EXPECTED_EXIFTOOL = "13.61"
 
 # (发行包名, 导入名, 规格卡 §0.3 要求, 是否必需)
 PACKAGES = [
-    ("gradio", "gradio", ">=5,<6", True),
+    ("gradio", "gradio", ">=5,<6", False),
     ("pillow", "PIL", "10.x", True),
     ("pillow-heif", "pillow_heif", ">=0.18", False),
     # Spec v1.4 section 0.3 lists opencv-python; the project ships opencv-contrib-python
@@ -49,6 +55,72 @@ ok = True
 def line(name: str, value: str, mark: str) -> None:
     rows.append((name, value, mark))
     print(f"  {name:22s} {value:34s} {mark}")
+
+
+def _ver_tuple(text: str) -> tuple[int, ...]:
+    """把 "5.9.0" / "1.4.x" / "0.10.14rc1" 解析成数字元组（遇到非数字即截断该段）。"""
+    parts: list[int] = []
+    for piece in str(text).strip().split("."):
+        digits = ""
+        for ch in piece:
+            if not ch.isdigit():
+                break
+            digits += ch
+        parts.append(int(digits) if digits else 0)
+    return tuple(parts)
+
+
+def _cmp(a: tuple[int, ...], b: tuple[int, ...]) -> int:
+    """按补零后逐位比较，返回 -1 / 0 / 1。"""
+    n = max(len(a), len(b))
+    left = a + (0,) * (n - len(a))
+    right = b + (0,) * (n - len(b))
+    return (left > right) - (left < right)
+
+
+def parse_spec(spec: str) -> list[tuple[str, tuple[int, ...]]]:
+    """解析区间记法：">=5,<6"、"10.x"、"1.1.3"、">=4.21,<5"。"""
+    clauses: list[tuple[str, tuple[int, ...]]] = []
+    for raw in str(spec).split(","):
+        part = raw.strip()
+        if not part:
+            continue
+        if part.endswith(".x"):
+            clauses.append(("~", _ver_tuple(part[:-2])))
+        elif part.startswith(">="):
+            clauses.append((">=", _ver_tuple(part[2:])))
+        elif part.startswith("<"):
+            clauses.append(("<", _ver_tuple(part[1:])))
+        else:
+            clauses.append(("==", _ver_tuple(part)))
+    return clauses
+
+
+def in_range(version: str, spec: str) -> tuple[bool | None, str]:
+    """返回 (是否符合, 备注)；None 表示版本串无法解析，调用方应按 WARN 处理。
+
+    2026-11-20 修正：`PACKAGES` 早就写了 `>=5,<6`、`10.x` 这些区间，但
+    `check_packages` 只把它打印出来、从不比较——装了 gradio 6.x 照样报 OK，
+    DoD「在别人电脑上跑通一次」的入口形同装饰。
+    """
+    tv = _ver_tuple(version)
+    if not tv or all(v == 0 for v in tv):
+        return None, "版本串无法解析"
+    for op, target in parse_spec(spec):
+        if op == "~":
+            if _cmp(tv[: len(target)], target) != 0:
+                return False, ""
+        elif op == ">=":
+            if _cmp(tv, target) < 0:
+                return False, ""
+        elif op == "<":
+            if _cmp(tv, target) >= 0:
+                return False, ""
+        elif _cmp(tv[: len(target)], target) != 0:
+            return False, ""
+    lower = str(version).lower()
+    note = "预发布版，仅提示" if any(t in lower for t in ("rc", "alpha", "beta", "dev", "pre")) else ""
+    return True, note
 
 
 def check_python() -> None:
@@ -77,7 +149,17 @@ def check_packages() -> None:
             line(dist, f"{version} 导入失败：{type(exc).__name__}", BAD)
             globals()["ok"] = False
             continue
-        line(dist, f"{version}   ({want})", OK)
+        verdict, note = in_range(version, want)
+        if verdict is None:
+            line(dist, f"{version}   ({want})", WARN)
+            continue
+        if not verdict:
+            # 必需包越界才算失败；可选包越界只提示，别挡路
+            line(dist, f"{version}   ({want} 不符)", BAD if required else WARN)
+            if required:
+                globals()["ok"] = False
+            continue
+        line(dist, f"{version}   ({want}){'' if not note else '  ' + note}", OK)
 
 
 def check_qr_roundtrip() -> None:
@@ -97,12 +179,6 @@ def check_qr_roundtrip() -> None:
     except Exception as exc:
         line("pyzbar 解码链路", f"{type(exc).__name__}: {exc}", BAD)
         globals()["ok"] = False
-
-
-def _local_tool(name: str) -> str | None:
-    """项目内自带的工具（免安装、不需要管理员），优先于 PATH。"""
-    exe = Path(__file__).resolve().parents[1] / "tools" / name / f"{name}.exe"
-    return str(exe) if exe.exists() else None
 
 
 def _clean_env() -> dict:
@@ -136,28 +212,28 @@ def check_binaries() -> None:
         line("Tesseract", "未安装", WARN)
         print("     R-04 需要。装好后再跑一次本脚本。")
 
-    # 本地副本优先：`_local_tool` 的语义就是"项目内自带的优先于 PATH"，
-    # 但这里曾写成 `which() or _local_tool()`，于是刚替换的本地版本被 PATH 里的旧版盖住，
-    # 检查器一直报旧版本还以为没事。
-    exif = _local_tool("exiftool") or shutil.which("exiftool")
-    if exif:
-        try:
-            ver = subprocess.run(
-                [exif, "-ver"], capture_output=True, text=True, timeout=30, env=_clean_env()
-            ).stdout.strip()
-            where = "项目内" if exif == _local_tool("exiftool") else "PATH"
-            if ver == EXPECTED_EXIFTOOL:
-                line("ExifTool", f"{ver}（{where}）", OK)
-            else:
-                line("ExifTool", f"{ver}（{where}，期望 {EXPECTED_EXIFTOOL}）", WARN)
-                print(f"     团队统一 ExifTool {EXPECTED_EXIFTOOL}，当前 {ver}。")
-                print("     换法：下载 exiftool-<ver>_64.zip 解压覆盖 tools/exiftool/，")
-                print("           把 exiftool(-k).exe 另存为 exiftool.exe，重跑本脚本。")
-        except Exception as exc:
-            line("ExifTool", f"调用失败 {type(exc).__name__}", BAD)
-    else:
-        line("ExifTool", "未安装", WARN)
-        print("     K-02 / K-09 的独立核验需要。免安装：解压到 tools/exiftool/ 即可。")
+    try:
+        exif = resolve_exiftool()
+        ver = subprocess.run(
+            [str(exif), "-ver"], capture_output=True, text=True, timeout=30,
+            env=_clean_env(),
+        )
+        version = ver.stdout.strip()
+        if ver.returncode != 0 or not version:
+            raise MetadataScanError("version command failed")
+        where = "项目内" if exif.parent.name == "exiftool" else "PATH/外部"
+        if version == EXPECTED_EXIFTOOL:
+            line("ExifTool", f"{version}（{where}）", OK)
+        else:
+            line("ExifTool", f"{version}（{where}，期望 {EXPECTED_EXIFTOOL}）", BAD)
+            globals()["ok"] = False
+            print(f"     团队统一 ExifTool {EXPECTED_EXIFTOOL}，当前 {version}。")
+            print("     换法：下载 exiftool-<ver>_64.zip 解压覆盖 tools/exiftool/，")
+            print("           把 exiftool(-k).exe 另存为 exiftool.exe，重跑本脚本。")
+    except (MetadataScanError, OSError, subprocess.SubprocessError) as exc:
+        line("ExifTool", f"不可用 {type(exc).__name__}", BAD)
+        globals()["ok"] = False
+        print("     ExifTool 是硬依赖。设置 PHOTOCHECK_EXIFTOOL，或解压 13.61 到 tools/exiftool/。")
 
 
 def main() -> int:

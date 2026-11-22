@@ -47,7 +47,8 @@ def run_probe_case(kind: str, response: dict[str, Any]) -> tuple[dict[str, Any],
     calls: list[tuple] = []
 
     def probe(image: Any, bbox: tuple[int, int, int, int], *, kinds: tuple[str, ...]):
-        calls.append((Path(image), tuple(bbox), tuple(kinds)))
+        source = Path(image) if isinstance(image, (str, Path)) else type(image).__name__
+        calls.append((source, tuple(bbox), tuple(kinds)))
         if isinstance(response, Exception):
             raise response
         return response

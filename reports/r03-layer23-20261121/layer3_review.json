@@ -1,0 +1,14 @@
+{
+  "version": "r03-v1.4-five-class-2026-11-15",
+  "reviewed_images": 38,
+  "appropriate": 38,
+  "over_redacted": 0,
+  "under_redacted": 0,
+  "reviewers": 2,
+  "agreed": 38,
+  "status": "passed",
+  "scope": "功能规格卡 v1.4 的手机号、身份证、二维码、元数据、人脸五类对象",
+  "decision": "项目负责人于 2026-11-15 确认本轮五类范围人工判读全部通过",
+  "known_limit": "姓名、地址、邮箱属于 S-7 扩展范围，本结论不声称已经覆盖或脱敏这三类内容",
+  "source_report": "photocheck/detectors/a_engine/reports/A_第三层判读结论_2026-11-14.md"
+}

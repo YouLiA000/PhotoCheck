@@ -54,6 +54,11 @@ def build_redaction_plan(
         method = method_by_finding.get(finding["id"], "solid")
         if method not in {"solid", "blur", "mosaic"}:
             raise ContractError(f"unsupported redaction method {method!r}")
+        # QR decoding has error correction, and face recognition remains possible
+        # through several aggressive blur/pixelation settings. Both classes are
+        # therefore always solid regardless of the UI's generic method choice.
+        if finding["kind"] in {"qr", "face"}:
+            method = "solid"
         items.append(
             {
                 "id": f"redact:{finding['id']}",

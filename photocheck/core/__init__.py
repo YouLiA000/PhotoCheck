@@ -11,7 +11,9 @@ from .full_recheck import full_file_recheck
 from .ingest import ImageIngestError, IngestedImage, ingest_image
 from .metadata import (
     MetadataScanError,
+    clear_metadata_cache,
     exiftool_version,
+    find_bundled_exiftool,
     metadata_residual_tags,
     read_metadata,
 )
@@ -31,6 +33,7 @@ __all__ = [
     "ImageIngestError",
     "IngestedImage",
     "MetadataScanError",
+    "clear_metadata_cache",
     "ExportError",
     "ProcessingResult",
     "RedactedImage",
@@ -46,6 +49,7 @@ __all__ = [
     "full_file_recheck",
     "ingest_image",
     "exiftool_version",
+    "find_bundled_exiftool",
     "metadata_residual_tags",
     "process_and_export",
     "read_metadata",

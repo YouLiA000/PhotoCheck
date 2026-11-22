@@ -312,6 +312,37 @@ class CrossRecord(unittest.TestCase):
         get(recs, "RedactionPlan")["items"][1]["method"] = "blur"
         self.assert_code(recs, "qr_method_not_solid")
 
+    def test_face_must_be_solid(self):
+        recs = copy.deepcopy(self.records)
+        face = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Detection",
+            "id": "det-demo-face-01",
+            "image_id": "image-demo-001",
+            "kind": "face",
+            "subtype": "face_region",
+            "bbox": [10, 10, 40, 40],
+            "detector_score": 0.9,
+            "evidence": "face_box",
+            "risk": 1,
+            "details": {},
+        }
+        recs.append(face)
+        recs.append({
+            "contract_version": "photocheck/v4",
+            "record_type": "Decision",
+            "finding_id": face["id"],
+            "action": "redact",
+            "revision": 2,
+        })
+        get(recs, "RedactionPlan")["items"].append({
+            "id": f"redact:{face['id']}",
+            "finding_id": face["id"],
+            "bbox": face["bbox"],
+            "method": "mosaic",
+        })
+        self.assert_code(recs, "face_method_not_solid")
+
     def test_redact_without_plan_item(self):
         recs = copy.deepcopy(self.records)
         recs.append(

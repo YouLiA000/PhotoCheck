@@ -95,6 +95,42 @@ class RedactionTests(unittest.TestCase):
                     self.assertEqual(result.image.getpixel((0, 0)), source.getpixel((0, 0)))
                     self.assertEqual(result.image.getpixel((199, 119)), source.getpixel((199, 119)))
 
+    def test_duplicate_mosaic_regions_are_not_applied_twice(self) -> None:
+        source = patterned_image()
+        descriptor = {
+            "contract_version": "photocheck/v4",
+            "record_type": "ImageDescriptor",
+            "image_id": "image-duplicate",
+            "width": source.width,
+            "height": source.height,
+            "orientation": "exif_transposed",
+            "coordinate_space": "top_left_pixels",
+        }
+        plan = build_redaction_plan(
+            descriptor,
+            [],
+            [],
+            revision=1,
+            manual_regions=[
+                {"id": "manual-001", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+                {"id": "manual-002", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+            ],
+        )
+        single_plan = build_redaction_plan(
+            descriptor,
+            [],
+            [],
+            revision=1,
+            manual_regions=[
+                {"id": "manual-001", "bbox": [40, 20, 80, 60], "method": "mosaic"},
+            ],
+        )
+        with apply_redactions(source, single_plan, image_id="image-duplicate") as single:
+            expected = single.image.tobytes()
+        with apply_redactions(source, plan, image_id="image-duplicate") as duplicated:
+            self.assertEqual(len(duplicated.applied_regions), 2)
+            self.assertEqual(duplicated.image.tobytes(), expected)
+
     def test_edge_mask_is_clamped_to_the_image(self) -> None:
         source = patterned_image((30, 20))
         plan = manual_plan(source, "image-test", bbox=[0, 0, 6, 4])
@@ -150,6 +186,54 @@ class RedactionTests(unittest.TestCase):
             detections=[qr],
         ) as result:
             self.assertEqual(result.applied_regions[0].method, "solid")
+
+    def test_face_finding_forces_solid_mask(self) -> None:
+        source = patterned_image()
+        descriptor = {
+            "contract_version": "photocheck/v4",
+            "record_type": "ImageDescriptor",
+            "image_id": "image-face",
+            "width": source.width,
+            "height": source.height,
+            "orientation": "exif_transposed",
+            "coordinate_space": "top_left_pixels",
+        }
+        face = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Detection",
+            "id": "det-face",
+            "image_id": "image-face",
+            "kind": "face",
+            "subtype": "face_region",
+            "bbox": [50, 30, 80, 80],
+            "detector_score": 0.9,
+            "evidence": "face_box",
+            "risk": 1,
+            "details": {},
+        }
+        decision = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Decision",
+            "finding_id": "det-face",
+            "action": "redact",
+            "revision": 1,
+        }
+        plan = build_redaction_plan(
+            descriptor,
+            [face],
+            [decision],
+            revision=1,
+            method_by_finding={"det-face": "blur"},
+        )
+        self.assertEqual(plan["items"][0]["method"], "solid")
+        with apply_redactions(
+            source,
+            plan,
+            image_id="image-face",
+            detections=[face],
+        ) as result:
+            self.assertEqual(result.applied_regions[0].method, "solid")
+            self.assertEqual(result.image.getpixel((60, 40))[:3], (0, 0, 0))
 
     def test_empty_plan_preserves_pixels(self) -> None:
         source = patterned_image((50, 40))

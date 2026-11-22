@@ -55,7 +55,24 @@ def git(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def is_git_worktree() -> bool:
+    """当前目录是否是 Git 工作树。
+
+    分发包（zip / 验收包）里没有 `.git`，三条断言全部依赖 Git 索引，跑不了。
+    这种场景应当跳过，而不是报失败——否则「在验收机器上跑测试」会因缺少 VCS
+    元数据而假红，掩盖真正的问题。
+    """
+    if shutil.which("git") is None:
+        return False
+    probe = subprocess.run(
+        ["git", "rev-parse", "--is-inside-work-tree"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    return probe.returncode == 0 and probe.stdout.strip() == "true"
+
+
 @unittest.skipIf(shutil.which("git") is None, "环境无 git，跳过红线守卫")
+@unittest.skipUnless(is_git_worktree(), "非 Git 工作树（分发包），跳过红线守卫")
 class AuthorisedPhotosStayLocal(unittest.TestCase):
     def test_index_contains_no_photographs(self):
         out = git("ls-files", "dataset/real").stdout.split()

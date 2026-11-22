@@ -3,7 +3,7 @@
 PhotoCheck is a local photo-privacy inspection prototype for Chinese campus
 scenarios. It currently implements the B-side processing infrastructure:
 
-- canonical JPEG/PNG ingestion with EXIF orientation normalization;
+- canonical JPEG/PNG/WebP/BMP ingestion with EXIF orientation normalization;
 - sensitive metadata detection through ExifTool;
 - metadata-free pixel reconstruction and safe exports;
 - solid, blur and mosaic region redaction;
@@ -13,20 +13,25 @@ scenarios. It currently implements the B-side processing infrastructure:
 
 ## Current status
 
-The 2026-11-08 C delivery is integrated into this repository. The A engine is
-vendored under `photocheck/detectors/a_engine/`; C's 43 张合成 dev 数据集, 23-image
-sealed lock set, Gradio UI, evaluation tooling, and local browser application
-are available under `dataset/`, `ui/`, `eval/`, and `app/`.
+This directory is the clean repository created on 2026-11-20. It contains the
+integrated A/B/C implementation, the frozen dev/lock datasets, the A engine,
+evaluation and audit tooling, and the local browser application.
+The dataset contains 43 张合成 dev images (38 labelled), 23 sealed lock images,
+and local-only authorised real samples.
 
-B's current runtime has passed 89 runtime/contract tests, 233 A engine and
-A+B integration tests, 228 C data/UI/eval/tool tests, and 31 application
-tests, for 581 passing tests in total. On C's 43-image dev batch, 41 images were processable,
-32 ended `passed`, 9 ended `not_applicable`, 52 plan regions were checked, and
-both residuals and unplanned detections were zero. The two remaining images are
-intentionally invalid JPEGs.
+The 2026-11-22 regression run is:
 
-K-07 face recall still has no authorised human-face evaluation set, so its
-detection quality is not yet claimed.
+- four documented groups: **102 / 240 / 381 / 35 passed**, **758 total**
+- environment preflight: all required dependencies OK
+- repository privacy scan: **561 files passed**
+
+The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
+single-face authorised samples** are prepared and all 22 have metadata removed.
+The two multi-person photos remain quarantined and are not counted.
+
+K-14 network/firewall evidence is archived under `docs/evidence/`. R-04 now has
+two independent named reviewers with 30/30 agreement. A passed state is never
+interpreted as an absolute safety claim.
 
 Run the local application with:
 
@@ -34,11 +39,9 @@ Run the local application with:
 python app\main.py
 ```
 
-On Windows the repository-root launcher is also available:
-
-```powershell
-run.bat
-```
+The supported source-development entry points are `setup.ps1` followed by
+`run_app.ps1`. `run.bat` is a legacy compatibility entry point; normal users
+should use the portable package.
 
 Build the portable Windows directory and ZIP:
 

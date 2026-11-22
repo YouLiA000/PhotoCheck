@@ -55,6 +55,11 @@ def test_mask_idcard():
     assert VALID_ID[4:14] not in masked
 
 
+def test_short_values_use_the_shared_conservative_policy():
+    assert mask_phone("12345678") == "12******"
+    assert mask_idcard("110101199003") == "11**********"
+
+
 # ---------- phone ----------
 
 @pytest.mark.parametrize(

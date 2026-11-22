@@ -53,28 +53,35 @@ def finalize(csv_path: Path) -> dict[str, Any]:
         raise ValueError("; ".join(problems[:10]))
 
     reviewer_agreements = sum(a == b for a, b in zip(left, right))
-    human_values = [
-        1 if str(row["manual_consensus"]).lower() == "readable" else 0
+    # All three arrays use the same polarity: True means a residual/readable
+    # value remains (the bad outcome).  The old implementation compared
+    # "human readable" (1=bad) with "machine passed" (1=good), producing a
+    # disagreement rate disguised as an agreement rate.
+    human_residual = [
+        str(row["manual_consensus"]).lower() == "readable"
         for row in rows
     ]
-    primary_values = [int(row.get("primary_status") == "passed") for row in rows]
-    tesseract_values = [int(row.get("tesseract_status") == "passed") for row in rows]
+    primary_residual = [row.get("primary_status") != "passed" for row in rows]
+    tesseract_residual = [row.get("tesseract_status") != "passed" for row in rows]
     summary = {
         "sample_size": len(rows),
         "reviewer_agreement_count": reviewer_agreements,
         "reviewer_agreement_rate": round(reviewer_agreements / len(rows), 4),
         "cohen_kappa": cohen_kappa(left, right),
-        "human_readable": sum(human_values),
-        "human_not_readable": len(rows) - sum(human_values),
+        "human_readable": sum(human_residual),
+        "human_not_readable": len(rows) - sum(human_residual),
         "primary_vs_human_agreement": round(
-            sum(a == b for a, b in zip(primary_values, human_values)) / len(rows),
+            sum(a == b for a, b in zip(primary_residual, human_residual)) / len(rows),
             4,
         ),
         "tesseract_vs_human_agreement": round(
-            sum(a == b for a, b in zip(tesseract_values, human_values)) / len(rows),
+            sum(a == b for a, b in zip(tesseract_residual, human_residual)) / len(rows),
             4,
         ),
         "manual_review_status": "complete_two_independent_reviewers",
+        # This status records form completeness, not a cryptographic proof of
+        # reviewer independence. Independence remains a signed process control.
+        "manual_independence_source": "process_attestation_only",
     }
 
     output_csv = csv_path.with_name("manual-consensus.csv")

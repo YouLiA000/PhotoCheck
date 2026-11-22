@@ -24,9 +24,18 @@ if str(ROOT) not in sys.path:
 from tools import make_r04_booklet as booklet  # noqa: E402
 
 
-def build_case(root: Path, *, blank: bool, count: int = 2, white: bool = False) -> Path:
+def build_case(
+    root: Path,
+    *,
+    blank: bool,
+    count: int = 2,
+    white: bool = False,
+    control_blank: bool = False,
+) -> Path:
     crops = root / "manual_crops"
     crops.mkdir(parents=True)
+    controls = root / "control_crops"
+    controls.mkdir(parents=True)
     rows: list[dict[str, str]] = []
     for i in range(1, count + 1):
         if blank:
@@ -37,6 +46,12 @@ def build_case(root: Path, *, blank: bool, count: int = 2, white: bool = False) 
             arr = np.full((40, 220), 255, dtype=np.uint8)
             arr[10:30, 20:200] = 0  # 有字迹的痕迹
         Image.fromarray(arr).save(crops / f"{i:02d}.png")
+        if control_blank:
+            control_arr = np.zeros((40, 220), dtype=np.uint8)
+        else:
+            control_arr = np.full((40, 220), 255, dtype=np.uint8)
+            control_arr[10:30, 20:200] = 0
+        Image.fromarray(control_arr).save(controls / f"{i:02d}.png")
         rows.append({"sample_no": str(i), "subtype": "phone"})
 
     with (root / "r04-objects.csv").open("w", encoding="utf-8", newline="") as fh:
@@ -49,14 +64,14 @@ def build_case(root: Path, *, blank: bool, count: int = 2, white: bool = False) 
 class BlankCropGuard(unittest.TestCase):
     def test_blank_crops_are_refused_by_default(self):
         with tempfile.TemporaryDirectory() as tmp:
-            src = build_case(Path(tmp) / "src", blank=True)
+            src = build_case(Path(tmp) / "src", blank=True, control_blank=True)
             code = booklet.main(["--objects", str(src)])
             self.assertEqual(code, 3, "全黑裁剪图应当被拒绝，而不是印成黑条")
             self.assertFalse((src / "print").exists(), "拒绝时不应产出任何 PDF")
 
     def test_allow_flag_permits_blank_for_leak_check(self):
         with tempfile.TemporaryDirectory() as tmp:
-            src = build_case(Path(tmp) / "src", blank=True)
+            src = build_case(Path(tmp) / "src", blank=True, control_blank=True)
             code = booklet.main(["--objects", str(src), "--allow-blank-crops"])
             self.assertEqual(code, 0)
             self.assertTrue((src / "print" / "R04判读册_评审A.pdf").is_file())
@@ -68,10 +83,23 @@ class BlankCropGuard(unittest.TestCase):
             code = booklet.main(["--objects", str(src)])
             self.assertEqual(code, 0)
 
+    def test_black_after_with_content_control_is_accepted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = build_case(Path(tmp) / "src", blank=True, control_blank=False)
+            code = booklet.main(["--objects", str(src)])
+            self.assertEqual(code, 0)
+
     def test_missing_crop_is_reported(self):
         with tempfile.TemporaryDirectory() as tmp:
             src = build_case(Path(tmp) / "src", blank=False, count=2)
             (src / "manual_crops" / "02.png").unlink()
+            code = booklet.main(["--objects", str(src)])
+            self.assertEqual(code, 2)
+
+    def test_missing_control_is_reported(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = build_case(Path(tmp) / "src", blank=False, count=2)
+            (src / "control_crops" / "02.png").unlink()
             code = booklet.main(["--objects", str(src)])
             self.assertEqual(code, 2)
 

@@ -78,7 +78,7 @@ async function refreshStatus() {
       tools.textContent = 'ExifTool 就位';
       tools.className = 'pill';
     } else {
-      tools.textContent = '未找到 ExifTool（元数据复核降级）';
+      tools.textContent = 'ExifTool 未就绪（无法处理图片）';
       tools.className = 'pill warn';
     }
   } catch (err) {
@@ -504,7 +504,7 @@ function renderReport(rep) {
   $('#reportExport').innerHTML = `
     导出文件 <code>${esc(rep.export.name.slice(0, 18))}…</code><br>
     原图 SHA-256 未变：<code>${esc((rep.export.source_sha256 || '').slice(0, 10))}…</code><br>
-    ${rep.exiftool ? '已用 ExifTool 独立复核元数据' : '未装 ExifTool，元数据复核降级'}`;
+    ${rep.exiftool ? '已用 ExifTool 独立复核元数据' : 'ExifTool 缺失，本次结果不得交付'}`;
 }
 
 function showAfter(rep) {
@@ -616,8 +616,8 @@ function init() {
   $('#method').addEventListener('change', (e) => {
     const notes = {
       solid: '纯色块：整块覆盖，复检必过。演示首选。',
-      mosaic: '马赛克：像素化，通常能过复检。',
-      blur: '模糊：已加大半径，但仍以逐区域复检结果为准。',
+      mosaic: '马赛克：用于文字区域；人脸区域会自动改用实心遮盖。',
+      blur: '模糊：用于文字区域；人脸区域会自动改用实心遮盖。',
     };
     state.methodNote = notes[e.target.value] || '';
     bumpRevision('遮盖方式已变化，旧复检报告已失效');

@@ -1,0 +1,21 @@
+{
+  "capture_label": "20261121-retest",
+  "captured_on": "2026-11-21 Asia/Shanghai",
+  "source_sha256": {
+    "01-普通网络可用.png": "1ebc128707bbc71a3f60b7f188670575db728e32d18d5348e79f3a4da13bc470",
+    "02-firewall-rules.png": "3be2196a24ddfacc5ed561dbde3833735b4b8f8b4b4ea24c132b4e8331ae0e5f",
+    "03-Python外连被阻断.png": "680f140f86a8bdf3452e77d7ea3b7fb8f2bf60843860cdb1faddcd48e7503405",
+    "04-防火墙模式完整流程.mp4": "0c1f2df4e54a2b70fd91dcce141c7a79a0ea2e3061f75fd42b30a3e95d85b51f",
+    "05-所有网络适配器已断开.png": "e89079c44dcfc6499cd5041c4ab3f21a3e36b46178fa837bd6d8479ef1a4c93d",
+    "06-外连和DNS均失败.png": "2663223ed565c3fee60c70d63aaaae0003e1dc42c2e531760d8441302c80ae96",
+    "07a-物理断网流程_部分.mp4": "b01f2c22163388139f15c1f7b35f7b6318bd757c9a02cd7dab9751a5171d5c9b",
+    "07b-物理断网成功补充.mp4": "93ef63d07b8922ecb2a259774cd550a1170c1610af468817257789903579036c",
+    "08-物理断网最终成功.png": "d7efabf296c83c010b211b35a8516b0d129488ea7678fca0f3304dfb2304a20c",
+    "firewall-console.txt": "00ec1e13c9de1843c7f5f96c36e0772982052c43f0794940be23ba2eb0f86506",
+    "network-summary.json": "33302631f277cf663a0bc557e97d1c6c60dbe18d591fc7849cce26769056f1ec",
+    "offline-audit.txt": "f7b1ad6c85d4528cc995c1519362910e53aabc9e3ce3b90a672eeb51348c78ee",
+    "physical-offline-console.txt": "d27dc04b353ad0294ea09075ab756565625b5243ca4eaccda2e5f17d256ebe87",
+    "physical-final-report.json": "133eefc0a97fef89b830530f96d74409e494d4d500c8202718d5ea54d3eade07"
+  },
+  "archive_note": "Hashes identify the raw capture. Public screenshots were irreversibly redacted and selected text summaries were sanitized; raw transcripts and videos remain outside the repository."
+}

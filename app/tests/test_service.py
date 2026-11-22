@@ -36,11 +36,18 @@ class ServiceUploadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "空"):
             service.save_upload("empty.png", b"")
 
-    def test_webp_is_rejected_consistently(self) -> None:
-        payload = BytesIO()
-        Image.new("RGB", (8, 8), "white").save(payload, format="WEBP")
-        with self.assertRaisesRegex(ValueError, "JPG / PNG"):
-            service.save_upload("photo.webp", payload.getvalue())
+    def test_common_consumer_formats_are_accepted(self) -> None:
+        for image_format, suffix in (("WEBP", ".webp"), ("BMP", ".bmp")):
+            with self.subTest(image_format=image_format):
+                payload = BytesIO()
+                Image.new("RGB", (8, 8), "white").save(payload, format=image_format)
+                with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+                    service, "UPLOADS", Path(tmp)
+                ):
+                    source_id = service.save_upload(
+                        f"photo{suffix}", payload.getvalue()
+                    )
+                    self.assertTrue(service.resolve_source(source_id).name.endswith(suffix))
 
     def test_extension_comes_from_actual_format(self) -> None:
         payload = BytesIO()
@@ -88,6 +95,59 @@ class ServiceAnalysisTests(unittest.TestCase):
         for value in ("nan", "inf", "-inf"):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 service._clamp_manual_box({"bbox": [0, 0, value, 10]}, 100, 100)
+
+    def test_manual_box_uses_actual_intersection_with_image(self) -> None:
+        with self.assertRaisesRegex(ValueError, "完全落在图外"):
+            service._clamp_manual_box({"bbox": [-1500, 10, 100, 20]}, 1000, 800)
+        with self.assertRaisesRegex(ValueError, "完全落在图外"):
+            service._clamp_manual_box({"bbox": [1100, 10, 100, 20]}, 1000, 800)
+        self.assertEqual(
+            service._clamp_manual_box({"bbox": [950, 10, 200, 20]}, 1000, 800)[0],
+            [950, 10, 50, 20],
+        )
+        with self.assertRaisesRegex(ValueError, "太小"):
+            service._clamp_manual_box({"bbox": [0, 0, 2, 20]}, 1000, 800)
+
+    def test_lru_eviction_removes_output_and_upload_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            uploads = root / "uploads"
+            outputs = root / "outputs"
+            uploads.mkdir()
+            run_dir = outputs / "run-old"
+            run_dir.mkdir(parents=True)
+            upload = uploads / ("a" * 32 + ".jpg")
+            upload.write_bytes(b"private")
+            output = run_dir / "result.jpg"
+            output.write_bytes(b"result")
+            session = service.Session(max_analyses=1)
+            first = service.Analysis(
+                id="old",
+                source_id="upload:" + "a" * 32,
+                path=upload,
+                descriptor={},
+                detections=(),
+                timings={},
+                warnings=(),
+            )
+            second = service.Analysis(
+                id="new",
+                source_id="sample:new",
+                path=Path("unused.jpg"),
+                descriptor={},
+                detections=(),
+                timings={},
+                warnings=(),
+            )
+            with (
+                mock.patch.object(service, "UPLOADS", uploads),
+                mock.patch.object(service, "OUTPUTS", outputs),
+            ):
+                session.add(first)
+                session.set_output(first.id, output)
+                session.add(second)
+            self.assertFalse(upload.exists())
+            self.assertFalse(run_dir.exists())
 
     def test_warmup_failure_is_recorded_without_exception_text(self) -> None:
         with mock.patch.object(

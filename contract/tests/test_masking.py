@@ -139,6 +139,19 @@ class Dispatch(unittest.TestCase):
         # 出现未定义的 text 子类时，宁可只给摘要，也不能把原文当"非文本"放过去
         self.assertEqual(masking.mask_for("text", "plate", "京A12345"), "text/plate")
 
+    def test_a_engine_aliases_the_contract_implementation(self):
+        from photocheck.detectors.a_engine.core.detect.entities import (
+            mask_idcard as engine_idcard,
+        )
+        from photocheck.detectors.a_engine.core.detect.entities import (
+            mask_phone as engine_phone,
+        )
+
+        for value in ("13800138000", "+8613800138000", "12345678", "1234"):
+            self.assertEqual(engine_phone(value), masking.mask_phone(value))
+        for value in ("110101199003071234", "110101199003", "1234"):
+            self.assertEqual(engine_idcard(value), masking.mask_idcard(value))
+
 
 class ShapeOfDataset(unittest.TestCase):
     """真值里的 masked_preview 必须是由本模块产出的形状。"""
@@ -164,6 +177,28 @@ class ShapeOfDataset(unittest.TestCase):
                         self.assertRegex(preview or "", IDCARD_SHAPE)
                     checked += 1
         self.assertGreaterEqual(checked, 30, "样本太少，这条测试没起到守门作用")
+
+
+class CountryCode(unittest.TestCase):
+    """带区号的号码必须和裸号码得到**同一个**掩码。
+
+    2026-11-20 修正：原实现对 `+8613800138000` 输出 `+86****8000`——区号露在外面，
+    且与 A 引擎（先剥区号再遮）形状不同。同一号码在两处显示不一致，是红线的缺口。
+    """
+
+    def test_three_prefix_forms_collapse_to_one_shape(self):
+        for value in ("+8613800138000", "008613800138000", "8613800138000"):
+            with self.subTest(value=value):
+                self.assertEqual(masking.mask_phone(value), "138****8000")
+
+    def test_prefix_does_not_leak_country_code(self):
+        out = masking.mask_phone("+8613931298426")
+        self.assertNotIn("+", out)
+        self.assertNotIn("86", out[:3], f"区号仍可见：{out}")
+        self.assertEqual(out, "139****8426")
+
+    def test_plain_number_unaffected(self):
+        self.assertEqual(masking.mask_phone("13931298426"), "139****8426")
 
 
 if __name__ == "__main__":

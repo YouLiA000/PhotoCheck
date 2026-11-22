@@ -13,7 +13,6 @@ from __future__ import annotations
 import platform
 import subprocess
 import sys
-import traceback
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,6 +20,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 OK, BAD, WARN = "[OK]  ", "[FAIL]", "[WARN]"
+EXPECTED_EXIFTOOL = "13.61"
 
 
 def line(tag: str, text: str) -> None:
@@ -50,9 +50,8 @@ def main() -> int:
 
     try:
         from app import service
-    except Exception:
-        traceback.print_exc()
-        line(BAD, "应用模块导入失败，见上面的堆栈")
+    except Exception as exc:  # noqa: BLE001
+        line(BAD, f"应用模块导入失败：{type(exc).__name__}")
         return 1
 
     status = service.status()
@@ -70,6 +69,8 @@ def main() -> int:
         line(tag, f"检测器 {key}：{value}")
         if value != "ok" and key != "face":
             critical.append(f"检测器 {key} 不可用：{value}")
+        elif value != "ok":
+            degraded.append(f"检测器 face 不可用：{value}")
 
     exiftool = service.exiftool_path()
     if exiftool and Path(exiftool).is_file():
@@ -77,10 +78,17 @@ def main() -> int:
             version = subprocess.run([str(exiftool), "-ver"], capture_output=True, text=True,
                                      timeout=15).stdout.strip()
         except Exception:  # noqa: BLE001
-            version = "版本未知"
-        line(OK, f"ExifTool {version}（{exiftool.parent.name}）")
+            line(BAD, "ExifTool 已找到但无法执行")
+            critical.append("ExifTool 调用失败，图片处理无法完成")
+        else:
+            if version == EXPECTED_EXIFTOOL:
+                line(OK, f"ExifTool {version}（{exiftool.parent.name}）")
+            else:
+                line(BAD, f"ExifTool {version}（期望 {EXPECTED_EXIFTOOL}）")
+                critical.append(f"ExifTool 版本不是团队固定的 {EXPECTED_EXIFTOOL}")
     else:
-        line(WARN, "未找到 ExifTool：元数据仍会被清除，但少了独立复核这一道")
+        line(BAD, "未找到 ExifTool：这是图片处理的硬依赖")
+        critical.append("ExifTool 未就绪，检测、导出和元数据复核无法完成")
 
     samples = service.samples()
     line(OK if samples else BAD, f"内置示例 {len(samples)} 张")
@@ -130,9 +138,8 @@ def main() -> int:
             f"处置 {processed.get('plan_items', 0)} 个区域，"
             f"复检状态 {processed.get('disposal_state')}",
         )
-    except Exception:
-        traceback.print_exc()
-        line(BAD, "端到端检测、导出或复检失败")
+    except Exception as exc:  # noqa: BLE001
+        line(BAD, f"端到端检测、导出或复检失败：{type(exc).__name__}")
         return 1
     finally:
         if analysis_id:
@@ -141,7 +148,7 @@ def main() -> int:
     if degraded:
         for issue in degraded:
             line(WARN, issue)
-        print("\n结论：程序可启动，但二维码/条码能力不完整。")
+        print("\n结论：程序可启动，但部分检测能力不完整，不能视为全绿。")
         return 1
 
     print("\n结论：一切正常，双击「启动.bat」即可使用。")

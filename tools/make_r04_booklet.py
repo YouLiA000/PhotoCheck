@@ -4,11 +4,8 @@
 为什么纸质：R-04 要求**两位评审独立判读**。纸质天然隔离——看不到对方的勾，
 也没法在同一个屏幕上边讨论边改。
 
-为什么同时印 1:1 和 3×：
-- 1:1 是**判据基准**：裁剪图就是原图分辨率下的一块，300 dpi 打印出来约 3.6 mm 行高，
-  与正文小字相当，代表「人眼在正常观看距离能否读出」；
-- 3× 只用肉眼放大像素，不补充任何信息，作为**辅助参照**，
-  避免评审因为「字太小看不清印刷」而误判成 not_readable。
+每个对象同时印遮前正控和遮后结果：遮前图先证明原区域确实有文字，遮后图再用
+1:1 分辨率判断「是否还能读出」。只有遮后全黑、没有遮前正控的判读册会被拒绝。
 
 两册内容完全相同，只有封面标识不同；不含 tesseract_status / primary_status / agreement
 等系统结论，避免评审被机器判断锚定。
@@ -32,7 +29,6 @@ A4 = (2480, 3508)          # 300 dpi
 MARGIN = 150
 FONT_PATH = "C:/Windows/Fonts/msyh.ttc"
 PER_PAGE = 6
-ZOOM = 3
 BLANK_PIXEL = 24           # 最大像素与最小像素之差 ≤ 此值视为纯色块
 
 
@@ -71,8 +67,8 @@ def cover(reviewer: str) -> Image.Image:
     y = 560
     d.text((MARGIN, y), "只判一件事", fill=0, font=f_h); y += 90
     for line in (
-        "遮盖之后，你还能不能从这块图里读出原文？",
-        "能读出来 → 勾 readable；读不出来 → 勾 not_readable。",
+        "先看「遮前正控」，确认原区域有文字；再看「遮后」。",
+        "遮后仍能读出原文 → 勾 readable；读不出来 → 勾 not_readable。",
     ):
         d.text((MARGIN, y), line, fill=0, font=f_b); y += 70
 
@@ -82,7 +78,7 @@ def cover(reviewer: str) -> Image.Image:
         "1. 只看图，不要参考任何系统结论——本册也没有给你系统结论。",
         "2. 不要和另一位评审讨论。独立性一旦破坏，这两票就作废。",
         "3. 每格都要勾，不许空着；拿不准也要选一个，并在格内写一句为什么。",
-        "4. 每格有 1:1 与 3× 两张。1:1 是判据基准，3× 只是帮你看清像素。",
+        "4. 遮前图只证明有内容；只能根据遮后图决定 readable / not_readable。",
     ):
         d.text((MARGIN, y), line, fill=0, font=f_b); y += 80
 
@@ -101,24 +97,36 @@ def cover(reviewer: str) -> Image.Image:
     return page
 
 
-def cell(page: Image.Image, d: ImageDraw.ImageDraw, box: tuple[int, int, int, int],
-         no: int, subtype: str, crop_path: Path) -> None:
+def _paste_fit(page: Image.Image, image: Image.Image, box: tuple[int, int, int, int]) -> None:
+    fitted = image.copy()
+    fitted.thumbnail((box[2], box[3]), Image.Resampling.LANCZOS)
+    x = box[0] + (box[2] - fitted.width) // 2
+    y = box[1] + (box[3] - fitted.height) // 2
+    page.paste(fitted, (x, y))
+
+
+def cell(
+    page: Image.Image,
+    d: ImageDraw.ImageDraw,
+    box: tuple[int, int, int, int],
+    no: int,
+    subtype: str,
+    crop_path: Path,
+    control_path: Path,
+) -> None:
     x, y, w, h = box
     f_no, f_small, f_tick = font(44), font(30), font(38)
 
     d.rectangle([x, y, x + w, y + h], outline=170, width=2)
     d.text((x + 24, y + 18), f"{no:02d}", fill=0, font=f_no)
     d.text((x + 130, y + 28), subtype, fill=90, font=f_small)
-    d.text((x + 24, y + 86), "1:1", fill=110, font=f_small)
-    d.text((x + 460, y + 86), f"{ZOOM}×", fill=110, font=f_small)
-
-    crop = Image.open(crop_path).convert("L")
-    page.paste(crop, (x + 110, y + 80))
-    big = crop.resize((crop.width * ZOOM, crop.height * ZOOM), Image.NEAREST)
-    if big.width > w - 560:
-        ratio = (w - 560) / big.width
-        big = big.resize((int(big.width * ratio), int(big.height * ratio)), Image.NEAREST)
-    page.paste(big, (x + 540, y + 80))
+    d.text((x + 24, y + 82), "遮前正控（只确认有文字）", fill=110, font=f_small)
+    with Image.open(control_path) as control:
+        _paste_fit(page, control.convert("L"), (x + 24, y + 122, w - 48, 190))
+    d.line((x + 24, y + 330, x + w - 24, y + 330), fill=170, width=2)
+    d.text((x + 24, y + 350), "遮后（按这张判读）", fill=0, font=f_small)
+    with Image.open(crop_path) as crop:
+        _paste_fit(page, crop.convert("L"), (x + 24, y + 392, w - 48, 260))
 
     ty = y + h - 110
     d.rectangle([x + 24, ty, x + 74, ty + 50], outline=0, width=3)
@@ -127,7 +135,14 @@ def cell(page: Image.Image, d: ImageDraw.ImageDraw, box: tuple[int, int, int, in
     d.text((x + 528, ty - 2), "not_readable", fill=0, font=f_tick)
 
 
-def page_of(reviewer: str, rows: list[dict], crops: Path, page_no: int, total: int) -> Image.Image:
+def page_of(
+    reviewer: str,
+    rows: list[dict],
+    crops: Path,
+    controls: Path,
+    page_no: int,
+    total: int,
+) -> Image.Image:
     page = Image.new("L", A4, 255)
     d = ImageDraw.Draw(page)
     f_h, f_s = font(46), font(30)
@@ -135,7 +150,7 @@ def page_of(reviewer: str, rows: list[dict], crops: Path, page_no: int, total: i
     d.text((MARGIN, 100), f"R-04 判读册 · 评审 {reviewer}（第 {page_no}/{total} 页）",
            fill=0, font=f_h)
     d.text((MARGIN, 170),
-           "1:1 为判据基准；3× 仅辅助看清像素。每格必勾，不许空着。",
+           "上方是遮前正控，下方是遮后结果；只按遮后结果勾选。每格必勾。",
            fill=90, font=f_s)
 
     cell_w = (A4[0] - 2 * MARGIN - 40) // 2
@@ -146,8 +161,9 @@ def page_of(reviewer: str, rows: list[dict], crops: Path, page_no: int, total: i
         x = MARGIN + col * (cell_w + 40)
         y = top + line * (cell_h + 30)
         crop = crops / f"{int(row['sample_no']):02d}.png"
+        control = controls / f"{int(row['sample_no']):02d}.png"
         cell(page, d, (x, y, cell_w, cell_h), int(row["sample_no"]),
-             row["subtype"], crop)
+             row["subtype"], crop, control)
     return page
 
 
@@ -165,8 +181,9 @@ def main(argv: list[str] | None = None) -> int:
     src = Path(args.objects)
     csv_path = src / "r04-objects.csv"
     crops = src / "manual_crops"
-    if not csv_path.is_file() or not crops.is_dir():
-        print(f"[error] 找不到 {csv_path} 或 {crops}", file=sys.stderr)
+    controls = src / "control_crops"
+    if not csv_path.is_file() or not crops.is_dir() or not controls.is_dir():
+        print(f"[error] 找不到 {csv_path}、{crops} 或 {controls}", file=sys.stderr)
         return 2
 
     with csv_path.open(encoding="utf-8-sig") as fh:
@@ -182,15 +199,22 @@ def main(argv: list[str] | None = None) -> int:
     if missing:
         print(f"[error] 缺裁剪图：{missing}", file=sys.stderr)
         return 2
+    missing_controls = [
+        r["sample_no"] for r in rows
+        if not (controls / f"{int(r['sample_no']):02d}.png").is_file()
+    ]
+    if missing_controls:
+        print(f"[error] 缺遮前正控图：{missing_controls}", file=sys.stderr)
+        return 2
 
     ratio = blank_ratio(crops, rows)
-    if ratio >= 0.9 and not args.allow_blank_crops:
+    control_ratio = blank_ratio(controls, rows)
+    if ratio >= 0.9 and control_ratio >= 0.9 and not args.allow_blank_crops:
         print(
             f"[refused] {ratio:.0%} 的裁剪图是纯色块。R-04 的 manual_crops 取自已遮盖图，"
             "裁剪范围就是遮盖范围，印出来评审只能全勾 not_readable，判读没有信息量。\n"
             "  · 要做「漏遮检查」口径：加 --allow-blank-crops 强制生成；\n"
-            "  · 要做「能否读出」判读：先让 r04_second_ocr.py 导出遮前 control 图，"
-            "见 docs/R04判读材料核查_2026-11-16.md。",
+            "  · 要做「能否读出」判读：control_crops 也必须包含可见文字。",
             file=sys.stderr,
         )
         return 3
@@ -203,7 +227,7 @@ def main(argv: list[str] | None = None) -> int:
         pages = [cover(reviewer)]
         for i in range(total):
             chunk = rows[i * PER_PAGE:(i + 1) * PER_PAGE]
-            pages.append(page_of(reviewer, chunk, crops, i + 1, total))
+            pages.append(page_of(reviewer, chunk, crops, controls, i + 1, total))
         pdf = out / f"R04判读册_评审{reviewer}.pdf"
         pages[0].save(pdf, save_all=True, append_images=pages[1:], resolution=300.0)
         print(f"[ok] {pdf}  {len(pages)} 页")

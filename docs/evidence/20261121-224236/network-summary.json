@@ -1,0 +1,32 @@
+{
+    "captured_at":  "2026-11-21T22:42:39.1239009+08:00",
+    "adapters":  [
+                     {
+                         "Name":  "WLAN",
+                         "InterfaceDescription":  "<redacted-adapter-description>",
+                         "Status":  "Disconnected",
+                         "LinkSpeed":  "574 Mbps"
+                     },
+                     {
+                         "Name":  "本地连接",
+                         "InterfaceDescription":  "<redacted-vpn-adapter>",
+                         "Status":  "Not Present",
+                         "LinkSpeed":  "0 bps"
+                     },
+                     {
+                         "Name":  "以太网",
+                         "InterfaceDescription":  "<redacted-adapter-description>",
+                         "Status":  "Disconnected",
+                         "LinkSpeed":  "0 bps"
+                     }
+                 ],
+    "default_routes":  [
+                           {
+                               "InterfaceAlias":  "WLAN",
+                               "NextHop":  "<redacted-private-ip>",
+                               "RouteMetric":  0
+                           }
+                       ],
+    "active_adapter_count":  0,
+    "external_connection_succeeded":  false
+}

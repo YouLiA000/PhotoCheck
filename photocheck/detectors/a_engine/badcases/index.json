@@ -25,7 +25,7 @@
       "spec_ref": "功能规格卡 v1.4 §0.2「details 只允许域名 / SSID 等安全摘要」",
       "fix_test": "test_qr_details_use_typed_fields",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/qr_link__rule_miss/BC-0001-qr-summary-silent-drop.md",
+      "path": "qr_link__rule_miss/BC-0001-qr-summary-silent-drop.md",
       "directory": "qr_link__rule_miss"
     },
     {
@@ -43,7 +43,7 @@
       "spec_ref": "功能规格卡 v1.4 §K-04「身份证号 18 位（末位可 X）+ 校验位」",
       "fix_test": "test_idcard_mask_ending_with_x_is_accepted",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/idcard__rule_miss/BC-0002-idcard-x-tail-rejected.md",
+      "path": "idcard__rule_miss/BC-0002-idcard-x-tail-rejected.md",
       "directory": "idcard__rule_miss"
     },
     {
@@ -61,7 +61,7 @@
       "spec_ref": "功能规格卡 v1.4 §0.2「meta：无必填项；允许安全 masked_preview」",
       "fix_test": "test_meta_preview_is_not_mistaken_for_plaintext",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/datetime__rule_miss/BC-0003-meta-datetime-false-leak.md",
+      "path": "datetime__rule_miss/BC-0003-meta-datetime-false-leak.md",
       "directory": "datetime__rule_miss"
     },
     {
@@ -79,7 +79,7 @@
       "spec_ref": "功能规格卡 v1.4 §K-04「手机号 138****0000」",
       "fix_test": "test_mask_phone_strips_country_code",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/phone__rule_miss/BC-0004-phone-country-code-mask.md",
+      "path": "phone__rule_miss/BC-0004-phone-country-code-mask.md",
       "directory": "phone__rule_miss"
     },
     {
@@ -97,7 +97,7 @@
       "spec_ref": "功能规格卡 v1.4 §K-04「1[3-9] + 9 位，两侧非数字，允许空格横线」",
       "fix_test": "test_phone_positive_with_country_code",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/phone__rule_miss/BC-0005-phone-country-code-missed.md",
+      "path": "phone__rule_miss/BC-0005-phone-country-code-missed.md",
       "directory": "phone__rule_miss"
     },
     {
@@ -115,7 +115,7 @@
       "spec_ref": "规格卡 K-09「对已遮区域用独立代码路径重新检测」；B 侧冒烟写法 `probe_region(redacted.png, bbox)`",
       "fix_test": "test_probe_region_accepts_a_path",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/pipeline__rule_miss/BC-0006-probe-region-path.md",
+      "path": "pipeline__rule_miss/BC-0006-probe-region-path.md",
       "directory": "pipeline__rule_miss"
     },
     {
@@ -133,7 +133,7 @@
       "spec_ref": "规格卡 K-09「对已遮区域用独立代码路径重新检测」/ K-09c 二维码重解码",
       "fix_test": "test_visible_code_is_found_through_probe_region",
       "reason_label": "OCR 未检出",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/qr_link__ocr_miss/BC-0007-qr-quiet-zone-reeval.md",
+      "path": "qr_link__ocr_miss/BC-0007-qr-quiet-zone-reeval.md",
       "directory": "qr_link__ocr_miss"
     },
     {
@@ -150,7 +150,7 @@
       "status": "open",
       "spec_ref": "规格卡 K-05「二维码 / 一维条码检测解码」",
       "reason_label": "OCR 未检出",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/pipeline__ocr_miss/BC-0008-pyzbar-silent-fallback.md",
+      "path": "pipeline__ocr_miss/BC-0008-pyzbar-silent-fallback.md",
       "directory": "pipeline__ocr_miss"
     },
     {
@@ -168,7 +168,7 @@
       "spec_ref": "功能规格卡 v1.4 §K-05「解不出也必须标框」",
       "fix_test": "test_cv2_fallback_rejects_dense_text_quadrilateral",
       "reason_label": "阈值误判",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/qr_unknown__threshold/BC-0009-cv2-text-candidate-false-positive.md",
+      "path": "qr_unknown__threshold/BC-0009-cv2-text-candidate-false-positive.md",
       "directory": "qr_unknown__threshold"
     },
     {
@@ -186,7 +186,7 @@
       "spec_ref": "功能规格卡 v1.4 §K-04「身份证号 18 位 + 校验位」",
       "fix_test": "test_invalid_birth_date_with_valid_checksum_is_not_an_idcard",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/idcard__rule_miss/BC-0010-invalid-birth-date-serial.md",
+      "path": "idcard__rule_miss/BC-0010-invalid-birth-date-serial.md",
       "directory": "idcard__rule_miss"
     },
     {
@@ -203,7 +203,7 @@
       "status": "open",
       "spec_ref": "功能规格卡 v1.4 §K-05「解不出也必须标框」",
       "reason_label": "阈值误判",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/qr_unknown__threshold/BC-0011-half-code-not-reported.md",
+      "path": "qr_unknown__threshold/BC-0011-half-code-not-reported.md",
       "directory": "qr_unknown__threshold"
     },
     {
@@ -221,7 +221,7 @@
       "spec_ref": "规格卡 DoD「异常输入不得中断」；契约 v4 Identifier 规则 `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$`",
       "fix_test": "test_analyze_survives_a_chinese_file_name",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/pipeline__rule_miss/BC-0012-cjk-filename-crash.md",
+      "path": "pipeline__rule_miss/BC-0012-cjk-filename-crash.md",
       "directory": "pipeline__rule_miss"
     },
     {
@@ -239,7 +239,7 @@
       "spec_ref": "规格卡 K-04「同一号码在图上出现多次时，每一处都必须被遮盖」——但同一处被识别两次不是两处",
       "fix_test": "test_repeated_text_in_one_block_yields_one_detection",
       "reason_label": "规则未匹配",
-      "path": "C:/Users/waker/WorkBuddy/雏雁计划/badcases/phone__rule_miss/BC-0013-duplicate-text-in-block.md",
+      "path": "phone__rule_miss/BC-0013-duplicate-text-in-block.md",
       "directory": "phone__rule_miss"
     }
   ]

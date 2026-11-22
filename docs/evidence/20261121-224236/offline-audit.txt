@@ -1,0 +1,12 @@
+{
+  "static": {
+    "imports": [],
+    "calls": []
+  },
+  "static_ok": true,
+  "runtime": {
+    "ok": true,
+    "disposal_state": "passed",
+    "detection_count": 3
+  }
+}

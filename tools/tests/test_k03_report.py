@@ -5,9 +5,14 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -118,6 +123,44 @@ class Aggregates(unittest.TestCase):
     def test_unknown_percentile_method_rejected(self):
         with self.assertRaises(ValueError):
             k03_report.percentile([1, 2, 3], 0.95, method="cubic")
+
+    def test_frozen_reference_constant(self):
+        self.assertEqual(k03_report.T_OCR_REF_V2_MS, 2690.2)
+
+    def test_gate_evaluation_uses_frozen_reference(self):
+        gates = k03_report.evaluate_gates({
+            "median_of_image_medians": 2690.2,
+            "p95_of_image_medians": 3094.4,
+            "max_of_image_medians": 3162.3,
+        })
+        self.assertTrue(gates["median_passed"])
+        self.assertTrue(gates["p95_passed"])
+        self.assertFalse(gates["max_requires_explanation"])
+        self.assertEqual(gates["reference_ms"], 2690.2)
+
+    def test_gate_rejects_slow_median_and_p95(self):
+        gates = k03_report.evaluate_gates(
+            {
+                "median_of_image_medians": 4000.0,
+                "p95_of_image_medians": 5000.0,
+                "max_of_image_medians": 6000.0,
+            },
+            reference_ms=2690.2,
+        )
+        self.assertFalse(gates["median_passed"])
+        self.assertFalse(gates["p95_passed"])
+        self.assertTrue(gates["max_requires_explanation"])
+
+    def test_gate_ref_must_be_positive(self):
+        with self.assertRaises(ValueError):
+            k03_report.evaluate_gates(
+                {
+                    "median_of_image_medians": 1,
+                    "p95_of_image_medians": 1,
+                    "max_of_image_medians": 1,
+                },
+                reference_ms=0,
+            )
 
 
 class Validate(unittest.TestCase):
@@ -298,6 +341,37 @@ class AFormat(unittest.TestCase):
         names = " ".join(name for name, _ in k03_report.TEMPLATE_ONLY_FIELDS)
         self.assertIn("samples_ms", names)
         self.assertIn("sha256", names)
+
+
+class CliReferenceMode(unittest.TestCase):
+    def test_cli_does_not_apply_cross_machine_absolute_gate(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "report.json"
+            path.write_text(json.dumps(valid_report()), encoding="utf-8")
+            stdout = io.StringIO()
+            with (
+                mock.patch.object(sys, "argv", ["k03_report.py", "validate", str(path)]),
+                contextlib.redirect_stdout(stdout),
+            ):
+                self.assertEqual(k03_report._cli(), 0)
+            self.assertIn("SKIPPED", stdout.getvalue())
+            self.assertIn("2690.2", stdout.getvalue())
+
+    def test_cli_accepts_same_run_local_reference(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "report.json"
+            path.write_text(json.dumps(valid_report()), encoding="utf-8")
+            stdout = io.StringIO()
+            with (
+                mock.patch.object(
+                    sys,
+                    "argv",
+                    ["k03_report.py", "validate", str(path), "--ref-ms", "90"],
+                ),
+                contextlib.redirect_stdout(stdout),
+            ):
+                self.assertEqual(k03_report._cli(), 0)
+            self.assertIn("same-run-local", stdout.getvalue())
 
 
 if __name__ == "__main__":

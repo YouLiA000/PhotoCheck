@@ -113,10 +113,14 @@ class Badcase:
         return self.path.parent.name
 
     def to_dict(self) -> dict[str, Any]:
+        try:
+            relative = self.path.relative_to(self.path.parent.parent).as_posix()
+        except ValueError:
+            relative = self.path.as_posix()
         return {
             **dict(self.meta),
             "reason_label": REASONS.get(self.meta["reason"], ""),
-            "path": self.path.as_posix(),
+            "path": relative,
             "directory": self.directory,
         }
 

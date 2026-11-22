@@ -4,7 +4,8 @@
 
 - Python: `C:\Python311\Python311\python.exe`
 - Virtual environment: `D:\Program Files\PhotoCheck\venv`
-- ExifTool 13.61: `D:\Program Files\PhotoCheck\ExifTool-13.61\exiftool.exe`
+- ExifTool 13.61: `tools\exiftool\exiftool.exe`（开发）
+  或 `runtime\exiftool\exiftool.exe`（便携）
 
 ExifTool is mandatory. If it is missing, `ingest_image()` and sanitized export
 fail closed with an actionable error rather than silently skipping metadata
@@ -23,7 +24,7 @@ Install Python dependencies:
 
 ## K-01
 
-`ingest_image()` validates a local JPEG/PNG, applies EXIF orientation once,
+`ingest_image()` validates a local JPEG/PNG/WebP/BMP, applies EXIF orientation once,
 returns a canonical image plus `ImageDescriptor` and metadata `Detection`
 records. Raw ExifTool output is stored only in a process-memory `SecretStore`
 and is discarded when the `IngestedImage` context closes.

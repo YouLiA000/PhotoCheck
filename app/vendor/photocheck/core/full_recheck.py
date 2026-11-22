@@ -6,6 +6,8 @@ from typing import Any, Callable, Iterable, Mapping
 
 from photocheck.detectors import AEnvelope, analyze_a
 
+IOU_MATCH_THRESHOLD = 0.5
+
 
 def full_file_recheck(
     output_path: str,
@@ -20,6 +22,17 @@ def full_file_recheck(
     detections = [dict(detection) for detection in detections]
     decisions = [dict(decision) for decision in decisions]
     detection_by_id = {detection["id"]: detection for detection in detections}
+    missing = sorted(
+        {
+            str(decision.get("finding_id"))
+            for decision in decisions
+            if decision.get("finding_id") not in detection_by_id
+        }
+    )
+    if missing:
+        raise ValueError(
+            "decision references unknown finding_id(s): " + ", ".join(missing[:3])
+        )
     retained = [
         detection_by_id[decision["finding_id"]]
         for decision in decisions
@@ -56,7 +69,7 @@ def _matches_retained(candidate: Mapping[str, Any], retained: Mapping[str, Any])
     retained_bbox = retained.get("bbox")
     if not isinstance(candidate_bbox, list) or not isinstance(retained_bbox, list):
         return False
-    return _iou(candidate_bbox, retained_bbox) >= 0.5
+    return _iou(candidate_bbox, retained_bbox) >= IOU_MATCH_THRESHOLD
 
 
 def _iou(first: list[int], second: list[int]) -> float:

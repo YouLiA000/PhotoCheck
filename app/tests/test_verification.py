@@ -50,6 +50,20 @@ class SolidRegionTests(unittest.TestCase):
         check = self._verify((0, 0, 0, 255), mode="RGBA")
         self.assertEqual(check["status"], "not_applicable")
 
+    def test_manual_blur_label_is_not_reported_as_solid(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "out.png"
+            Image.new("RGB", (20, 20), "white").save(path)
+            with Image.open(path) as output:
+                check = _verify_region(
+                    output,
+                    region(method="blur"),
+                    [],
+                    lambda *a, **k: {},
+                )
+        self.assertEqual(check["status"], "not_applicable")
+        self.assertEqual(check["method"], "blur_region_structural_only")
+
     def test_missing_file_does_not_raise(self) -> None:
         """文件读不出来时判失败，而不是抛异常把整份报告带崩。"""
         check = _verify_region(Path("no-such-file.png"), region(), [], lambda *a, **k: {})

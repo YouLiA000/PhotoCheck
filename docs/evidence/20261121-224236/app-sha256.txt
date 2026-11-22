@@ -1,0 +1,4 @@
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          C04D78CB390FEEF90D1621B6B5CF9939523A17A58FC1AC2C1B39CF275068D0DC       PhotoCheck_App_win64.zip

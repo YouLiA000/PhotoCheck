@@ -80,6 +80,17 @@ class FullRecheckTests(unittest.TestCase):
         self.assertEqual(result["retained_count"], 0)
         self.assertEqual(result["unplanned_count"], 1)
 
+    def test_unknown_decision_finding_is_rejected_with_domain_error(self) -> None:
+        decision = {
+            "contract_version": "photocheck/v4",
+            "record_type": "Decision",
+            "finding_id": "missing",
+            "action": "retain",
+            "revision": 1,
+        }
+        with self.assertRaisesRegex(ValueError, "unknown finding_id"):
+            self.run_recheck([], [decision])
+
 
 if __name__ == "__main__":
     unittest.main()

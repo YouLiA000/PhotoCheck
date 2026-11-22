@@ -34,7 +34,7 @@ if str(VENDOR) not in sys.path:
     sys.path.insert(0, str(VENDOR))
 
 from photocheck.contract import build_redaction_plan  # noqa: E402
-from photocheck.core import ingest_image, process_and_export  # noqa: E402
+from photocheck.core import find_bundled_exiftool, ingest_image, process_and_export  # noqa: E402
 from photocheck.detectors import analyze_a  # noqa: E402
 
 SAMPLES_DIR = APP_ROOT / "samples"
@@ -65,16 +65,13 @@ for _p in (UPLOADS, OUTPUTS):
 
 
 def exiftool_path() -> Path | None:
-    """ExifTool 是可选的（没有就跳过独立复核），有就优先用随包的。
+    """Return the bundled ExifTool; ExifTool is mandatory for image processing.
 
-    B 的 ``process_and_export`` 会用它做导出后的独立元数据复核——这是报告里
-    「元数据残留 0」那一行的来源。缺了它报告会退化成只看 Pillow 的读取。
+    ``ingest_image`` fails closed when ExifTool is unavailable.  The UI still
+    opens so the prerequisite can be diagnosed, but detection, export, and
+    metadata verification cannot complete without this executable.
     """
-    for base in (APP_ROOT.parent / "runtime" / "exiftool", APP_ROOT.parent / "tools" / "exiftool"):
-        exe = base / "exiftool.exe"
-        if exe.is_file():
-            return exe
-    return None
+    return find_bundled_exiftool(APP_ROOT.parent)
 
 
 _EXIFTOOL = exiftool_path()
@@ -110,16 +107,25 @@ class Session:
         self.warm_warning: str | None = None
 
     def add(self, analysis: Analysis) -> None:
+        evicted_analysis: Analysis | None = None
+        evicted_output: Path | None = None
         with self.lock:
             self.analyses[analysis.id] = analysis
             self.analyses.move_to_end(analysis.id)
             self.last_analysis_id = analysis.id
             while len(self.analyses) > self.max_analyses:
-                expired_id, _ = self.analyses.popitem(last=False)
-                self.outputs.pop(expired_id, None)
+                expired_id, evicted_analysis = self.analyses.popitem(last=False)
+                evicted_output = self.outputs.pop(expired_id, None)
                 self.reports.pop(expired_id, None)
                 self.latest_revisions.pop(expired_id, None)
                 self.decision_fingerprints.pop(expired_id, None)
+        if evicted_output is not None:
+            _remove_output_dir(evicted_output.parent)
+        if evicted_analysis is not None and evicted_analysis.source_id.startswith("upload:"):
+            source = evicted_analysis.path
+            if _is_within(source, UPLOADS):
+                source.unlink(missing_ok=True)
+                source.with_suffix(".name").unlink(missing_ok=True)
 
     def get(self, source_id: str, analysis_id: str | None = None) -> Analysis:
         with self.lock:
@@ -254,7 +260,7 @@ def resolve_source(source_id: str) -> Path:
     if kind == "upload":
         if not re.fullmatch(r"[0-9a-f]{32}", key):
             raise ValueError("上传标识不合法")
-        for suffix in (".jpg", ".png"):
+        for suffix in (".jpg", ".png", ".webp", ".bmp"):
             path = UPLOADS / f"{key}{suffix}"
             if path.is_file():
                 return path
@@ -263,7 +269,7 @@ def resolve_source(source_id: str) -> Path:
 
 
 MAX_IMAGE_PIXELS = 50_000_000
-UPLOAD_FORMATS = {"JPEG": ".jpg", "PNG": ".png"}
+UPLOAD_FORMATS = {"JPEG": ".jpg", "PNG": ".png", "WEBP": ".webp", "BMP": ".bmp"}
 
 
 def _validate_image_bytes(payload: bytes) -> str:
@@ -275,7 +281,7 @@ def _validate_image_bytes(payload: bytes) -> str:
     try:
         opened = Image.open(BytesIO(payload))
     except UnidentifiedImageError as exc:
-        raise ValueError("无法识别图片；只支持 JPG / PNG") from exc
+        raise ValueError("无法识别图片；支持 JPG / PNG / WebP / BMP") from exc
     except Image.DecompressionBombError as exc:
         raise ValueError("图片像素过大，已拒绝") from exc
     except (OSError, ValueError) as exc:
@@ -284,7 +290,7 @@ def _validate_image_bytes(payload: bytes) -> str:
     with opened:
         image_format = opened.format or ""
         if image_format not in UPLOAD_FORMATS:
-            raise ValueError("暂不支持该格式；请转换为 JPG / PNG 后重试")
+            raise ValueError("暂不支持该格式；支持 JPG / PNG / WebP / BMP")
         if opened.width * opened.height > MAX_IMAGE_PIXELS:
             raise ValueError("图片超过 5000 万像素，请先缩小后重试")
         if getattr(opened, "n_frames", 1) != 1:
@@ -395,13 +401,12 @@ def _clamp_manual_box(box: Any, width: int, height: int) -> tuple[list[int], str
         raise ValueError(f"不支持的遮盖方式：{box_method}")
     if w <= 0 or h <= 0:
         raise ValueError("补框宽高必须大于 0")
-    x = max(0, min(x, width - 1))
-    y = max(0, min(y, height - 1))
-    w = min(w, width - x)
-    h = min(h, height - y)
-    if w < 3 or h < 3:
+    ix1, iy1 = max(0, x), max(0, y)
+    ix2, iy2 = min(width, x + w), min(height, y + h)
+    iw, ih = ix2 - ix1, iy2 - iy1
+    if iw < 3 or ih < 3:
         raise ValueError("补框太小或完全落在图外")
-    return [x, y, w, h], box_method
+    return [ix1, iy1, iw, ih], box_method
 
 
 # 遮盖余量：引擎给的框是「字的外接矩形」，边缘常常压着半个笔画；

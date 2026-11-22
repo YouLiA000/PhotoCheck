@@ -1,0 +1,22 @@
+PhotoCheck K-14 acceptance evidence
+Captured: 2026-11-21 Asia/Shanghai
+
+Firewall scenario: PASSED
+- Normal network: www.baidu.com:443 True; curl HTTP 200
+- PhotoCheck Python outbound: blocked with WinError 10013
+- Rules: PhotoCheck-Deny-Out-Python and PhotoCheck-Deny-Out-ExifTool, outbound Block
+- UI E2E: passed; 3 plan items; 3 checks; 0 residuals; 0 unplanned
+
+Physical offline scenario: PASSED
+- Active adapters: 0
+- External connection: false
+- DNS: no DNS servers; baidu/example resolution failed
+- Note: ActiveStore retained a stale default-route entry via disconnected WLAN; no active adapter and external test failed.
+- Automated offline smoke: passed; detection_count=3
+- Supplemental UI E2E: passed; 3 plan items; 3 checks; 0 residuals; 0 unplanned
+
+Recording note
+- 07a is the original partial offline recording.
+- 07b is a supplemental recording started after the test had begun; 05, 06, network-summary.json, and physical-offline-console.txt document the offline state before it.
+
+Final status: K-14 evidence complete for team review.
