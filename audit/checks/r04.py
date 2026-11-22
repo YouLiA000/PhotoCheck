@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 
 from audit.model import Context, Result, check, fail, ok, partial, skip
@@ -30,9 +31,19 @@ def second_ocr_and_manual(ctx: Context) -> Result:
 
     manual_path = ctx.docs_dir / "manual-summary.json"
     if not manual_path.is_file():
+        first_review = ctx.docs_dir / "R04_评审C_2026-11-22.csv"
+        completed = 0
+        if first_review.is_file():
+            with first_review.open(encoding="utf-8-sig", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+            completed = sum(
+                str(row.get("judgement") or "").strip() in {"readable", "not_readable"}
+                for row in rows
+            )
         return partial(
-            f"自动交叉 {agreement:.1%}，正控 {control:.1%}；双人判读未填写",
-            "两位评审独立填写 R04 对象表后运行 tools/finalize_r04_manual.py",
+            f"自动交叉 {agreement:.1%}，正控 {control:.1%}；"
+            f"第一位评审 {completed}/30，仍缺第二位",
+            "第二位评审独立填写后合并两份结果并运行 tools/finalize_r04_manual.py",
         )
     try:
         manual = json.loads(ctx.read_text(manual_path))

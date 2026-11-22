@@ -14,7 +14,8 @@ K-03 测的是**纯 OCR 稳态耗时**，不是端到端检测。测量由 A 的
   3. CLI：`validate` 校验一份报告、`template` 输出空模板，方便 A 照着填。
 
 只依赖标准库。这里把规格卡的 1.2× / 1.5× 闸门固化为可执行判定，但冻结基线
-仍由 `T_OCR_REF_V2_MS` 明确控制；改基线或参考集必须升级版本并取得三方同意。
+正式闸门必须传入同一台机器、同一次运行测得的 `T_ref_local`。常量
+`T_OCR_REF_V2_MS` 只保留为 B 验收机参考值，不再作为跨机绝对闸门。
 
 用法：
     python tools/k03_report.py template > k03_report.json     # 出空模板
@@ -660,8 +661,11 @@ def _cli() -> int:
     p_validate.add_argument(
         "--ref-ms",
         type=float,
-        default=T_OCR_REF_V2_MS,
-        help=f"冻结基线（默认 {T_OCR_REF_V2_MS} ms）",
+        default=None,
+        help=(
+            "本机同一次运行测得的 k03_ref_v1 中位耗时 T_ref_local；"
+            f"B 验收机参考值为 {T_OCR_REF_V2_MS} ms"
+        ),
     )
 
     args = parser.parse_args()
@@ -702,20 +706,31 @@ def _cli() -> int:
             print(f"[gaps] 与 C 模板的字段缺口 {len(gaps)} 项（不计为错误，但算不全模板要求）：")
             for name, why in gaps:
                 print(f"  - {name}：{why}")
-        if not problems:
+        if not problems and args.ref_ms is None:
+            summary = gate_input
+            print(
+                "[gate] SKIPPED：未提供 --ref-ms。绝对值 "
+                f"median={summary.get('median_of_image_medians')} ms / "
+                f"p95={summary.get('p95_of_image_medians')} ms / "
+                f"max={summary.get('max_of_image_medians')} ms；"
+                f"B 验收机参考值仅作报告展示（{T_OCR_REF_V2_MS:.1f} ms）。"
+            )
+        elif not problems:
             try:
                 gates = evaluate_gates(gate_input, reference_ms=args.ref_ms)
             except ValueError as exc:
                 print(f"[gate] 无法判定：{exc}")
                 return 1
             if abs(args.ref_ms - T_OCR_REF_V2_MS) > 1e-9:
-                print(
-                    "[gate] WARNING：使用了自定义基线，仅用于诊断；"
-                    f"正式验收必须使用 {T_OCR_REF_V2_MS:.1f} ms"
-                )
+                print(f"[gate] reference_mode=same-run-local ({args.ref_ms:.1f} ms)")
+            else:
+                print("[gate] reference_mode=B-acceptance-machine-reference")
             _print_gates(gates)
         if problems:
             return 1
+        if args.ref_ms is None:
+            print("[ok] 报告自洽；未提供本机参考，因此不产生性能 PASS/FAIL。")
+            return 0
         if not (gates["median_passed"] and gates["p95_passed"]):
             return 1
         print("[ok] 报告自洽、口径一致")

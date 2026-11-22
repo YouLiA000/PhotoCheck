@@ -20,6 +20,18 @@ if (-not $PythonPath) {
     throw "Python executable not found: $Python"
 }
 
+if (-not $env:PHOTOCHECK_EXIFTOOL) {
+    foreach ($candidate in @(
+        (Join-Path $Root "runtime\exiftool\exiftool.exe"),
+        (Join-Path $Root "tools\exiftool\exiftool.exe")
+    )) {
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+            $env:PHOTOCHECK_EXIFTOOL = $candidate
+            break
+        }
+    }
+}
+
 $Adapters = @(
     Get-NetAdapter | Select-Object Name, InterfaceDescription, Status, LinkSpeed
 )
@@ -28,6 +40,12 @@ $Routes = @(
         Select-Object InterfaceAlias, NextHop, RouteMetric
 )
 $activeAdapters = @($Adapters | Where-Object { $_.Status -eq "Up" })
+$Adapters |
+    Format-Table -AutoSize |
+    Out-File -LiteralPath (Join-Path $Evidence "physical-adapters.txt") -Encoding UTF8
+$Routes |
+    Format-Table -AutoSize |
+    Out-File -LiteralPath (Join-Path $Evidence "physical-default-routes.txt") -Encoding UTF8
 $firewallProfiles = @()
 try {
     $firewallProfiles = @(
@@ -56,6 +74,7 @@ $network = [ordered]@{
     default_route_count = $Routes.Count
     external_connection_succeeded = $connected
     firewall_profiles = $firewallProfiles
+    details_in = @("physical-adapters.txt", "physical-default-routes.txt")
 }
 $network | ConvertTo-Json -Depth 5 |
     Set-Content -LiteralPath (Join-Path $Evidence "network-summary.json") -Encoding UTF8
@@ -67,6 +86,7 @@ $auditOutput | Set-Content -LiteralPath (Join-Path $Evidence "offline-audit.txt"
 Write-Output "Evidence directory: $Evidence"
 Write-Output "Active adapters: $($activeAdapters.Count)"
 Write-Output "External connection succeeded: $connected"
+Write-Output "ExifTool: $($env:PHOTOCHECK_EXIFTOOL)"
 Write-Output "Offline audit exit: $auditCode"
 
 if ($connected) {

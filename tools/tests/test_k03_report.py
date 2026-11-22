@@ -5,9 +5,14 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -336,6 +341,37 @@ class AFormat(unittest.TestCase):
         names = " ".join(name for name, _ in k03_report.TEMPLATE_ONLY_FIELDS)
         self.assertIn("samples_ms", names)
         self.assertIn("sha256", names)
+
+
+class CliReferenceMode(unittest.TestCase):
+    def test_cli_does_not_apply_cross_machine_absolute_gate(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "report.json"
+            path.write_text(json.dumps(valid_report()), encoding="utf-8")
+            stdout = io.StringIO()
+            with (
+                mock.patch.object(sys, "argv", ["k03_report.py", "validate", str(path)]),
+                contextlib.redirect_stdout(stdout),
+            ):
+                self.assertEqual(k03_report._cli(), 0)
+            self.assertIn("SKIPPED", stdout.getvalue())
+            self.assertIn("2690.2", stdout.getvalue())
+
+    def test_cli_accepts_same_run_local_reference(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "report.json"
+            path.write_text(json.dumps(valid_report()), encoding="utf-8")
+            stdout = io.StringIO()
+            with (
+                mock.patch.object(
+                    sys,
+                    "argv",
+                    ["k03_report.py", "validate", str(path), "--ref-ms", "90"],
+                ),
+                contextlib.redirect_stdout(stdout),
+            ):
+                self.assertEqual(k03_report._cli(), 0)
+            self.assertIn("same-run-local", stdout.getvalue())
 
 
 if __name__ == "__main__":

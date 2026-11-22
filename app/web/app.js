@@ -78,7 +78,7 @@ async function refreshStatus() {
       tools.textContent = 'ExifTool 就位';
       tools.className = 'pill';
     } else {
-      tools.textContent = '未找到 ExifTool（元数据复核降级）';
+      tools.textContent = 'ExifTool 未就绪（无法处理图片）';
       tools.className = 'pill warn';
     }
   } catch (err) {
@@ -504,7 +504,7 @@ function renderReport(rep) {
   $('#reportExport').innerHTML = `
     导出文件 <code>${esc(rep.export.name.slice(0, 18))}…</code><br>
     原图 SHA-256 未变：<code>${esc((rep.export.source_sha256 || '').slice(0, 10))}…</code><br>
-    ${rep.exiftool ? '已用 ExifTool 独立复核元数据' : '未装 ExifTool，元数据复核降级'}`;
+    ${rep.exiftool ? '已用 ExifTool 独立复核元数据' : 'ExifTool 缺失，本次结果不得交付'}`;
 }
 
 function showAfter(rep) {

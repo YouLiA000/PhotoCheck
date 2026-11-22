@@ -12,6 +12,7 @@ from .ingest import ImageIngestError, IngestedImage, ingest_image
 from .metadata import (
     MetadataScanError,
     exiftool_version,
+    find_bundled_exiftool,
     metadata_residual_tags,
     read_metadata,
 )
@@ -46,6 +47,7 @@ __all__ = [
     "full_file_recheck",
     "ingest_image",
     "exiftool_version",
+    "find_bundled_exiftool",
     "metadata_residual_tags",
     "process_and_export",
     "read_metadata",

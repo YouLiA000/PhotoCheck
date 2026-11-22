@@ -260,6 +260,8 @@ def run(
     output_dir.mkdir(parents=True, exist_ok=True)
     crop_root = output_dir / "manual_crops"
     crop_root.mkdir()
+    control_root = output_dir / "control_crops"
+    control_root.mkdir()
     processed_root = output_dir / "processed"
     processed_root.mkdir()
 
@@ -280,6 +282,7 @@ def run(
 
     rows: list[dict[str, Any]] = []
     contacts: list[tuple[str, str, Image.Image]] = []
+    controls: list[tuple[str, str, Image.Image]] = []
     started_at = datetime.now().isoformat(timespec="seconds")
     for image_id, image_candidates in sorted(by_image.items()):
         candidate = image_candidates[0]
@@ -378,8 +381,13 @@ def run(
                         )
                         crop_path = crop_root / f"{len(rows):02d}.png"
                         processed_crop.save(crop_path, format="PNG")
+                        control_path = control_root / f"{len(rows):02d}.png"
+                        original_crop.save(control_path, format="PNG")
                         contacts.append(
                             (image_id, str(rows[-1]["masked_preview"]), processed_crop.copy())
+                        )
+                        controls.append(
+                            (image_id, str(rows[-1]["masked_preview"]), original_crop.copy())
                         )
                         processed_crop.close()
                         original_crop.close()
@@ -387,7 +395,10 @@ def run(
     if len(rows) != sample_size:
         raise RuntimeError(f"expected {sample_size} processed objects, got {len(rows)}")
     _make_contact_sheet(contacts, output_dir / "manual-contact-sheet.png")
+    _make_contact_sheet(controls, output_dir / "control-contact-sheet.png")
     for crop in contacts:
+        crop[2].close()
+    for crop in controls:
         crop[2].close()
 
     csv_path = output_dir / "r04-objects.csv"
@@ -429,6 +440,7 @@ def run(
             "raw_ocr_text_stored": False,
             "masked_preview_only": True,
             "processed_crops_only_for_manual_review": True,
+            "control_crops_local_only": True,
         },
     }
     (output_dir / "r04-results.json").write_text(
@@ -441,6 +453,8 @@ def run(
         f"- 对象：{sample_size} 个（手机号 {phone_count} / 身份证 {idcard_count}）\n"
         f"- 随机种子：{seed}\n"
         "- 查看 `manual-contact-sheet.png` 或 `manual_crops/01.png` 至 `30.png`。\n"
+        "- 同时查看 `control-contact-sheet.png` / `control_crops/`，先确认原区域有文字，"
+        "再看遮后区域是否仍可读。两份材料都不应提交到公共仓库。\n"
         "- 两位评审独立填写 `r04-objects.csv` 的 `manual_reviewer_a`、"
         "`manual_reviewer_b`，只填 `readable` 或 `not_readable`。\n"
         "- 分歧由第三人填写 `manual_adjudicated`；不得互相讨论后抄同一答案。\n"

@@ -1,7 +1,6 @@
 # PhotoCheck runtime dependencies (Python 3.11).
 # Dependency changes require three-person approval.
 
-gradio==5.50.0
 Pillow==10.4.0
 pillow-heif>=0.18
 opencv-contrib-python==4.10.0.84

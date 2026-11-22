@@ -40,9 +40,9 @@ else { & $python.Executable @($python.PrefixArgs) -m venv .venv }
 $vpy = Join-Path $Root ".venv\Scripts\python.exe"
 if (-not (Test-Path $vpy)) { throw "虚拟环境创建失败：$vpy 不存在" }
 
-Write-Host "[3/4] 安装依赖 ..." -ForegroundColor Cyan
+Write-Host "[3/4] 安装运行与开发依赖 ..." -ForegroundColor Cyan
 & $vpy -m pip install --upgrade pip
-& $vpy -m pip install -r requirements.txt
+& $vpy -m pip install -r requirements-dev.txt
 if ($LASTEXITCODE -ne 0) { throw "依赖安装失败（pip 退出码 $LASTEXITCODE）" }
 
 Write-Host "[4/4] 环境自检 ..." -ForegroundColor Cyan

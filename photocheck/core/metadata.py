@@ -10,9 +10,7 @@ import sys
 from pathlib import Path
 from typing import Any, Mapping
 
-DEFAULT_EXIFTOOL_PATH = Path(
-    r"D:\Program Files\PhotoCheck\ExifTool-13.61\exiftool.exe"
-)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 _ALLOWED_PNG_TECHNICAL_TAGS = {
     "BitDepth",
@@ -35,6 +33,32 @@ class MetadataScanError(ValueError):
     """Raised when ExifTool cannot return a trustworthy metadata record."""
 
 
+def find_bundled_exiftool(root: str | os.PathLike[str] | None = None) -> Path | None:
+    """Return the ExifTool shipped under ``tools/`` or ``runtime/``.
+
+    This is the single project-wide answer to "where is the bundled copy?".
+    Application code, offline scripts, and environment checks all use it so a
+    development checkout and a portable package resolve the prerequisite the
+    same way.
+    """
+
+    bases = [Path(root)] if root is not None else []
+    bases.append(PROJECT_ROOT)
+    seen: set[Path] = set()
+    for base in bases:
+        base = base.resolve()
+        if base in seen:
+            continue
+        seen.add(base)
+        for candidate in (
+            base / "runtime" / "exiftool" / "exiftool.exe",
+            base / "tools" / "exiftool" / "exiftool.exe",
+        ):
+            if candidate.is_file():
+                return candidate.resolve()
+    return None
+
+
 def resolve_exiftool(explicit_path: str | os.PathLike[str] | None = None) -> Path:
     if explicit_path is not None:
         candidate = Path(explicit_path)
@@ -51,11 +75,12 @@ def resolve_exiftool(explicit_path: str | os.PathLike[str] | None = None) -> Pat
             f"PHOTOCHECK_EXIFTOOL does not point to a file: {candidate}"
         )
 
-    discovered = shutil.which("exiftool")
     runtime_root = Path(sys.executable).resolve().parent
+    bundled = find_bundled_exiftool()
+    discovered = shutil.which("exiftool")
     candidates = [
         runtime_root / "exiftool" / "exiftool.exe",
-        DEFAULT_EXIFTOOL_PATH,
+        bundled,
         Path(discovered) if discovered else None,
     ]
     for candidate in candidates:
@@ -63,7 +88,8 @@ def resolve_exiftool(explicit_path: str | os.PathLike[str] | None = None) -> Pat
             return candidate
     raise MetadataScanError(
         "ExifTool not found; set PHOTOCHECK_EXIFTOOL or place it at "
-        "runtime\\exiftool\\exiftool.exe"
+        "tools\\exiftool\\exiftool.exe (development) or "
+        "runtime\\exiftool\\exiftool.exe (portable)"
     )
 
 

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-22T00:09:18",
-  "head": "769747e",
+  "generated_at": "2026-11-22T13:55:21",
+  "head": "3c26e34",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 107 tests in 0.298s | OK",
+      "evidence": "Ran 108 tests in 0.234s | OK",
       "hint": ""
     },
     {
@@ -199,7 +199,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "6 条，均含结论与理由",
+      "evidence": "8 条，均含结论与理由",
       "hint": ""
     },
     {
@@ -319,7 +319,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "contract/masking.py ← 被 1 个模块引用",
+      "evidence": "photocheck/contract/masking.py ← 被 4 个模块引用",
       "hint": ""
     },
     {
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 124 个文件，无完整敏感号",
+      "evidence": "扫描 127 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -359,8 +359,8 @@
       "level": "P1",
       "owner": "B",
       "status": "PARTIAL",
-      "evidence": "自动交叉 100.0%，正控 96.7%；双人判读未填写",
-      "hint": "两位评审独立填写 R04 对象表后运行 tools/finalize_r04_manual.py"
+      "evidence": "自动交叉 100.0%，正控 96.7%；第一位评审 30/30，仍缺第二位",
+      "hint": "第二位评审独立填写后合并两份结果并运行 tools/finalize_r04_manual.py"
     },
     {
       "id": "UI-01",
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.092s | OK",
+      "evidence": "Ran 48 tests in 2.703s | OK",
       "hint": ""
     },
     {

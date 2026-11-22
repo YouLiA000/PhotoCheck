@@ -19,20 +19,20 @@ evaluation and audit tooling, and the local browser application.
 The dataset contains 43 张合成 dev images (38 labelled), 23 sealed lock images,
 and local-only authorised real samples.
 
-The 2026-11-21 regression run is:
+The 2026-11-22 regression run is:
 
-- contract/data/UI/eval/tool/application groups: **421 passed**
-- B runtime + A/B integration: **69 passed**
-- A engine: **238 passed**
+- four documented groups: **99 / 240 / 381 / 31 passed**, **751 total**
 - environment preflight: all required dependencies OK
+- repository privacy scan: **553 files passed**
 
 The previous K-07 sample gap was closed locally on 2026-11-20: **22 strict
 single-face authorised samples** are prepared and all 22 have metadata removed.
 The two multi-person photos remain quarantined and are not counted.
 
-Known incomplete evidence items are the two-reviewer R-04 manual judgement and
-the acceptance-machine K-14 network/firewall artifact set. A passed state is
-never interpreted as an absolute safety claim.
+K-14 network/firewall evidence is archived under `docs/evidence/`. The only
+remaining audit partial is R-04: one independent reviewer (C) has completed the
+30-object form, and the second independent reviewer is still required. A passed
+state is never interpreted as an absolute safety claim.
 
 Run the local application with:
 
@@ -40,11 +40,9 @@ Run the local application with:
 python app\main.py
 ```
 
-On Windows the repository-root launcher is also available:
-
-```powershell
-run.bat
-```
+The supported source-development entry points are `setup.ps1` followed by
+`run_app.ps1`. `run.bat` is a legacy compatibility entry point; normal users
+should use the portable package.
 
 Build the portable Windows directory and ZIP:
 

@@ -139,6 +139,19 @@ class Dispatch(unittest.TestCase):
         # 出现未定义的 text 子类时，宁可只给摘要，也不能把原文当"非文本"放过去
         self.assertEqual(masking.mask_for("text", "plate", "京A12345"), "text/plate")
 
+    def test_a_engine_aliases_the_contract_implementation(self):
+        from photocheck.detectors.a_engine.core.detect.entities import (
+            mask_idcard as engine_idcard,
+        )
+        from photocheck.detectors.a_engine.core.detect.entities import (
+            mask_phone as engine_phone,
+        )
+
+        for value in ("13800138000", "+8613800138000", "12345678", "1234"):
+            self.assertEqual(engine_phone(value), masking.mask_phone(value))
+        for value in ("110101199003071234", "110101199003", "1234"):
+            self.assertEqual(engine_idcard(value), masking.mask_idcard(value))
+
 
 class ShapeOfDataset(unittest.TestCase):
     """真值里的 masked_preview 必须是由本模块产出的形状。"""

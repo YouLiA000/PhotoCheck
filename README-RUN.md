@@ -27,7 +27,8 @@
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
-脚本会：用 Python 3.11 建 `.venv` → 安装 `requirements.txt` → 跑 `tools/check_env.py`。
+脚本会：用 Python 3.11 建 `.venv` → 安装 `requirements-dev.txt`
+（包含运行依赖与团队内部 Gradio 原型依赖）→ 跑 `tools/check_env.py`。
 
 **成功判据**：末尾显示「必需项全部就绪」，退出码 0。
 
@@ -44,7 +45,9 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 .venv\Scripts\python.exe -m pytest photocheck\detectors\a_engine\tests -q
 ```
 
-期望：**421 / 69 / 238 passed**，`xfailed` 为 0。
+期望：按仓库当前 `AGENTS.md` 四组命令运行，合计 **751 passed**。
+`test_real_photos_local_only` 在非 Git 工作树会显式 skip，不能把该 skip
+记成真实照片红线已执行。
 
 ---
 

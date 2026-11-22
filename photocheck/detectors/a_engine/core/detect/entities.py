@@ -28,9 +28,21 @@ Two rule fixes from the 2026-11-06 measurement round:
 from __future__ import annotations
 
 import re
+import sys
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 from typing import Sequence
+
+try:
+    from photocheck.contract.masking import mask_idcard, mask_phone
+except ModuleNotFoundError:
+    # Upstream A tests import this module as top-level ``core.*``. Add the
+    # integrated repository root so both entry styles use one implementation.
+    _REPO_ROOT = Path(__file__).resolve().parents[5]
+    if str(_REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(_REPO_ROOT))
+    from photocheck.contract.masking import mask_idcard, mask_phone
 
 from ..config import DEFAULT_CONFIG, OcrConfig
 from ..contract import BBox, Detection
@@ -125,30 +137,6 @@ def idcard_birth_date_valid(number: str) -> bool:
     except (TypeError, ValueError):
         return False
     return 1800 <= birthday.year <= 2100
-
-
-def mask_phone(value: str) -> str:
-    """138****8000.
-
-    Strip the +86 / 0086 country code first. Masking before stripping hides the
-    country code and leaves the 8-digit subscriber prefix exposed instead.
-    """
-    v = value.strip()
-    digits = re.sub(r"[\s\-]", "", v)
-    if digits.startswith("+86"):
-        digits = digits[3:]
-    elif digits.startswith("0086"):
-        digits = digits[4:]
-    elif digits.startswith("86") and len(digits) == 13:
-        digits = digits[2:]
-    return f"{digits[:3]}****{digits[-4:]}" if len(digits) >= 8 else "*" * len(digits)
-
-
-def mask_idcard(value: str) -> str:
-    """1101**********0011. The trailing X is upper-cased: the contract's mask
-    pattern only accepts an upper-case X."""
-    v = value.strip()
-    return f"{v[:4]}{'*' * (len(v) - 8)}{v[-4:].upper()}" if len(v) > 8 else "*" * len(v)
 
 
 def find_entities(text: str) -> list[EntityMatch]:

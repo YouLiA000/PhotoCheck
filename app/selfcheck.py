@@ -20,6 +20,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 OK, BAD, WARN = "[OK]  ", "[FAIL]", "[WARN]"
+EXPECTED_EXIFTOOL = "13.61"
 
 
 def line(tag: str, text: str) -> None:
@@ -77,10 +78,17 @@ def main() -> int:
             version = subprocess.run([str(exiftool), "-ver"], capture_output=True, text=True,
                                      timeout=15).stdout.strip()
         except Exception:  # noqa: BLE001
-            version = "版本未知"
-        line(OK, f"ExifTool {version}（{exiftool.parent.name}）")
+            line(BAD, "ExifTool 已找到但无法执行")
+            critical.append("ExifTool 调用失败，图片处理无法完成")
+        else:
+            if version == EXPECTED_EXIFTOOL:
+                line(OK, f"ExifTool {version}（{exiftool.parent.name}）")
+            else:
+                line(BAD, f"ExifTool {version}（期望 {EXPECTED_EXIFTOOL}）")
+                critical.append(f"ExifTool 版本不是团队固定的 {EXPECTED_EXIFTOOL}")
     else:
-        line(WARN, "未找到 ExifTool：元数据仍会被清除，但少了独立复核这一道")
+        line(BAD, "未找到 ExifTool：这是图片处理的硬依赖")
+        critical.append("ExifTool 未就绪，检测、导出和元数据复核无法完成")
 
     samples = service.samples()
     line(OK if samples else BAD, f"内置示例 {len(samples)} 张")

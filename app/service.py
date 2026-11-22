@@ -34,7 +34,7 @@ if str(VENDOR) not in sys.path:
     sys.path.insert(0, str(VENDOR))
 
 from photocheck.contract import build_redaction_plan  # noqa: E402
-from photocheck.core import ingest_image, process_and_export  # noqa: E402
+from photocheck.core import find_bundled_exiftool, ingest_image, process_and_export  # noqa: E402
 from photocheck.detectors import analyze_a  # noqa: E402
 
 SAMPLES_DIR = APP_ROOT / "samples"
@@ -65,16 +65,13 @@ for _p in (UPLOADS, OUTPUTS):
 
 
 def exiftool_path() -> Path | None:
-    """ExifTool 是可选的（没有就跳过独立复核），有就优先用随包的。
+    """Return the bundled ExifTool; ExifTool is mandatory for image processing.
 
-    B 的 ``process_and_export`` 会用它做导出后的独立元数据复核——这是报告里
-    「元数据残留 0」那一行的来源。缺了它报告会退化成只看 Pillow 的读取。
+    ``ingest_image`` fails closed when ExifTool is unavailable.  The UI still
+    opens so the prerequisite can be diagnosed, but detection, export, and
+    metadata verification cannot complete without this executable.
     """
-    for base in (APP_ROOT.parent / "runtime" / "exiftool", APP_ROOT.parent / "tools" / "exiftool"):
-        exe = base / "exiftool.exe"
-        if exe.is_file():
-            return exe
-    return None
+    return find_bundled_exiftool(APP_ROOT.parent)
 
 
 _EXIFTOOL = exiftool_path()
