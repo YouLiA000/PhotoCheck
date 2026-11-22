@@ -221,6 +221,9 @@ Windows 10/11 64 位 · 内存 4GB+ · 磁盘 1GB · 不需要装 Python · 不�
 
 def write_docs(out: Path) -> None:
     (out / "使用说明.txt").write_text(USAGE, encoding="utf-8", newline="\r\n")
+    readme = ROOT / "README.md"
+    if readme.is_file():
+        shutil.copy2(readme, out / "README.md")
     manual = ROOT / "docs" / "PhotoCheck_成品说明_2026-11-13.md"
     if manual.is_file():
         shutil.copy2(manual, out / "项目说明.md")
@@ -231,6 +234,7 @@ def write_docs(out: Path) -> None:
         "评测协议_v1.0.md",
         "标注指南_R-01_v1.md",
         "R03导出图复检_2026-11-08.md",
+        "R05发布清单与复现说明_2026-11-22.md",
     ):
         source = ROOT / "docs" / relative
         if source.is_file():

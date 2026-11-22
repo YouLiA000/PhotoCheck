@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-22T21:14:58",
-  "head": "3368060",
+  "generated_at": "2026-11-22T22:08:14",
+  "head": "723545a",
   "checks": [
     {
       "id": "CT-01",
@@ -19,7 +19,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 108 tests in 0.292s | OK",
+      "evidence": "Ran 108 tests in 0.205s | OK",
       "hint": ""
     },
     {
@@ -169,7 +169,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "0.8 小时前更新",
+      "evidence": "0.0 小时前更新",
       "hint": ""
     },
     {
@@ -329,7 +329,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "扫描 127 个文件，无完整敏感号",
+      "evidence": "扫描 106 个文件，无完整敏感号",
       "hint": ""
     },
     {
@@ -389,7 +389,7 @@
       "level": "P0",
       "owner": "C",
       "status": "PASS",
-      "evidence": "Ran 48 tests in 4.096s | OK",
+      "evidence": "Ran 48 tests in 2.898s | OK",
       "hint": ""
     },
     {
